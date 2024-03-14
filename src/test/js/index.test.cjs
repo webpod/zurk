@@ -1,9 +1,9 @@
 const assert = require('node:assert')
 const { describe, it } = require('node:test')
-const { foo } = require('@antongolub/blank-ts')
+const { $ } = require('zurk')
 
-describe('cjs foo()', () => {
-  it('is callable', () => {
-    assert.equal(foo(), undefined)
+describe('cjs entry', () => {
+  it('$ is callable', () => {
+    assert.equal(typeof $, 'function')
   })
 })

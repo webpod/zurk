@@ -1,9 +1,9 @@
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
-import { foo } from '@antongolub/blank-ts'
+import { $ } from 'zurk'
 
-describe('mjs foo()', () => {
-  it('is callable', () => {
-    assert.equal(foo(), undefined)
+describe('mjs entry', () => {
+  it('$ is callable', () => {
+    assert.equal(typeof $, 'function')
   })
 })

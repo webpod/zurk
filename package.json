@@ -1,7 +1,7 @@
 {
-  "name": "@antongolub/blank-ts",
+  "name": "zurk",
   "version": "0.0.0",
-  "description": "Blank TS package",
+  "description": "zx core utils",
   "type": "module",
   "main": "target/cjs/index.cjs",
   "exports": {
@@ -17,7 +17,8 @@
   "files": [
     "target/cjs",
     "target/esm",
-    "target/dts"
+    "target/dts",
+    "target/coverage/lcov.info"
   ],
   "scripts": {
     "build": "concurrently 'npm:build:*'",
@@ -27,18 +28,18 @@
     "build:stamp": "npx buildstamp",
     "test": "concurrently 'npm:test:*'",
     "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
-    "test:unit": "c8 -r lcov -r text -o target/coverage -x src/scripts -x src/test node --loader ts-node/esm --experimental-specifier-resolution=node src/scripts/test.mjs"
+    "test:unit": "c8 -r lcov -r text -o target/coverage -x src/scripts -x src/test -x target node --loader ts-node/esm --experimental-specifier-resolution=node src/scripts/test.mjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antongolub/blank-ts.git"
+    "url": "git+https://github.com/webpod/zurk.git"
   },
   "author": "Anton Golub <antongolub@antongolub.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/antongolub/blank-ts/issues"
+    "url": "https://github.com/webpod/zurk/issues"
   },
-  "homepage": "https://github.com/antongolub/blank-ts#readme",
+  "homepage": "https://github.com/webpod/zurk#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.11.27",

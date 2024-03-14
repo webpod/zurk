@@ -1,5 +1,5 @@
 {
-  "name": "@antongolub/blank-ts",
+  "name": "zurk",
   "out": "../../../target/docs",
   "entryPoints": ["../../../src/main/ts/"],
   "exclude": ["../../../src/test", "**/node_modules/**"],
