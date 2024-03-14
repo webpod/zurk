@@ -1,3 +1,34 @@
+# IDEs
+.idea
+
+# Credentials
+**/*.asc
+**/*.key
+**/*.pem
+**/*.cert
+**/.npmrc
+**/.yarnrc
+
+# Bundles
+bundle
+build
+buildstamp.json
+dist
+docs
+flow-typed
+lib
+target
+typings
+
+# Temp assets
+.temp
+temp
+
+# Codeclimate
+codeclimate.*
+cc-reporter
+cc-reporter.*
+
 # Logs
 logs
 *.log
@@ -21,6 +52,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+coverage.*
 *.lcov
 
 # nyc test coverage
@@ -47,6 +79,9 @@ web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
+.tsbuildinfo
+buildcache
+.buildcache
 
 # Optional npm cache directory
 .npm
