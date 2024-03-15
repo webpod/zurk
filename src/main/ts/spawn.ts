@@ -108,6 +108,7 @@ export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detach
   signal
 })
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   const now = Date.now()
   const stdio: TSpawnResult['stdio'] = [c.stdin, c.stdout, c.stderr]
@@ -116,11 +117,11 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
     if (c.sync) {
       const opts = buildSpawnOpts(c)
       const result = c.spawnSync(c.cmd, c.args, opts)
-      if (result.stdout.length) {
+      if (result.stdout.length > 0) {
         c.stdout.write(result.stdout)
         c.ee.emit('stdout', result.stdout, c)
       }
-      if (result.stderr.length) {
+      if (result.stderr.length > 0) {
         c.stderr.write(result.stderr)
         c.ee.emit('stderr', result.stderr, c)
       }
