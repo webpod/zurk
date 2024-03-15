@@ -1,3 +1,4 @@
+import type EventEmitter from 'node:events'
 import util from 'node:util'
 import {
   invoke,
@@ -11,26 +12,37 @@ export const ZURK = Symbol('Zurk')
 
 export type TZurkListener = (value: any, ctx: TZurkCtx) => void
 
+export type TZurkListeners = {
+  stdout: (data: Buffer, ctx: TZurkCtx) => void
+  stderr: (data: Buffer, ctx: TZurkCtx) => void
+  end: (result: TZurk, ctx: TZurkCtx) => void
+  err: (error: any, ctx: TZurkCtx) => void
+  abort: (error: any, ctx: TZurkCtx) => void
+}
+
+// TODO infer
 export interface TZurkOn<R> {
-  on(name: 'stdout', listener: (data: Buffer, ctx: TZurkCtx) => void): R
-  on(name: 'stderr', listener: (data: Buffer, ctx: TZurkCtx) => void): R
-  on(name: 'end', listener: (result: TZurk, ctx: TZurkCtx) => void): R
-  on(name: 'err', listener: (error: any, ctx: TZurkCtx) => void): R
-  on(name: 'abort', listener: (error: any, ctx: TZurkCtx) => void): R
+  on<T extends 'stdout', L extends TZurkListeners[T]>(name: T, listener: L): R
+  on<T extends 'stderr', L extends TZurkListeners[T]>(name: T, listener: L): R
+  on<T extends 'end', L extends TZurkListeners[T]>(name: T, listener: L): R
+  on<T extends 'err', L extends TZurkListeners[T]>(name: T, listener: L): R
+  on<T extends 'abort', L extends TZurkListeners[T]>(name: T, listener: L): R
 }
 
 export interface TZurk extends TSpawnResult, TZurkOn<TZurk> {
-  _ctx: TZurkCtx
-  on(event: string | symbol, listener: TZurkListener): TZurk
+  ctx:  TZurkCtx
 }
 
 export type TZurkCtx = TSpawnCtxNormalized & { nothrow?: boolean, nohandle?: boolean }
 
-export type TZurkOptions = Partial<Omit<TZurkCtx, 'callback'>>
+export type TZurkOptions = Partial<Omit<TZurkCtx, 'callback'>> & {
+  on?: Partial<TZurkListeners>
+}
 
 export type TZurkPromise = Promise<TZurk> & Promisified<TZurk> & TZurkOn<TZurkPromise> & {
-  _ctx: TZurkCtx
+  ctx:  TZurkCtx
   stdio: TZurkCtx['stdio']
+  child: TZurkCtx['child']
 }
 
 export const zurk = <T extends TZurkOptions = TZurkOptions, R = T extends {sync: true} ? TZurk : TZurkPromise>(opts: T): R =>
@@ -45,6 +57,7 @@ export const zurkAsync = (opts: TZurkOptions): TZurkPromise => {
       ctx.error && !ctx.nothrow ? reject(ctx.error) : resolve(zurkFactory(ctx))
     }
   })
+  attachListeners(ctx.ee, opts.on)
 
   invoke(ctx)
 
@@ -61,6 +74,7 @@ export const zurkSync = (opts: TZurkOptions): TZurk => {
       response = zurkFactory(ctx)
     }
   })
+  attachListeners(ctx.ee, opts.on)
 
   invoke(ctx)
 
@@ -81,7 +95,8 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
       if (p === 'catch') return target.catch.bind(target)
       if (p === 'finally') return target.finally.bind(target)
       if (p === 'stdio') return ctx.stdio
-      if (p === '_ctx') return ctx
+      if (p === 'ctx') return ctx
+      if (p === 'child') return ctx.child
       if (p === 'on') return function (name: string, cb: VoidFunction){ ctx.ee.on(name, cb); return proxy }
 
       if (p in target) return Reflect.get(target, p, receiver)
@@ -91,6 +106,12 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
   }) as TZurkPromise
 
   return proxy
+}
+
+export const attachListeners = (ee: EventEmitter, on: Partial<TZurkListeners> = {}) => {
+  for (const [name, listener] of Object.entries(on)) {
+    ee.on(name, listener as any)
+  }
 }
 
 export const getError = (data: TSpawnResult) => {
@@ -109,23 +130,24 @@ export const zurkFactory = <C extends TSpawnCtxNormalized>(ctx: C): TZurk  => ne
 
 class Zurk implements TZurk {
   [ZURK] = ZURK
-  _ctx: TZurkCtx
+  ctx:  TZurkCtx
   constructor(ctx: TZurkCtx) {
-    this._ctx = ctx
+    this.ctx = ctx
   }
-  on(name: string, cb: TVoidCallback): this { this._ctx.ee.on(name, cb); return this }
-  get status()  { return this._ctx.fulfilled?.status ?? null }
-  get signal()  { return this._ctx.fulfilled?.signal ?? null }
-  get error()   { return this._ctx.error }
-  get stderr()  { return this._ctx.fulfilled?.stderr || '' }
-  get stdout()  { return this._ctx.fulfilled?.stdout || '' }
-  get stdall()  { return this._ctx.fulfilled?.stdall || '' }
+  on(name: string, cb: TVoidCallback): this { this.ctx.ee.on(name, cb); return this }
+  get child()   { return this.ctx.child }
+  get status()  { return this.ctx.fulfilled?.status ?? null }
+  get signal()  { return this.ctx.fulfilled?.signal ?? null }
+  get error()   { return this.ctx.error }
+  get stderr()  { return this.ctx.fulfilled?.stderr || '' }
+  get stdout()  { return this.ctx.fulfilled?.stdout || '' }
+  get stdall()  { return this.ctx.fulfilled?.stdall || '' }
   get stdio(): TSpawnResult['stdio'] { return [
-    this._ctx.stdin,
-    this._ctx.stdout,
-    this._ctx.stderr
+    this.ctx.stdin,
+    this.ctx.stdout,
+    this.ctx.stderr
   ]}
-  get duration()  { return this._ctx.fulfilled?.duration ?? 0 }
+  get duration()  { return this.ctx.fulfilled?.duration ?? 0 }
   toString(){ return this.stdall.trim() }
   valueOf(){ return this.stdall.trim() }
 }

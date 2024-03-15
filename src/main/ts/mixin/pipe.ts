@@ -13,9 +13,9 @@ export const pipeMixin: TMixin = <T extends TZurk | TZurkPromise >($: TShell, re
         const { fulfilled, stdout} = ctx
         if (isZurkAny(stream)) {
           if (fulfilled) {
-            stream._ctx.input = fulfilled.stdout
+            stream.ctx.input = fulfilled.stdout
           } else {
-            stream._ctx.stdin = stdout as VoidWritable
+            stream.ctx.stdin = stdout as VoidWritable
           }
 
           return stream

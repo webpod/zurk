@@ -115,7 +115,7 @@ describe('mixins', () => {
       const p = $`sleep 10`
       p.timeoutSignal = 'SIGALRM'
       p.timeout = 25
-      p._ctx.nothrow = true
+      p.ctx.nothrow = true
 
       const { error } = await p
       assert.equal(error.message, 'Command failed with signal SIGALRM')

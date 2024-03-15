@@ -14,7 +14,7 @@ export type TSpawnResult = {
   status:   number | null
   signal:   NodeJS.Signals | null
   duration: number
-  _ctx:     TSpawnCtxNormalized
+  ctx:      TSpawnCtxNormalized
   error?:   TSpawnError,
   child?:   TChild
 }
@@ -42,8 +42,6 @@ export interface TSpawnCtxNormalized {
   spawnSync:  typeof cp.spawnSync
   spawnOpts:  Record<string, any>
   callback:   (err: TSpawnError, result: TSpawnResult) => void
-  onStdout:   (data: string | Buffer) => void
-  onStderr:   (data: string | Buffer) => void
   stdin:      Readable
   stdout:     Writable
   stderr:     Writable
@@ -69,8 +67,6 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   spawnSync:  cp.spawnSync,
   spawnOpts:  {},
   callback:   noop,
-  onStdout:   noop,
-  onStderr:   noop,
   stdin:      new VoidWritable(),
   stdout:     new VoidWritable(),
   stderr:     new VoidWritable(),
@@ -132,14 +128,13 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         stdio,
         get stdall() { return this.stdout + this.stderr },
         duration: Date.now() - now,
-        _ctx:     c
+        ctx:      c
       })
       c.ee.emit('end', c.fulfilled, c)
 
     } else {
       c.run(() => {
         let error: any = null
-        // let status: number | null = null
         const opts = buildSpawnOpts(c)
         const stderr: string[] = []
         const stdout: string[] = []
@@ -148,8 +143,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         c.child = child
 
         opts.signal.addEventListener('abort', event => {
-          c.ee.emit('abort', event, c)
-
           if (opts.detached && child.pid) {
             try {
               // https://github.com/nodejs/node/issues/51766
@@ -158,6 +151,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               child.kill()
             }
           }
+          c.ee.emit('abort', event, c)
         })
         processInput(child, c.input || c.stdin)
 
@@ -176,7 +170,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
             error = e
             c.ee.emit('err', error, c)
           })
-          // .on('exit', (_status) => status = _status)
           .on('close', (status, signal) => {
             c.callback(error, c.fulfilled = {
               error,
@@ -187,7 +180,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               stdall:   stdall.join(''),
               stdio:    [c.stdin, c.stdout, c.stderr],
               duration: Date.now() - now,
-              _ctx:     c
+              ctx:      c
             })
             c.ee.emit('end', c.fulfilled, c)
           })
@@ -205,7 +198,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         stdall:   '',
         stdio,
         duration: Date.now() - now,
-        _ctx:     c
+        ctx:      c
       }
     )
     c.ee.emit('err', error, c)

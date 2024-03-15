@@ -23,7 +23,7 @@
   "scripts": {
     "build": "concurrently 'npm:build:*'",
     "build:js": "node ./src/scripts/build.mjs",
-    "build:dts": "tsc --emitDeclarationOnly --skipLibCheck --outDir target/dts",
+    "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
     "build:docs": "typedoc --options src/main/typedoc",
     "build:stamp": "npx buildstamp",
     "test": "concurrently 'npm:test:*'",

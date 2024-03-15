@@ -48,9 +48,10 @@ export type TShellOptions = Omit<TZurkOptions, 'input'> & {
   input?: TShellCtx['input'] | TShellResponse | TShellResponseSync | null
 } & TShellOptionsExtra
 
-export interface TShellResponse extends Omit<Promisified<TZurk>, 'stdio' | '_ctx'>, Promise<TZurk & TShellResponseExtra<TShellResponse>>, TShellResponseExtra<TShellResponse> {
+export interface TShellResponse extends Omit<Promisified<TZurk>, 'stdio' | 'ctx' | 'child'>, Promise<TZurk & TShellResponseExtra<TShellResponse>>, TShellResponseExtra<TShellResponse> {
+  child: TZurk['child']
   stdio: [Readable | Writable, Writable, Writable]
-  _ctx: TShellCtx
+  ctx:  TShellCtx
   on: (event: string | symbol, listener: TZurkListener) => TShellResponse
 }
 
@@ -104,24 +105,24 @@ const zurkMixin: TMixin = ($: TShell, target: TShellOptions | TZurk | TZurkPromi
   return isPromiseLike(result)
     ? zurkifyPromise(
       (result as TZurkPromise).then((r: TZurk) => applyMixins($, r, result)) as Promise<TZurk>,
-      result._ctx)
+      result.ctx)
     : result as TZurk
 }
 
 $.mixins = [zurkMixin, killMixin, pipeMixin, timeoutMixin]
 
 export const applyMixins = ($: TShell, result: TZurk | TZurkPromise | TShellOptions, parent?: TZurk | TZurkPromise) => {
-  let ctx: TShellCtx = (parent as TZurkPromise | TZurk)?._ctx
+  let ctx: TShellCtx = (parent as TZurkPromise | TZurk)?.ctx
 
   return $.mixins.reduce((r, m) => {
-    ctx = ctx || (r as TZurkPromise | TZurk)._ctx
+    ctx = ctx || (r as TZurkPromise | TZurk).ctx
     return m($, r as any, ctx)
   }, result)
 }
 
 export const parseInput = (input: TShellOptions['input']): TShellCtx['input'] => {
   if (typeof (input as TShellResponseSync)?.stdout === 'string') return (input as TShellResponseSync).stdout
-  if ((input as TShellResponse)?._ctx) return (input as TShellResponse)._ctx.stdout
+  if ((input as TShellResponse)?.ctx) return (input as TShellResponse).ctx.stdout
 
   return input as TShellCtx['input']
 }
