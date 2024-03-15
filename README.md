@@ -71,5 +71,7 @@ const { error } = await p
 error.message // 'The operation was aborted'
 ```
 
+- [ ] Stdout limit
+
 ## License
 [MIT](./LICENSE)

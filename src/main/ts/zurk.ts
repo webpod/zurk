@@ -5,19 +5,26 @@ import {
   TSpawnCtxNormalized,
   TSpawnResult,
 } from './spawn.js'
-import { isPromiseLike, makeDeferred, type Promisified } from './util.js'
+import { isPromiseLike, makeDeferred, type Promisified, type TVoidCallback } from './util.js'
 
 export const ZURK = Symbol('Zurk')
 
+export type TZurkListener = (value: any, ctx: TZurkCtx) => void
+
 export interface TZurk extends TSpawnResult {
   _ctx: TZurkCtx
+  on(event: string | symbol, listener: TZurkListener): TZurk
 }
 
 export type TZurkCtx = TSpawnCtxNormalized & { nothrow?: boolean, nohandle?: boolean }
 
 export type TZurkOptions = Partial<Omit<TZurkCtx, 'callback'>>
 
-export type TZurkPromise = Promise<TZurk> & Promisified<TZurk> & { _ctx: TZurkCtx, stdio: TZurkCtx['stdio'] }
+export type TZurkPromise = Promise<TZurk> & Promisified<TZurk> & {
+  _ctx: TZurkCtx
+  stdio: TZurkCtx['stdio']
+  on(event: string | symbol, listener: TZurkListener): TZurkPromise
+}
 
 export const zurk = <T extends TZurkOptions = TZurkOptions, R = T extends {sync: true} ? TZurk : TZurkPromise>(opts: T): R =>
   (opts.sync ? zurkSync(opts) : zurkAsync(opts)) as R
@@ -56,22 +63,28 @@ export const zurkSync = (opts: TZurkOptions): TZurk => {
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpawnCtxNormalized) => isPromiseLike(target) && !util.types.isProxy(target)
-  ? new Proxy(target, {
+export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpawnCtxNormalized) => {
+  if (!isPromiseLike(target) || util.types.isProxy(target)) {
+    return target as TZurkPromise
+  }
+  const proxy = new Proxy(target, {
     get(target: Promise<TZurk>, p: string | symbol, receiver: any): any {
+      if (p === ZURK) return ZURK
       if (p === 'then') return target.then.bind(target)
       if (p === 'catch') return target.catch.bind(target)
       if (p === 'finally') return target.finally.bind(target)
       if (p === 'stdio') return ctx.stdio
       if (p === '_ctx') return ctx
-      if (p === ZURK) return ZURK
+      if (p === 'on') return function (name: string, cb: VoidFunction){ ctx.ee.on(name, cb); return proxy }
 
       if (p in target) return Reflect.get(target, p, receiver)
 
       return target.then(v => Reflect.get(v, p, receiver))
     }
   }) as TZurkPromise
-  : target as TZurkPromise
+
+  return proxy
+}
 
 export const getError = (data: TSpawnResult) => {
   if (data.error) return data.error
@@ -93,6 +106,7 @@ class Zurk implements TZurk {
   constructor(ctx: TZurkCtx) {
     this._ctx = ctx
   }
+  on(name: string, cb: TVoidCallback): this { this._ctx.ee.on(name, cb); return this }
   get status()  { return this._ctx.fulfilled?.status ?? null }
   get signal()  { return this._ctx.fulfilled?.signal ?? null }
   get error()   { return this._ctx.error }

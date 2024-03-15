@@ -1,11 +1,12 @@
 import * as assert from 'node:assert'
 import { describe, it } from 'node:test'
+import EventEmitter from 'node:events'
 import { invoke, normalizeCtx, TSpawnCtx, TSpawnResult } from '../../main/ts/spawn.js'
 import { makeDeferred } from '../../main/ts/util.js'
 
 describe('invoke()', () => {
   it('calls a given cmd', async () => {
-    const results = []
+    const results: string[] = []
     const callback: TSpawnCtx['callback'] = (_err, result) => results.push(result.stdout)
     const { promise, resolve, reject } = makeDeferred<TSpawnResult>()
 
@@ -13,7 +14,7 @@ describe('invoke()', () => {
       sync: true,
       cmd: 'echo',
       args: ['hello'],
-      callback
+      callback,
     }))
 
     invoke(normalizeCtx({
@@ -22,7 +23,7 @@ describe('invoke()', () => {
       args: ['world'],
       callback(err, result) {
         err ? reject(err) : resolve(result)
-      }
+      },
     }))
 
     await promise.then((result) => callback(null, result))
@@ -61,5 +62,7 @@ describe('normalizeCtx()', () => {
     assert.equal(normalized.cwd, 'a')
     assert.equal(normalized.cwd, 'b')
     assert.equal(normalized.cwd, 'c')
+    assert.ok(normalized.ee instanceof EventEmitter)
+    assert.ok(normalized.ac instanceof AbortController)
   })
 })

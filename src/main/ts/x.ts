@@ -6,7 +6,7 @@ import {
   TZurk,
   TZurkPromise,
   TZurkOptions,
-  TZurkCtx
+  TZurkCtx, TZurkListener
 } from './zurk.js'
 import { type Promisified, type TVoidCallback, isPromiseLike, isStringLiteral, assign, quote } from './util.js'
 import { pipeMixin } from './mixin/pipe.js'
@@ -51,6 +51,7 @@ export type TShellOptions = Omit<TZurkOptions, 'input'> & {
 export interface TShellResponse extends Omit<Promisified<TZurk>, 'stdio' | '_ctx'>, Promise<TZurk & TShellResponseExtra<TShellResponse>>, TShellResponseExtra<TShellResponse> {
   stdio: [Readable | Writable, Writable, Writable]
   _ctx: TShellCtx
+  on: (event: string | symbol, listener: TZurkListener) => TShellResponse
 }
 
 export interface TShellResponseSync extends TZurk, TShellResponseExtra<TShellResponseSync> {

@@ -2,6 +2,7 @@ import * as cp from 'node:child_process'
 import process from 'node:process'
 import { Readable, Writable, Stream, Transform } from 'node:stream'
 import { assign, noop } from './util.js'
+import EventEmitter from 'node:events'
 
 export type TSpawnError = any
 
@@ -25,14 +26,16 @@ export type TChild = ReturnType<typeof cp.spawn>
 export type TInput = string | Buffer | Stream
 
 export interface TSpawnCtxNormalized {
+  id:         string,
   cwd:        string
   cmd:        string
   sync:       boolean
   args:       ReadonlyArray<string>
   input:      TInput | null
-  env:        Record<string, string | undefined>
   stdio:      ['pipe', 'pipe', 'pipe']
   detached:   boolean
+  env:        Record<string, string | undefined>
+  ee:         EventEmitter
   ac:         AbortController
   shell:      string | true | undefined
   spawn:      typeof cp.spawn
@@ -48,16 +51,17 @@ export interface TSpawnCtxNormalized {
   fulfilled?: TSpawnResult
   error?:     any
   run:        (cb: () => void, ctx: TSpawnCtxNormalized) => void
-  // kill:       (signal: number) => void
 }
 
 export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
+  id:         Math.random().toString(36).slice(2),
   cmd:        '',
   cwd:        process.cwd(),
   sync:       false,
   args:       [],
   input:      null,
   env:        process.env,
+  ee:         new EventEmitter(),
   ac:         new AbortController(),
   detached:   true,
   shell:      true,
@@ -112,11 +116,14 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
     if (c.sync) {
       const opts = buildSpawnOpts(c)
       const result = c.spawnSync(c.cmd, c.args, opts)
-
-      c.stdout.write(result.stdout)
-      c.stderr.write(result.stderr)
-      c.onStdout(result.stdout)
-      c.onStderr(result.stderr)
+      if (result.stdout.length) {
+        c.stdout.write(result.stdout)
+        c.ee.emit('stdout', result.stdout, c)
+      }
+      if (result.stderr.length) {
+        c.stderr.write(result.stderr)
+        c.ee.emit('stderr', result.stderr, c)
+      }
       c.callback(null, c.fulfilled = {
         ...result,
         stdout:   result.stdout.toString(),
@@ -126,6 +133,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         duration: Date.now() - now,
         _ctx:     c
       })
+      c.ee.emit('end', c.fulfilled, c)
 
     } else {
       c.run(() => {
@@ -138,7 +146,9 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         const child = c.spawn(c.cmd, c.args, opts)
         c.child = child
 
-        opts.signal.addEventListener('abort', () => {
+        opts.signal.addEventListener('abort', event => {
+          c.ee.emit('abort', event, c)
+
           if (opts.detached && child.pid) {
             try {
               // https://github.com/nodejs/node/issues/51766
@@ -150,23 +160,36 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         })
         processInput(child, c.input || c.stdin)
 
-        child.stdout.pipe(c.stdout).on('data', (d) => { stdout.push(d); stdall.push(d); c.onStdout(d) })
-        child.stderr.pipe(c.stderr).on('data', (d) => { stderr.push(d); stdall.push(d); c.onStderr(d) })
-        child.on('error', (e) => error = e)
-        // child.on('exit', (_status) => status = _status)
-        child.on('close', (status, signal) => {
-          c.callback(error, c.fulfilled = {
-            error,
-            status,
-            signal,
-            stdout:   stdout.join(''),
-            stderr:   stderr.join(''),
-            stdall:   stdall.join(''),
-            stdio:    [c.stdin, c.stdout, c.stderr],
-            duration: Date.now() - now,
-            _ctx:     c
-          })
+        child.stdout.pipe(c.stdout).on('data', d => {
+          stdout.push(d)
+          stdall.push(d)
+          c.ee.emit('stdout', d, c)
         })
+        child.stderr.pipe(c.stderr).on('data', d => {
+          stderr.push(d)
+          stdall.push(d)
+          c.ee.emit('stderr', d, c)
+        })
+        child
+          .on('error', (e: any) => {
+            error = e
+            c.ee.emit('err', error, c)
+          })
+          // .on('exit', (_status) => status = _status)
+          .on('close', (status, signal) => {
+            c.callback(error, c.fulfilled = {
+              error,
+              status,
+              signal,
+              stdout:   stdout.join(''),
+              stderr:   stderr.join(''),
+              stdall:   stdall.join(''),
+              stdio:    [c.stdin, c.stdout, c.stderr],
+              duration: Date.now() - now,
+              _ctx:     c
+            })
+            c.ee.emit('end', c.fulfilled, c)
+          })
       }, c)
     }
   } catch (error: unknown) {
@@ -184,6 +207,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         _ctx:     c
       }
     )
+    c.ee.emit('err', error, c)
+    c.ee.emit('end', c.fulfilled, c)
   }
 
   return c
