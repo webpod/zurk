@@ -23,6 +23,6 @@ export const killMixin: TMixin = <T extends TZurk | TZurkPromise >($: TShell, re
       kill(signal?: null | string | number | NodeJS.Signals): Promise<typeof signal> {
         return kill(ctx.child, signal)
       },
-      abort() { ctx.ac.abort() },
+      abort(reason?: any) { ctx.ac.abort(reason)},
     })
     : result
