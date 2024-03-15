@@ -11,7 +11,15 @@ export const ZURK = Symbol('Zurk')
 
 export type TZurkListener = (value: any, ctx: TZurkCtx) => void
 
-export interface TZurk extends TSpawnResult {
+export interface TZurkOn<R> {
+  on(name: 'stdout', listener: (data: Buffer, ctx: TZurkCtx) => void): R
+  on(name: 'stderr', listener: (data: Buffer, ctx: TZurkCtx) => void): R
+  on(name: 'end', listener: (result: TZurk, ctx: TZurkCtx) => void): R
+  on(name: 'err', listener: (error: any, ctx: TZurkCtx) => void): R
+  on(name: 'abort', listener: (error: any, ctx: TZurkCtx) => void): R
+}
+
+export interface TZurk extends TSpawnResult, TZurkOn<TZurk> {
   _ctx: TZurkCtx
   on(event: string | symbol, listener: TZurkListener): TZurk
 }
@@ -20,10 +28,9 @@ export type TZurkCtx = TSpawnCtxNormalized & { nothrow?: boolean, nohandle?: boo
 
 export type TZurkOptions = Partial<Omit<TZurkCtx, 'callback'>>
 
-export type TZurkPromise = Promise<TZurk> & Promisified<TZurk> & {
+export type TZurkPromise = Promise<TZurk> & Promisified<TZurk> & TZurkOn<TZurkPromise> & {
   _ctx: TZurkCtx
   stdio: TZurkCtx['stdio']
-  on(event: string | symbol, listener: TZurkListener): TZurkPromise
 }
 
 export const zurk = <T extends TZurkOptions = TZurkOptions, R = T extends {sync: true} ? TZurk : TZurkPromise>(opts: T): R =>
