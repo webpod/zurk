@@ -5,7 +5,8 @@
 – eat all kinds of materials.
 </sup>
 
-# 🔬
+<h1> 🔬 </h1>
+
 > This subproject is a kind of experiment, addressed to the [google/zx/issues/589](https://github.com/google/zx/issues/589).
 Just a testing ground for verifying ideas and approaches aimed at improve the [zx](https://github.com/google/zx) architecture.
 
@@ -18,6 +19,21 @@ Just a testing ground for verifying ideas and approaches aimed at improve the [z
 * **Extensibility**: 
   * The context object at every layer is accessible fo modify.
   * Typings are mostly represented by interfaces, so it's easy to tweak up if necessary. 
+
+## Install
+```bash
+yarn add zurk
+```
+
+## API
+
+```ts
+import {$, exec, zurk} from 'zurk'
+
+const r1 = exec({sync: true, cmd: 'echo foo'})
+const r2 = await zurk({sync: false, cmd: 'echo foo'})
+const r3 = await $`echo foo`
+```
 
 ## Proposals
 - [x] Promises in cmd literals
