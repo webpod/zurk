@@ -231,4 +231,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   return c
 }
 
+const exec = (ctx: TSpawnCtx): TSpawnCtxNormalized => invoke(normalizeCtx(ctx))
+
 // https://2ality.com/2018/05/child-process-streams.html
