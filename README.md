@@ -5,10 +5,19 @@
 – eat all kinds of materials.
 </sup>
 
-
-This subproject is a kind of experiment, addressed to the [google/zx/issues/589](https://github.com/google/zx/issues/589).
+# 🔬
+> This subproject is a kind of experiment, addressed to the [google/zx/issues/589](https://github.com/google/zx/issues/589).
 Just a testing ground for verifying ideas and approaches aimed at improve the [zx](https://github.com/google/zx) architecture.
 
+## Concepts
+* **Layered** architecture:
+  * `spawn` builds a configurable exec context around the `node:child_process` API.
+  * `zurk` implements the API for sync and async executions.
+  * `x` provides the basic template-string API.
+* **Granularity**: the package provides several entry points to help user to choose the right level of abstraction and/or to assist with tree-shaking.
+* **Extensibility**: 
+  * The context object at every layer is accessible fo modify.
+  * Typings are mostly represented by interfaces, so it's easy to tweak up if necessary. 
 
 ## Proposals
 - [x] Promises in cmd literals
