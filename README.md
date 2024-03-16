@@ -5,8 +5,7 @@
 – eat all kinds of materials.
 </sup>
 
-<br/>
-<span style="font-size:2.5em;"> 🔬🧫</span>
+# 🔬🧫
 
 > This subproject is a kind of experiment, addressed to the [google/zx/issues/589](https://github.com/google/zx/issues/589).
 Just a testing ground for verifying ideas and approaches aimed at improve the [zx](https://github.com/google/zx) architecture.
