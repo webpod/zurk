@@ -55,8 +55,8 @@ export const buildCmd = (quote: TQuote, pieces: TemplateStringsArray, args: any[
   let cmd = pieces[0], i = 0
   while (i < args.length) {
     const s = Array.isArray(args[i])
-      ? args[i].map((x: any) => quote(substitute(x))).join(' ')
-      : quote(substitute(args[i]))
+      ? args[i].map((x: any) => quote(subs(x))).join(' ')
+      : quote(subs(args[i]))
 
     cmd += s + pieces[++i]
   }

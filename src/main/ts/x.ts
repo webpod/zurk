@@ -11,6 +11,7 @@ import {
 import {
   type Promisified,
   type TVoidCallback,
+  type TQuote,
   isPromiseLike,
   isStringLiteral,
   assign,
@@ -82,8 +83,6 @@ export interface TShellSync {
   <O>(this: O, pieces?: TemplateStringsArray, ...args: any[]): TShellResponseSync
   (opts: TShellOptions): TShellSync
 }
-
-export type TQuote = (input: string) => string
 
 export const $: TShell = function(this: any, pieces?: any, ...args: any): any {
   const preset = this || {}

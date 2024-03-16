@@ -10,6 +10,12 @@
       "require": "./target/cjs/index.cjs",
       "import": "./target/esm/index.mjs",
       "default": "./target/esm/index.mjs"
+    },
+    "./spawn": {
+      "types": "./target/dts/spawn.d.ts",
+      "require": "./target/cjs/spawn.cjs",
+      "import": "./target/esm/spawn.mjs",
+      "default": "./target/esm/spawn.mjs"
     }
   },
   "module": "target/esm/index.mjs",
@@ -22,7 +28,7 @@
   ],
   "scripts": {
     "build": "concurrently 'npm:build:*'",
-    "build:js": "node ./src/scripts/build.mjs",
+    "build:js": "node ./src/scripts/build.mjs --entry='./src/main/ts/index.ts:./src/main/ts/spawn.ts'",
     "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
     "build:docs": "typedoc --options src/main/typedoc",
     "build:stamp": "npx buildstamp",

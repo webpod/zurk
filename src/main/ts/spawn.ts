@@ -4,6 +4,8 @@ import EventEmitter from 'node:events'
 import { Readable, Writable, Stream, Transform } from 'node:stream'
 import { assign, noop } from './util.js'
 
+export * from './util.js'
+
 export type TSpawnError = any
 
 export type TSpawnResult = {
