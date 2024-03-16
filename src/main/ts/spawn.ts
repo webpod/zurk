@@ -1,8 +1,8 @@
 import * as cp from 'node:child_process'
 import process from 'node:process'
+import EventEmitter from 'node:events'
 import { Readable, Writable, Stream, Transform } from 'node:stream'
 import { assign, noop } from './util.js'
-import EventEmitter from 'node:events'
 
 export type TSpawnError = any
 
@@ -17,6 +17,15 @@ export type TSpawnResult = {
   ctx:      TSpawnCtxNormalized
   error?:   TSpawnError,
   child?:   TChild
+}
+
+export type TSpawnListeners = {
+  start:    (data: TChild, ctx: TSpawnCtxNormalized) => void
+  stdout:   (data: Buffer, ctx: TSpawnCtxNormalized) => void
+  stderr:   (data: Buffer, ctx: TSpawnCtxNormalized) => void
+  abort:    (error: Event, ctx: TSpawnCtxNormalized) => void
+  err:      (error: Error, ctx: TSpawnCtxNormalized) => void
+  end:      (result: TSpawnResult, ctx: TSpawnCtxNormalized) => void
 }
 
 export type TSpawnCtx = Partial<Omit<TSpawnCtxNormalized, 'child'>>
@@ -36,6 +45,7 @@ export interface TSpawnCtxNormalized {
   detached:   boolean
   env:        Record<string, string | undefined>
   ee:         EventEmitter
+  on:         Partial<TSpawnListeners>
   ac:         AbortController
   shell:      string | true | undefined
   spawn:      typeof cp.spawn
@@ -61,6 +71,7 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   env:        process.env,
   ee:         new EventEmitter(),
   ac:         new AbortController(),
+  on:         {},
   detached:   true,
   shell:      true,
   spawn:      cp.spawn,
@@ -104,6 +115,12 @@ export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detach
   signal
 })
 
+export const attachListeners = (ee: EventEmitter, on: Partial<TSpawnListeners> = {}) => {
+  for (const [name, listener] of Object.entries(on)) {
+    ee.on(name, listener as any)
+  }
+}
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   const now = Date.now()
@@ -111,8 +128,10 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
 
   try {
     if (c.sync) {
+      attachListeners(c.ee, c.on)
       const opts = buildSpawnOpts(c)
       const result = c.spawnSync(c.cmd, c.args, opts)
+      c.ee.emit('start', result, c)
       if (result.stdout.length > 0) {
         c.stdout.write(result.stdout)
         c.ee.emit('stdout', result.stdout, c)
@@ -134,6 +153,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
 
     } else {
       c.run(() => {
+        attachListeners(c.ee, c.on)
+
         let error: any = null
         const opts = buildSpawnOpts(c)
         const stderr: string[] = []
@@ -141,6 +162,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         const stdall: string[] = []
         const child = c.spawn(c.cmd, c.args, opts)
         c.child = child
+
+        c.ee.emit('start', child, c)
 
         opts.signal.addEventListener('abort', event => {
           if (opts.detached && child.pid) {

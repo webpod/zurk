@@ -1,32 +1,23 @@
-import type EventEmitter from 'node:events'
 import util from 'node:util'
 import {
   invoke,
   normalizeCtx,
   TSpawnCtxNormalized,
   TSpawnResult,
+  TSpawnListeners,
 } from './spawn.js'
 import { isPromiseLike, makeDeferred, type Promisified, type TVoidCallback } from './util.js'
 
 export const ZURK = Symbol('Zurk')
 
-export type TZurkListener = (value: any, ctx: TZurkCtx) => void
-
-export type TZurkListeners = {
-  stdout: (data: Buffer, ctx: TZurkCtx) => void
-  stderr: (data: Buffer, ctx: TZurkCtx) => void
-  end: (result: TZurk, ctx: TZurkCtx) => void
-  err: (error: any, ctx: TZurkCtx) => void
-  abort: (error: any, ctx: TZurkCtx) => void
-}
-
 // TODO infer
 export interface TZurkOn<R> {
-  on<T extends 'stdout', L extends TZurkListeners[T]>(name: T, listener: L): R
-  on<T extends 'stderr', L extends TZurkListeners[T]>(name: T, listener: L): R
-  on<T extends 'end', L extends TZurkListeners[T]>(name: T, listener: L): R
-  on<T extends 'err', L extends TZurkListeners[T]>(name: T, listener: L): R
-  on<T extends 'abort', L extends TZurkListeners[T]>(name: T, listener: L): R
+  on<T extends 'start', L extends TSpawnListeners[T]>(name: T, listener: L): R
+  on<T extends 'stdout', L extends TSpawnListeners[T]>(name: T, listener: L): R
+  on<T extends 'stderr', L extends TSpawnListeners[T]>(name: T, listener: L): R
+  on<T extends 'end', L extends TSpawnListeners[T]>(name: T, listener: L): R
+  on<T extends 'err', L extends TSpawnListeners[T]>(name: T, listener: L): R
+  on<T extends 'abort', L extends TSpawnListeners[T]>(name: T, listener: L): R
 }
 
 export interface TZurk extends TSpawnResult, TZurkOn<TZurk> {
@@ -35,9 +26,7 @@ export interface TZurk extends TSpawnResult, TZurkOn<TZurk> {
 
 export type TZurkCtx = TSpawnCtxNormalized & { nothrow?: boolean, nohandle?: boolean }
 
-export type TZurkOptions = Partial<Omit<TZurkCtx, 'callback'>> & {
-  on?: Partial<TZurkListeners>
-}
+export type TZurkOptions = Partial<Omit<TZurkCtx, 'callback'>>
 
 export type TZurkPromise = Promise<TZurk> & Promisified<TZurk> & TZurkOn<TZurkPromise> & {
   ctx:  TZurkCtx
@@ -57,7 +46,6 @@ export const zurkAsync = (opts: TZurkOptions): TZurkPromise => {
       ctx.error && !ctx.nothrow ? reject(ctx.error) : resolve(zurkFactory(ctx))
     }
   })
-  attachListeners(ctx.ee, opts.on)
 
   invoke(ctx)
 
@@ -74,7 +62,6 @@ export const zurkSync = (opts: TZurkOptions): TZurk => {
       response = zurkFactory(ctx)
     }
   })
-  attachListeners(ctx.ee, opts.on)
 
   invoke(ctx)
 
@@ -106,12 +93,6 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
   }) as TZurkPromise
 
   return proxy
-}
-
-export const attachListeners = (ee: EventEmitter, on: Partial<TZurkListeners> = {}) => {
-  for (const [name, listener] of Object.entries(on)) {
-    ee.on(name, listener as any)
-  }
 }
 
 export const getError = (data: TSpawnResult) => {
