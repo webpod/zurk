@@ -3,8 +3,8 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import * as os from 'node:os'
 import { describe, it } from 'node:test'
-import { $ } from '../../main/ts/x.js'
 import { Stream } from 'node:stream'
+import { $ } from '../../main/ts/x.js'
 
 const __dirname = new URL('.', import.meta.url).pathname
 const fixtures = path.resolve(__dirname, '../fixtures')

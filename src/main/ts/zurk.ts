@@ -2,11 +2,16 @@ import util from 'node:util'
 import {
   invoke,
   normalizeCtx,
-  TSpawnCtxNormalized,
-  TSpawnResult,
-  TSpawnListeners,
+  type TSpawnCtxNormalized,
+  type TSpawnResult,
+  type TSpawnListeners,
 } from './spawn.js'
-import { isPromiseLike, makeDeferred, type Promisified, type TVoidCallback } from './util.js'
+import {
+  isPromiseLike,
+  makeDeferred,
+  type Promisified,
+  type TVoidCallback
+} from './util.js'
 
 export const ZURK = Symbol('Zurk')
 

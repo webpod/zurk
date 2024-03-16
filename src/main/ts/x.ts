@@ -16,7 +16,8 @@ import {
   isStringLiteral,
   assign,
   quote,
-  buildCmd
+  buildCmd,
+  parseInput
 } from './util.js'
 import { pipeMixin } from './mixin/pipe.js'
 import { killMixin } from './mixin/kill.js'
@@ -125,11 +126,4 @@ export const applyMixins = ($: TShell, result: TZurk | TZurkPromise | TShellOpti
     ctx = ctx || (r as TZurkPromise | TZurk).ctx
     return m($, r as any, ctx)
   }, result)
-}
-
-export const parseInput = (input: TShellOptions['input']): TShellCtx['input'] => {
-  if (typeof (input as TShellResponseSync)?.stdout === 'string') return (input as TShellResponseSync).stdout
-  if ((input as TShellResponse)?.ctx) return (input as TShellResponse).ctx.stdout
-
-  return input as TShellCtx['input']
 }

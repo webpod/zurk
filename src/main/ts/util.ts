@@ -1,3 +1,5 @@
+import { Stream } from 'node:stream'
+
 export const noop = () => { /* noop */ }
 
 export type PromiseResolve<T = any> = (value: T | PromiseLike<T>) => void
@@ -70,3 +72,13 @@ export const substitute: TSubstitute = (arg: any) =>
   (typeof arg?.stdout === 'string')
     ? arg.stdout.replace(/\n$/, '')
     : `${arg}`
+
+export const parseInput = (input: any): string | Buffer | Stream | null => {
+  if (typeof input === 'string' || input instanceof Buffer || input instanceof Stream) return input
+
+  if (typeof input?.stdout === 'string') return input.stdout
+
+  if (input?.ctx) return parseInput(input.ctx.stdout)
+
+  return null
+}

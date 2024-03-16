@@ -296,10 +296,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
-"@types/node@^20.11.27":
-  version "20.11.27"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.27.tgz#debe5cfc8a507dd60fe2a3b4875b1604f215c2ac"
-  integrity sha512-qyUZfMnCg1KEz57r7pzFtSGt49f6RPkPBis3Vo4PbS7roQEDn22hiHzl/Lo1q4i4hDEgBJmBF/NTNg2XR0HbFg==
+"@types/node@^20.11.28":
+  version "20.11.28"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.28.tgz#4fd5b2daff2e580c12316e457473d68f15ee6f66"
+  integrity sha512-M/GPWVS2wLkSkNHVeLkrF2fD5Lx5UC4PxA0uZcKc6QqbIQUJyW1jVjueJYi1z8n0I5PxYrtpnPnWglE+y9A0KA==
   dependencies:
     undici-types "~5.26.4"
 
@@ -883,10 +883,10 @@ esbuild-node-externals@^1.13.0:
     find-up "^5.0.0"
     tslib "^2.4.1"
 
-esbuild-plugin-entry-chunks@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/esbuild-plugin-entry-chunks/-/esbuild-plugin-entry-chunks-0.1.8.tgz#66600276510c1b5a042b14cded95e9d9b74dfcb6"
-  integrity sha512-iKX18Uj8WTiRygwOGNa4S66pvNeexcvH1ohs/P5wV0fVGCRRzHzCiyI1/HShCVkC8HOnxvGWiG006PmsBHmS9Q==
+esbuild-plugin-entry-chunks@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/esbuild-plugin-entry-chunks/-/esbuild-plugin-entry-chunks-0.1.11.tgz#6397a0a6f50b6f319df01b56a6ea326bd3eb3dd2"
+  integrity sha512-lSFwPa7YYdp0iSg3ukKKlHrJ735WpsqlkfsYzUHXYhFYRHPuYaf5qkNyWulyDL7ycPlguCo/Q4ALCsi1mu6waA==
   dependencies:
     depseek "0.4.0"
 

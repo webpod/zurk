@@ -1,6 +1,6 @@
 import * as assert from 'node:assert'
 import { describe, it } from 'node:test'
-import { invoke, zurk, $, buildCmd, exec } from '../../main/ts'
+import { invoke, zurk, $, buildCmd, exec } from '../../main/ts/index.js'
 
 describe('index', () => {
   it('has proper exports', () => {
