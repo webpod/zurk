@@ -45,3 +45,28 @@ export const quote = (arg: string) => {
     `'`
   )
 }
+
+export type TQuote = (input: string) => string
+
+export const buildCmd = (quote: TQuote, pieces: TemplateStringsArray, args: any[], subs = substitute): string | Promise<string> =>  {
+  if (args.some(isPromiseLike))
+    return Promise.all(args).then((args) => buildCmd(quote, pieces, args))
+
+  let cmd = pieces[0], i = 0
+  while (i < args.length) {
+    const s = Array.isArray(args[i])
+      ? args[i].map((x: any) => quote(substitute(x))).join(' ')
+      : quote(substitute(args[i]))
+
+    cmd += s + pieces[++i]
+  }
+
+  return cmd
+}
+
+export type TSubstitute = (arg: any) => string
+
+export const substitute: TSubstitute = (arg: any) =>
+  (typeof arg?.stdout === 'string')
+    ? arg.stdout.replace(/\n$/, '')
+    : `${arg}`

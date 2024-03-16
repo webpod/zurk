@@ -8,7 +8,15 @@ import {
   TZurkOptions,
   TZurkCtx
 } from './zurk.js'
-import { type Promisified, type TVoidCallback, isPromiseLike, isStringLiteral, assign, quote } from './util.js'
+import {
+  type Promisified,
+  type TVoidCallback,
+  isPromiseLike,
+  isStringLiteral,
+  assign,
+  quote,
+  buildCmd
+} from './util.js'
 import { pipeMixin } from './mixin/pipe.js'
 import { killMixin } from './mixin/kill.js'
 import { timeoutMixin } from './mixin/timeout.js'
@@ -126,24 +134,3 @@ export const parseInput = (input: TShellOptions['input']): TShellCtx['input'] =>
 
   return input as TShellCtx['input']
 }
-
-export const buildCmd = (quote: TQuote, pieces: TemplateStringsArray, args: any[]): string | Promise<string> =>  {
-  if (args.some(isPromiseLike))
-    return Promise.all(args).then((args) => buildCmd(quote, pieces, args))
-
-  let cmd = pieces[0], i = 0
-  while (i < args.length) {
-    const s = Array.isArray(args[i])
-      ? args[i].map((x: any) => quote(substitute(x))).join(' ')
-      : quote(substitute(args[i]))
-
-    cmd += s + pieces[++i]
-  }
-
-  return cmd
-}
-
-export const substitute = (arg: any) =>
-  (typeof arg?.stdout === 'string')
-    ? arg.stdout.replace(/\n$/, '')
-    : `${arg}`
