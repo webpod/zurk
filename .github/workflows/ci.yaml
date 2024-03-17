@@ -73,7 +73,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          # cache: 'yarn'
+          cache: 'yarn'
 
       - name: Fetch deps
         run: yarn --mutex network --frozen-lockfile --network-concurrency 25 --silent --disable-self-update-check
@@ -81,5 +81,11 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Run tests
+      - name: Run all tests
+        if: matrix.os == 'ubuntu-22.04'
         run: yarn test
+
+      - name: Run win32 tests
+        if: matrix.os == 'windows-latest'
+        run: node --loader ts-node/esm --experimental-specifier-resolution=node ./src/test/ts/zurk.test.ts
+        timeout-minutes: 5
