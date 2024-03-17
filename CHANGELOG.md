@@ -1,3 +1,8 @@
+## [0.0.31](https://github.com/webpod/zurk/compare/v0.0.30...v0.0.31) (2024-03-17)
+
+### Fixes & improvements
+* fix: apply undefined-filter to `assign` ([1463ca8](https://github.com/webpod/zurk/commit/1463ca8bba2d6ff6bdeb82a8598d306150481990))
+
 ## [0.0.30](https://github.com/webpod/zurk/compare/undefined...v0.0.30) (2024-03-17)
 
 ### Fixes & improvements
@@ -16,5 +21,3 @@
 ### Features
 * feat: introduce listeners map, rename `_ctx` to `ctx` ([616b091](https://github.com/webpod/zurk/commit/616b0913117496f1aec4dd26353270fdfdd30f11))
 * feat: pass reason arg to internal abortController ([76441c5](https://github.com/webpod/zurk/commit/76441c5a70af0716013a18818f184854625a5d5b))
-
-
