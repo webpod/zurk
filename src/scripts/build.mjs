@@ -7,6 +7,7 @@ import { entryChunksPlugin } from 'esbuild-plugin-entry-chunks'
 import minimist from 'minimist'
 import glob from 'fast-glob'
 
+const unwrapQuotes = str => str.replace(/^['"]|['"]$/g, '')
 const argv = minimist(process.argv.slice(2), {
   default: {
     entry:      './src/main/ts/index.ts',
@@ -22,12 +23,11 @@ const argv = minimist(process.argv.slice(2), {
   string: ['entry', 'external', 'bundle', 'license', 'format', 'map', 'cwd']
 })
 const { entry, external, bundle, minify, sourcemap, license, format, cwd: _cwd } = argv
-
 const plugins = []
 const cwd = Array.isArray(_cwd) ? _cwd[_cwd.length - 1] : _cwd
 const entryPoints = entry.includes('*')
-  ? await glob(entry.split(':'), { absolute: false, onlyFiles: true, cwd })
-  : entry.split(':')
+  ? await glob(unwrapQuotes(entry.split(':')), { absolute: false, onlyFiles: true, cwd })
+  : unwrapQuotes(entry.split(':'))
 
 const _bundle = bundle !== 'none' && !process.argv.includes('--no-bundle')
 const _external = _bundle
