@@ -45,7 +45,7 @@ describe('$()', () => {
     const name = await $({input})`jq -r .name`
     assert.equal(name.toString().trim(), 'foo')
 
-    const stdin = fs.createReadStream(path.join(fixtures, 'foo.json'))
+    const stdin = fs.createReadStream(path.resolve(fixtures, 'foo.json'))
     const data = await $({stdin})`jq -r .data`
     assert.equal(data.toString().trim(), 'foobar')
 
