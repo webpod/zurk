@@ -26,7 +26,8 @@ export const isStringLiteral = (pieces: any) => pieces?.every?.((p: any) => type
 
 export const assign = <T, E>(target: T, ...extras: E[]): T =>
   Object.defineProperties(target, extras.reduce<Record<string, any>>((m: any, extra) =>
-    ({...m, ...Object.getOwnPropertyDescriptors(extra)}), {}))
+    ({...m, ...Object.fromEntries(Object.entries(Object.getOwnPropertyDescriptors(extra))
+        .filter(([,v]) => !Object.hasOwn(v, 'value') || v.value !== undefined))}), {}))
 
 export const quote = (arg: string) => {
   if (/^[\w./:=@-]+$/i.test(arg) || arg === '') {
