@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: ${{ github.ref == 'refs/heads/master' && '0' || '1' }}
+          fetch-depth: ${{ github.ref == 'refs/heads/main' && '0' || '1' }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -35,7 +35,7 @@ jobs:
         run: yarn test
 
 #      - name: Codeclimate
-#        if: github.ref == 'refs/heads/master'
+#        if: github.ref == 'refs/heads/main'
 #        uses: paambaati/codeclimate-action@v4.0.0
 #        env:
 #          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
@@ -44,7 +44,7 @@ jobs:
 #            ${{github.workspace}}/target/coverage/lcov.info:lcov
 
       - name: Semantic Release
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_PROVENANCE: true

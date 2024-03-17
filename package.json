@@ -1,7 +1,7 @@
 {
   "name": "zurk",
   "version": "0.0.0",
-  "description": "zx core utils",
+  "description": "A generic process spawner",
   "type": "module",
   "main": "target/cjs/index.cjs",
   "exports": {
