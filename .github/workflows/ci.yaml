@@ -43,17 +43,17 @@ jobs:
 #          coverageLocations: |
 #            ${{github.workspace}}/target/coverage/lcov.info:lcov
 
-#      - name: Semantic Release
-#        if: github.ref == 'refs/heads/master'
-#        env:
-#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-#          NPM_PROVENANCE: true
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          GIT_AUTHOR_NAME: ${{ secrets.GIT_AUTHOR_NAME }}
-#          GIT_AUTHOR_EMAIL: ${{ secrets.GIT_AUTHOR_EMAIL }}
-#          GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
-#          GIT_COMMITTER_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
-#        run: npm_config_yes=true npx zx-semrel
+      - name: Semantic Release
+        if: github.ref == 'refs/heads/master'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_PROVENANCE: true
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: ${{ secrets.GIT_AUTHOR_NAME }}
+          GIT_AUTHOR_EMAIL: ${{ secrets.GIT_AUTHOR_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
+          GIT_COMMITTER_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
+        run: npm_config_yes=true npx zx-semrel
 
   pr:
     if: github.event_name == 'pull_request'
