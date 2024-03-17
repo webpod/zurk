@@ -26,8 +26,8 @@ const { entry, external, bundle, minify, sourcemap, license, format, cwd: _cwd }
 const plugins = []
 const cwd = Array.isArray(_cwd) ? _cwd[_cwd.length - 1] : _cwd
 const entryPoints = entry.includes('*')
-  ? await glob(unwrapQuotes(entry.split(':')), { absolute: false, onlyFiles: true, cwd })
-  : unwrapQuotes(entry.split(':'))
+  ? await glob(unwrapQuotes(entry).split(':'), { absolute: false, onlyFiles: true, cwd })
+  : unwrapQuotes(entry).split(':')
 
 const _bundle = bundle !== 'none' && !process.argv.includes('--no-bundle')
 const _external = _bundle
