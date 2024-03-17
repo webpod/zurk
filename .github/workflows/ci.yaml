@@ -87,5 +87,5 @@ jobs:
 
       - name: Run win32 tests
         if: matrix.os == 'windows-latest'
-        run: node --loader ts-node/esm --experimental-specifier-resolution=node ./src/test/ts/zurk.test.ts
+        run: node --loader ts-node/esm --experimental-specifier-resolution=node ./src/test/ts/spawn.test.ts
         timeout-minutes: 5

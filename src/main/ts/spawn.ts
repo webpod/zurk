@@ -74,7 +74,7 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   ee:         new EventEmitter(),
   ac:         new AbortController(),
   on:         {},
-  detached:   true,
+  detached:   process.platform !== 'win32',
   shell:      true,
   spawn:      cp.spawn,
   spawnSync:  cp.spawnSync,
