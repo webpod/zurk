@@ -35,8 +35,7 @@
   "files": [
     "target/cjs",
     "target/esm",
-    "target/dts",
-    "target/coverage/lcov.info"
+    "target/dts"
   ],
   "scripts": {
     "build": "concurrently 'npm:build:*'",
@@ -47,7 +46,7 @@
     "test": "concurrently 'npm:test:*'",
     "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
     "test:unit": "c8 -r lcov -r text -o target/coverage -x src/scripts -x src/test -x target node --loader ts-node/esm --experimental-specifier-resolution=node src/scripts/test.mjs",
-    "publish:draft": "yarn build && npm publish --no-git-tag-version"
+    "publish:draft": "npm run build && npm publish --no-git-tag-version"
   },
   "repository": {
     "type": "git",
