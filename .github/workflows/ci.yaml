@@ -26,13 +26,13 @@ jobs:
           # cache: 'yarn'
 
       - name: Fetch deps
-        run: yarn --mutex network --frozen-lockfile --network-concurrency 25 --silent --disable-self-update-check
+        run: npm ci
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Run tests
-        run: yarn test
+        run: npm run test
 
 #      - name: Codeclimate
 #        if: github.ref == 'refs/heads/main'
@@ -76,14 +76,14 @@ jobs:
           cache: 'yarn'
 
       - name: Fetch deps
-        run: yarn --mutex network --frozen-lockfile --network-concurrency 25 --silent --disable-self-update-check
+        run: npm ci
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Run all tests
         if: matrix.os == 'ubuntu-22.04'
-        run: yarn test
+        run: npm run test
 
       - name: Run win32 tests
         if: matrix.os == 'windows-latest'
