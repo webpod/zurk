@@ -1,3 +1,8 @@
+## [0.0.32](https://github.com/webpod/zurk/compare/v0.0.31...v0.0.32) (2024-03-26)
+
+### Fixes & improvements
+* perf: migrate from yarn to npm ([6c455a2](https://github.com/webpod/zurk/commit/6c455a20ff2503ec1a439e36d58480025ba1e878))
+
 ## [0.0.31](https://github.com/webpod/zurk/compare/v0.0.30...v0.0.31) (2024-03-17)
 
 ### Fixes & improvements
