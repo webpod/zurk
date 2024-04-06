@@ -49,6 +49,7 @@ export interface TSpawnCtxNormalized {
   ee:         EventEmitter
   on:         Partial<TSpawnListeners>
   ac:         AbortController
+  signal:     AbortController['signal']
   shell:      string | true | undefined
   spawn:      typeof cp.spawn
   spawnSync:  typeof cp.spawnSync
@@ -73,6 +74,7 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   env:        process.env,
   ee:         new EventEmitter(),
   ac:         new AbortController(),
+  get signal() { return this.ac.signal },
   on:         {},
   detached:   process.platform !== 'win32',
   shell:      true,
@@ -105,7 +107,7 @@ export class VoidWritable extends Transform {
   }
 }
 
-export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detached, ac: {signal}}: TSpawnCtxNormalized) => ({
+export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detached, signal}: TSpawnCtxNormalized) => ({
   ...spawnOpts,
   env,
   cwd,

@@ -51,9 +51,11 @@ describe('invoke()', () => {
 
 describe('normalizeCtx()', () => {
   it('normalizes ctx', () => {
+    const signal = new AbortController().signal
     const cwds = ['a', 'b', 'c']
     const ctx = {
       cmd: 'foo',
+      signal,
       get cwd () {
         return cwds.shift() || process.cwd()
       },
@@ -62,6 +64,7 @@ describe('normalizeCtx()', () => {
     assert.equal(normalized.cwd, 'a')
     assert.equal(normalized.cwd, 'b')
     assert.equal(normalized.cwd, 'c')
+    assert.equal(normalized.signal, signal)
     assert.ok(normalized.ee instanceof EventEmitter)
     assert.ok(normalized.ac instanceof AbortController)
   })
