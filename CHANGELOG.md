@@ -1,3 +1,8 @@
+## [0.1.0](https://github.com/webpod/zurk/compare/v0.0.32...v0.1.0) (2024-04-06)
+
+### Features
+* feat: provide `signal` opt ([dc2b7ea](https://github.com/webpod/zurk/commit/dc2b7ea0a07ead8d7250290881f7c6422cb5b090))
+
 ## [0.0.32](https://github.com/webpod/zurk/compare/v0.0.31...v0.0.32) (2024-03-26)
 
 ### Fixes & improvements
