@@ -1,3 +1,8 @@
+## [0.1.2](https://github.com/webpod/zurk/compare/v0.1.1...v0.1.2) (2024-04-07)
+
+### Fixes & improvements
+* fix: extend stdio opts ([546afc6](https://github.com/webpod/zurk/commit/546afc6da0d015926d3936793f2c69358fc2cb5f))
+
 ## [0.1.1](https://github.com/webpod/zurk/compare/v0.1.0...v0.1.1) (2024-04-07)
 
 ### Fixes & improvements
