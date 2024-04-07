@@ -55,6 +55,10 @@ describe('$()', () => {
     assert.equal((await sorted).toString(), '1\n2\n3\n4\n5')
   })
 
+  it('handles custom stdio', async () => {
+    await $({stdio: ['inherit', 'inherit', 'inherit']})`ls`
+  })
+
   it('supports presets', () => {
     const $$ = $({sync: true, cmd: 'echo foo'})
     const $$$ = $$({cmd: 'echo bar'})

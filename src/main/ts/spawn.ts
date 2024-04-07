@@ -36,6 +36,8 @@ export type TChild = ReturnType<typeof cp.spawn>
 
 export type TInput = string | Buffer | Stream
 
+export type IO = 'pipe' | 'ignore' | 'inherit'
+
 export interface TSpawnCtxNormalized {
   id:         string,
   cwd:        string
@@ -43,7 +45,7 @@ export interface TSpawnCtxNormalized {
   sync:       boolean
   args:       ReadonlyArray<string>
   input:      TInput | null
-  stdio:      ['pipe', 'pipe', 'pipe']
+  stdio:      [IO, IO, IO]
   detached:   boolean
   env:        Record<string, string | undefined>
   ee:         EventEmitter
@@ -182,12 +184,12 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         })
         processInput(child, c.input || c.stdin)
 
-        child.stdout.pipe(c.stdout).on('data', d => {
+        child.stdout?.pipe(c.stdout).on('data', d => {
           stdout.push(d)
           stdall.push(d)
           c.ee.emit('stdout', d, c)
         })
-        child.stderr.pipe(c.stderr).on('data', d => {
+        child.stderr?.pipe(c.stderr).on('data', d => {
           stderr.push(d)
           stdall.push(d)
           c.ee.emit('stderr', d, c)
