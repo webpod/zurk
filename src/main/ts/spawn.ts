@@ -36,8 +36,6 @@ export type TChild = ReturnType<typeof cp.spawn>
 
 export type TInput = string | Buffer | Stream
 
-export type IO = 'pipe' | 'ignore' | 'inherit'
-
 export interface TSpawnCtxNormalized {
   id:         string,
   cwd:        string
@@ -45,7 +43,7 @@ export interface TSpawnCtxNormalized {
   sync:       boolean
   args:       ReadonlyArray<string>
   input:      TInput | null
-  stdio:      [IO, IO, IO]
+  stdio:      cp.StdioOptions
   detached:   boolean
   env:        Record<string, string | undefined>
   ee:         EventEmitter
