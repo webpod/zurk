@@ -1,3 +1,8 @@
+## [0.1.1](https://github.com/webpod/zurk/compare/v0.1.0...v0.1.1) (2024-04-07)
+
+### Fixes & improvements
+* fix: provide stdio customization ([cbfc232](https://github.com/webpod/zurk/commit/cbfc232011d79ae54e9bc99e6b41c59c0d6a47c0))
+
 ## [0.1.0](https://github.com/webpod/zurk/compare/v0.0.32...v0.1.0) (2024-04-06)
 
 ### Features
