@@ -1,3 +1,8 @@
+## [0.1.3](https://github.com/webpod/zurk/compare/v0.1.2...v0.1.3) (2024-04-27)
+
+### Fixes & improvements
+* fix: let AbortController API be optional ([a21e1b9](https://github.com/webpod/zurk/commit/a21e1b94d1e7f15c1adc0c5bc7d951901cc87bca))
+
 ## [0.1.2](https://github.com/webpod/zurk/compare/v0.1.1...v0.1.2) (2024-04-07)
 
 ### Fixes & improvements
