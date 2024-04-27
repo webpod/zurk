@@ -73,8 +73,8 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   input:      null,
   env:        process.env,
   ee:         new EventEmitter(),
-  ac:         new AbortController(),
-  get signal() { return this.ac.signal },
+  ac:         AbortController && new AbortController(),
+  get signal() { return this.ac?.signal },
   on:         {},
   detached:   process.platform !== 'win32',
   shell:      true,
@@ -169,7 +169,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
 
         c.ee.emit('start', child, c)
 
-        opts.signal.addEventListener('abort', event => {
+        opts.signal?.addEventListener('abort', event => {
           if (opts.detached && child.pid) {
             try {
               // https://github.com/nodejs/node/issues/51766
