@@ -2,7 +2,7 @@
 
 <sup>
 – cute sounds but never friendly. <br/>
-– eat all kinds of materials.
+– eats all kinds of materials.
 </sup>
 
 # 🔬🧫
