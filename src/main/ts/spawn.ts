@@ -73,7 +73,7 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   input:      null,
   env:        process.env,
   ee:         new EventEmitter(),
-  ac:         AbortController && new AbortController(),
+  ac:         global.AbortController && new AbortController(),
   get signal() { return this.ac?.signal },
   on:         {},
   detached:   process.platform !== 'win32',

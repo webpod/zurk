@@ -3,10 +3,30 @@
 name: CI
 on: [push, pull_request]
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            target
+            package.json
+          retention-days: 1
+
   push:
     name: Push ${{ github.ref }}
+    needs: build
     if: github.event_name == 'push'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       checks: read
       statuses: write
@@ -18,19 +38,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: ${{ github.ref == 'refs/heads/main' && '0' || '1' }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
       - name: Fetch deps
         run: npm ci
-
-      - name: Build
-        run: npm run build
-
       - name: Run tests
         run: npm run test
 
@@ -58,34 +75,37 @@ jobs:
 
   pr:
     if: github.event_name == 'pull_request'
+    needs: build
     name: PR (Node v${{ matrix.node-version }}, OS ${{ matrix.os }})
     strategy:
       matrix:
-        os: [ ubuntu-22.04, windows-latest ]
-        node-version: [ 20 ]
+        os: [ ubuntu-latest, windows-latest ]
+        node-version: [ 14, 20, 22 ]
 
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-
-      - name: Fetch deps
-        run: npm ci
-
-      - name: Build
-        run: npm run build
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
 
       - name: Run all tests
-        if: matrix.os == 'ubuntu-22.04'
-        run: npm run test
-
-      - name: Run win32 tests
-        if: matrix.os == 'windows-latest'
-        run: node --loader ts-node/esm --experimental-specifier-resolution=node ./src/test/ts/spawn.test.ts
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == 20
+        run: |
+          npm ci
+          npm run test
+      - name: Run spawn tests (win32)
+        if: matrix.os == 'windows-latest' && matrix.node-version == 20
+        run: |
+          npm ci
+          node --loader ts-node/esm --experimental-specifier-resolution=node ./src/test/ts/spawn.test.ts
         timeout-minutes: 5
+
+      - name: Run smoke tests
+        run: npm run test:smoke
