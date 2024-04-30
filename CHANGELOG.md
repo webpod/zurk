@@ -1,3 +1,8 @@
+## [0.1.4](https://github.com/webpod/zurk/compare/v0.1.3...v0.1.4) (2024-04-30)
+
+### Fixes & improvements
+* fix: replace `Object.hasOwn` with `Object.hasOwnPrototype` ([1fb5262](https://github.com/webpod/zurk/commit/1fb5262f752b478a39cffef399d744aa6f37c7a4))
+
 ## [0.1.3](https://github.com/webpod/zurk/compare/v0.1.2...v0.1.3) (2024-04-27)
 
 ### Fixes & improvements
