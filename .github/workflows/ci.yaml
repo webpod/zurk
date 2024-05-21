@@ -80,8 +80,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        # v22 awaits https://github.com/nodejs/node/issues/52682
-        node-version: [ 14, 20 ]
+        node-version: [ 14, 20, 22 ]
 
     runs-on: ${{ matrix.os }}
     steps:
