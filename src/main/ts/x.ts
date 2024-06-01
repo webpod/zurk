@@ -85,14 +85,17 @@ export interface TShellSync {
   (opts: TShellOptions): TShellSync
 }
 
+const g = global || globalThis
+
 export const $: TShell = function(this: any, pieces?: any, ...args: any): any {
-  const preset = this || {}
+  const self =  (this !== g) && this
+  const preset = self || {}
 
   if (pieces === undefined) return applyMixins($, preset)
 
   if (isStringLiteral(pieces)) return ignite(preset, pieces, ...args)
 
-  return (...args: any) => $.apply(this ? assign(this, pieces) : pieces, args)
+  return (...args: any) => $.apply(self ? assign(self, pieces) : pieces, args)
 }
 
 const ignite = (preset: any, pieces: TemplateStringsArray, ...args: any[]) => {

@@ -8,7 +8,7 @@
 # 🔬🧫
 
 > This subproject is a kind of experiment, addressed to the [google/zx/issues/589](https://github.com/google/zx/issues/589).
-Just a testing ground for verifying ideas and approaches aimed at improve the [zx](https://github.com/google/zx) architecture.
+Just a testing ground for verifying ideas and approaches aimed at improve the [zx's](https://github.com/google/zx) architecture.
 
 ## Concepts
 * **Layered** architecture:
@@ -19,6 +19,16 @@ Just a testing ground for verifying ideas and approaches aimed at improve the [z
 * **Extensibility**: 
   * The context object at every layer is accessible fo modify.
   * Typings are mostly represented by interfaces, so it's easy to tweak up if necessary. 
+
+## Requirements
+* **OS**
+  * Linux
+  * MacOS
+  * Windows
+* **JS Runtime**
+  * Node.js >= 6 (CJS)
+  * Node.js >= 12 (ESM)
+  * Bun >= 1.0.0
 
 ## Install
 ```bash

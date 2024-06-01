@@ -182,23 +182,23 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         })
         processInput(child, c.input || c.stdin)
 
-        child.stdout?.pipe(c.stdout).on('data', d => {
+        child.stdout?.on('data', d => {
           stdout.push(d)
           stdall.push(d)
           c.ee.emit('stdout', d, c)
-        })
-        child.stderr?.pipe(c.stderr).on('data', d => {
+        }).pipe(c.stdout)
+        child.stderr?.on('data', d => {
           stderr.push(d)
           stdall.push(d)
           c.ee.emit('stderr', d, c)
-        })
+        }).pipe(c.stderr)
         child
           .on('error', (e: any) => {
             error = e
             c.ee.emit('err', error, c)
           })
           .on('close', (status, signal) => {
-            c.callback(error, c.fulfilled = {
+            c.fulfilled = {
               error,
               status,
               signal,
@@ -208,7 +208,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               stdio:    [c.stdin, c.stdout, c.stderr],
               duration: Date.now() - now,
               ctx:      c
-            })
+            }
+            c.callback(error, c.fulfilled)
             c.ee.emit('end', c.fulfilled, c)
           })
       }, c)
