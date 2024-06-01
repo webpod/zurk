@@ -113,3 +113,17 @@ jobs:
 
       - name: Run smoke:cjs tests
         run: npm run test:smoke:cjs
+
+  smoke-bun:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Bun
+        uses: antongolub/action-setup-bun@v1
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+      - run: |
+          bun ./src/test/smoke/invoke.test.cjs
+          bun ./src/test/smoke/invoke.test.mjs

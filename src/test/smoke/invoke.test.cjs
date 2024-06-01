@@ -10,11 +10,13 @@ const r2 = $({sync: true})`echo bar`
 assert.ok(/bar/.test(r2.stdout))
 assert.equal(r2.status, 0);
 
-$`echo baz`.then((r3) => {
-  assert.ok(/baz/.test(r3.stdout))
-  assert.equal(r3.status, 0)
-  clearInterval(keepAlive)
-})
+$`echo baz`
+  .then((r3) => {
+    clearInterval(keepAlive)
+
+    assert.ok(/baz/.test(r3.stdout))
+    assert.equal(r3.status, 0)
+  })
 
 console.log('nodejs:', process.versions.node)
 console.log('smoke cjs: ok')
