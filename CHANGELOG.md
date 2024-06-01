@@ -1,3 +1,8 @@
+## [0.2.0](https://github.com/webpod/zurk/compare/v0.1.4...v0.2.0) (2024-06-01)
+
+### Features
+* feat: provide compat with nodejs 6+ (cjs) and nodejs 12+ (esm) ([1606b98](https://github.com/webpod/zurk/commit/1606b9812d7a997d84ede212150c7b86b4468abb))
+
 ## [0.1.4](https://github.com/webpod/zurk/compare/v0.1.3...v0.1.4) (2024-04-30)
 
 ### Fixes & improvements
