@@ -83,3 +83,5 @@ export const parseInput = (input: any): string | Buffer | Stream | null => {
 
   return null
 }
+
+export const pFinally = (p: Promise<any>, cb: any) => p.finally?.(cb) || p.then(cb, cb)

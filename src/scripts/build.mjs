@@ -4,8 +4,12 @@ import process from 'node:process'
 import esbuild from 'esbuild'
 import { nodeExternalsPlugin } from 'esbuild-node-externals'
 import { entryChunksPlugin } from 'esbuild-plugin-entry-chunks'
+import { transformHookPlugin } from 'esbuild-plugin-transform-hook'
+import { extractHelpersPlugin } from 'esbuild-plugin-extract-helpers'
+import { injectFile } from 'esbuild-plugin-utils'
 import minimist from 'minimist'
 import glob from 'fast-glob'
+import path from "node:path";
 
 const unwrapQuotes = str => str.replace(/^['"]|['"]$/g, '')
 const argv = minimist(process.argv.slice(2), {
@@ -44,17 +48,56 @@ if (bundle === 'src') {
   plugins.push(nodeExternalsPlugin())
 }
 
-const formats = format.split(',')
-const banner = argv.banner && bundle === 'all'
-  ? {
-    js: `
-const require = (await import("node:module")).createRequire(import.meta.url);
-const __filename = (await import("node:url")).fileURLToPath(import.meta.url);
-const __dirname = (await import("node:path")).dirname(__filename);
-`
-  }
-  : {}
+const cjsPlugins = [
+  extractHelpersPlugin({
+    helper: 'cjslib.cjs',
+    cwd: 'target/cjs',
+    include: /\.cjs/,
+  }),
+  transformHookPlugin({
+    hooks: [
+      {
+        on: 'end',
+        pattern: /cjslib/,
+        transform(contents) {
+          return injectFile(contents.toString(), './src/scripts/object.polyfill.cjs')
+        },
+      },
+      {
+        on: 'end',
+        pattern: entryPointsToRegexp(entryPoints),
+        transform(contents, p) {
+          return contents
+            .toString()
+            .replaceAll('"node:', '"')
+            .replace(
+              /0 && \(module\.exports =(.|\n)+/,
+              ($0) => {
+                if (!$0.includes('...')) return $0
 
+                const lines = $0.split('\n').slice(1, -1)
+                const vars = []
+                const reexports = []
+                lines.forEach((l) => {
+                  const e = /\s*\.{3}(require\(.+\))/.exec(l)?.[1]
+                  if (e) {
+                    reexports.push(e)
+                  } else {
+                    vars.push(l)
+                  }
+                })
+
+                return `0 && (module.exports = Object.assign({
+${vars.join('\n')}
+}, ${reexports.join(',\n')}))`
+              }
+            )
+        },
+      },]
+  })
+]
+
+const formats = format.split(',')
 
 const esmConfig = {
   absWorkingDir: cwd,
@@ -66,7 +109,7 @@ const esmConfig = {
   sourcemap,
   sourcesContent: false,
   platform: 'node',
-  target: 'esnext',
+  target: 'es2019',
   format: 'esm',
   outExtension: {
     '.js': '.mjs'
@@ -74,19 +117,22 @@ const esmConfig = {
   plugins,
   legalComments: license,
   tsconfig: './tsconfig.json',
-  //https://github.com/evanw/esbuild/issues/1921
-  banner
+
 }
 
 const cjsConfig = {
   ...esmConfig,
   outdir: './target/cjs',
-  target: 'es6',
+  target: 'es2015',
   format: 'cjs',
   banner: {},
   outExtension: {
     '.js': '.cjs'
-  }
+  },
+  plugins: [
+    ...plugins,
+    ...cjsPlugins
+  ],
 }
 
 for (const format of formats) {
@@ -94,7 +140,16 @@ for (const format of formats) {
 
   await esbuild
     .build(config)
-    .catch(() => process.exit(1))
+    .catch((e) => {
+      console.error(e)
+      process.exit(1)
+    })
+}
+
+function entryPointsToRegexp(entryPoints) {
+  return new RegExp(
+    '(' + entryPoints.map((e) => path.parse(e).name).join('|') + ')\\.cjs$'
+  )
 }
 
 process.exit(0)
