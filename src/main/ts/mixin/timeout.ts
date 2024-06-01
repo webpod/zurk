@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { assign } from '../util.js'
+import { assign, pFinally } from '../util.js'
 import type { TMixin, TShell, TShellCtx } from '../x.js'
 import { type TZurk, type TZurkPromise, isZurkPromise } from '../zurk.js'
 
@@ -31,7 +31,7 @@ export const timeoutMixin: TMixin = <T extends TZurk | TZurkPromise >($: TShell,
     })
 
     attachTimeout(ctx, result)
-    result.finally(() => clearTimeout((ctx as any).timer))
+    pFinally(result,() => clearTimeout((ctx as any).timer))
   }
 
   return result

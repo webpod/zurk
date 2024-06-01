@@ -1,4 +1,3 @@
-import util from 'node:util'
 import {
   invoke,
   normalizeCtx,
@@ -14,6 +13,7 @@ import {
 } from './util.js'
 
 export const ZURK = Symbol('Zurk')
+export const ZURKPROXY = Symbol('ZurkProxy')
 
 // TODO infer
 export interface TZurkOn<R> {
@@ -77,15 +77,16 @@ export const zurkSync = (opts: TZurkOptions): TZurk => {
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpawnCtxNormalized) => {
-  if (!isPromiseLike(target) || util.types.isProxy(target)) {
+  if (!isPromiseLike(target) || isZurkProxy(target)) {
     return target as TZurkPromise
   }
   const proxy = new Proxy(target, {
     get(target: Promise<TZurk>, p: string | symbol, receiver: any): any {
+      if (p === ZURKPROXY) return ZURKPROXY
       if (p === ZURK) return ZURK
       if (p === 'then') return target.then.bind(target)
       if (p === 'catch') return target.catch.bind(target)
-      if (p === 'finally') return target.finally.bind(target)
+      if (p === 'finally') return (target.finally || target.then).bind(target)
       if (p === 'stdio') return ctx.stdio
       if (p === 'ctx') return ctx
       if (p === 'child') return ctx.child
@@ -111,6 +112,7 @@ export const getError = (data: TSpawnResult) => {
 export const isZurk = (o: any): o is TZurk => o?.[ZURK] === ZURK
 export const isZurkPromise = (o: any): o is TZurkPromise => o?.[ZURK] === ZURK && o instanceof Promise
 export const isZurkAny = (o: any): o is TZurk | TZurkPromise => isZurk(o) || isZurkPromise(o)
+export const isZurkProxy = (value: any): boolean => value?.[ZURKPROXY] === ZURKPROXY
 
 export const zurkFactory = <C extends TSpawnCtxNormalized>(ctx: C): TZurk  => new Zurk(ctx)
 

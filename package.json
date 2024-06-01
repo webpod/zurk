@@ -46,7 +46,8 @@
     "test": "concurrently 'npm:test:*'",
     "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
     "test:unit": "c8 -r lcov -r text -o target/coverage -x src/scripts -x src/test -x target node --loader ts-node/esm --experimental-specifier-resolution=node src/scripts/test.mjs",
-    "test:smoke": "node ./src/test/smoke/invoke.test.mjs && node src/test/smoke/invoke.test.cjs",
+    "test:smoke:esm": "node ./src/test/smoke/invoke.test.mjs",
+    "test:smoke:cjs": "node src/test/smoke/invoke.test.cjs",
     "publish:draft": "npm run build && npm publish --no-git-tag-version"
   },
   "repository": {
@@ -67,6 +68,9 @@
     "esbuild": "^0.21.3",
     "esbuild-node-externals": "^1.13.1",
     "esbuild-plugin-entry-chunks": "^0.1.14",
+    "esbuild-plugin-extract-helpers": "^0.0.5",
+    "esbuild-plugin-transform-hook": "^0.1.0",
+    "esbuild-plugin-utils": "^0.1.0",
     "eslint": "^8.57.0",
     "eslint-config-qiwi": "^2.1.3",
     "fast-glob": "^3.3.2",
