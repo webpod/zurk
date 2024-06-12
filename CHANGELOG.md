@@ -1,3 +1,8 @@
+## [0.3.0](https://github.com/webpod/zurk/compare/v0.2.0...v0.3.0) (2024-06-12)
+
+### Features
+* feat: provide chunks store customization ([165b020](https://github.com/webpod/zurk/commit/165b02001f0f46e8b46e521c2e8e800960a11241))
+
 ## [0.2.0](https://github.com/webpod/zurk/compare/v0.1.4...v0.2.0) (2024-06-01)
 
 ### Features
