@@ -8,13 +8,16 @@ export * from './util.js'
 
 export type TSpawnError = any
 
+export type TPushable<T = any> = { push(...args: T[]): number }
+
+export type TJoinable = { join(sep?: string): string }
+
+export type TSpawnStoreChunks = Iterable<string| Buffer> & TPushable<string| Buffer> & TJoinable
+
 export type TSpawnStore = {
-  stdout: Array<string | Buffer>
-  stderr: Array<string | Buffer>
-  stdall: Array<string | Buffer>
-  getStdout: () => string
-  getStderr: () => string
-  getStdall: () => string
+  stdout: TSpawnStoreChunks
+  stderr: TSpawnStoreChunks
+  stdall: TSpawnStoreChunks
 }
 
 export type TSpawnResult = {
@@ -136,17 +139,11 @@ export const attachListeners = (ee: EventEmitter, on: Partial<TSpawnListeners> =
   }
 }
 
-export const createStore = (): TSpawnStore => {
-  const store: TSpawnStore = {
-    stdout: [],
-    stderr: [],
-    stdall: [],
-    getStdout() { return store.stdout.join('') },
-    getStderr() { return store.stderr.join('') },
-    getStdall() { return store.stdall.join('') }
-  }
-  return store
-}
+export const createStore = (): TSpawnStore => ({
+  stdout: [],
+  stderr: [],
+  stdall: [],
+})
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
@@ -171,8 +168,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
       }
       c.callback(null, c.fulfilled = {
         ...result,
-        get stdout() { return c.store.getStdout() },
-        get stderr() { return c.store.getStderr() },
+        get stdout() { return c.store.stdout.join('') },
+        get stderr() { return c.store.stderr.join('') },
         stdio,
         get stdall() { return this.stdout + this.stderr },
         duration: Date.now() - now,
@@ -224,9 +221,9 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               error,
               status,
               signal,
-              get stdout() { return c.store.getStdout() },
-              get stderr() { return c.store.getStderr() },
-              get stdall() { return c.store.getStdall() },
+              get stdout() { return c.store.stdout.join('') },
+              get stderr() { return c.store.stderr.join('') },
+              get stdall() { return c.store.stdall.join('') },
               stdio:    [c.stdin, c.stdout, c.stderr],
               duration: Date.now() - now,
               ctx:      c

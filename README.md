@@ -123,10 +123,7 @@ const getFixedSizeArray = (size: number) => {
 const store: TSpawnStore = {
   stdout: getFixedSizeArray(1),
   stderr: getFixedSizeArray(2),
-  stdall: getFixedSizeArray(0),
-  getStdout() { return this.stdout.join('') },
-  getStderr() { return this.stdout.join('') },
-  getStdall() { return '' },
+  stdall: getFixedSizeArray(0)
 }
 
 const result = await $({store})`echo hello`

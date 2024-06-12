@@ -96,17 +96,15 @@ describe('exec()', () => {
     const store: TSpawnStore = {
       stdout: getFixedSizeArray(1),
       stderr: getFixedSizeArray(2),
-      stdall: getFixedSizeArray(0),
-      getStdout() { return store.stdout.join('')},
-      getStderr() { return store.stderr.join('')},
-      getStdall() { return store.stdall.join('')},
+      stdall: getFixedSizeArray(0)
     }
 
     const ctx = exec({sync: false, callback, store, cmd: 'echo', args: ['hello']})
     const result = await promise
 
-    assert.equal(ctx.store.getStdall(), '')
-    assert.equal(ctx.store.getStdout().trim(), 'hello')
+    assert.equal(ctx.store.stdall.join(''), '')
+    assert.equal(ctx.store.stdout.join('').trim(), 'hello')
+    assert.equal([...ctx.store.stdout].length, 1)
     assert.equal(result.stdout.trim(), 'hello')
     assert.equal(result.stdall, '')
   })
