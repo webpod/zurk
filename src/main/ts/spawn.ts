@@ -8,6 +8,15 @@ export * from './util.js'
 
 export type TSpawnError = any
 
+export type TSpawnStore = {
+  stdout: Array<string | Buffer>
+  stderr: Array<string | Buffer>
+  stdall: Array<string | Buffer>
+  getStdout: () => string
+  getStderr: () => string
+  getStdall: () => string
+}
+
 export type TSpawnResult = {
   stderr:   string
   stdout:   string
@@ -54,6 +63,7 @@ export interface TSpawnCtxNormalized {
   spawn:      typeof cp.spawn
   spawnSync:  typeof cp.spawnSync
   spawnOpts:  Record<string, any>
+  store:      TSpawnStore
   callback:   (err: TSpawnError, result: TSpawnResult) => void
   stdin:      Readable
   stdout:     Writable
@@ -81,6 +91,7 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   spawn:      cp.spawn,
   spawnSync:  cp.spawnSync,
   spawnOpts:  {},
+  store:      createStore(),
   callback:   noop,
   stdin:      new VoidWritable(),
   stdout:     new VoidWritable(),
@@ -125,6 +136,18 @@ export const attachListeners = (ee: EventEmitter, on: Partial<TSpawnListeners> =
   }
 }
 
+export const createStore = (): TSpawnStore => {
+  const store: TSpawnStore = {
+    stdout: [],
+    stderr: [],
+    stdall: [],
+    getStdout() { return store.stdout.join('') },
+    getStderr() { return store.stderr.join('') },
+    getStdall() { return store.stdall.join('') }
+  }
+  return store
+}
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   const now = Date.now()
@@ -137,17 +160,19 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
       const result = c.spawnSync(c.cmd, c.args, opts)
       c.ee.emit('start', result, c)
       if (result.stdout.length > 0) {
+        c.store.stdout.push(result.stdout)
         c.stdout.write(result.stdout)
         c.ee.emit('stdout', result.stdout, c)
       }
       if (result.stderr.length > 0) {
+        c.store.stderr.push(result.stderr)
         c.stderr.write(result.stderr)
         c.ee.emit('stderr', result.stderr, c)
       }
       c.callback(null, c.fulfilled = {
         ...result,
-        stdout:   result.stdout.toString(),
-        stderr:   result.stderr.toString(),
+        get stdout() { return c.store.getStdout() },
+        get stderr() { return c.store.getStderr() },
         stdio,
         get stdall() { return this.stdout + this.stderr },
         duration: Date.now() - now,
@@ -161,9 +186,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
 
         let error: any = null
         const opts = buildSpawnOpts(c)
-        const stderr: string[] = []
-        const stdout: string[] = []
-        const stdall: string[] = []
         const child = c.spawn(c.cmd, c.args, opts)
         c.child = child
 
@@ -183,13 +205,13 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         processInput(child, c.input || c.stdin)
 
         child.stdout?.on('data', d => {
-          stdout.push(d)
-          stdall.push(d)
+          c.store.stdout.push(d)
+          c.store.stdall.push(d)
           c.ee.emit('stdout', d, c)
         }).pipe(c.stdout)
         child.stderr?.on('data', d => {
-          stderr.push(d)
-          stdall.push(d)
+          c.store.stderr.push(d)
+          c.store.stdall.push(d)
           c.ee.emit('stderr', d, c)
         }).pipe(c.stderr)
         child
@@ -202,9 +224,9 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               error,
               status,
               signal,
-              stdout:   stdout.join(''),
-              stderr:   stderr.join(''),
-              stdall:   stdall.join(''),
+              get stdout() { return c.store.getStdout() },
+              get stderr() { return c.store.getStderr() },
+              get stdall() { return c.store.getStdall() },
               stdio:    [c.stdin, c.stdout, c.stderr],
               duration: Date.now() - now,
               ctx:      c
