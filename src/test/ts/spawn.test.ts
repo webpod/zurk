@@ -1,7 +1,14 @@
 import * as assert from 'node:assert'
 import { describe, it } from 'node:test'
 import EventEmitter from 'node:events'
-import { invoke, normalizeCtx, TSpawnCtx, TSpawnResult } from '../../main/ts/spawn.js'
+import {
+  exec,
+  invoke,
+  normalizeCtx,
+  TSpawnCtx,
+  TSpawnResult,
+  TSpawnStore
+} from '../../main/ts/spawn.js'
 import { makeDeferred } from '../../main/ts/util.js'
 
 describe('invoke()', () => {
@@ -67,5 +74,40 @@ describe('normalizeCtx()', () => {
     assert.equal(normalized.signal, signal)
     assert.ok(normalized.ee instanceof EventEmitter)
     assert.ok(normalized.ac instanceof AbortController)
+    assert.deepEqual(normalized.store.stdout, [])
+    assert.deepEqual(normalized.store.stderr, [])
+  })
+})
+
+describe('exec()', () => {
+  it('supports custom stores', async () => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const getFixedSizeArray = (size: number) => {
+      const arr: any[] = []
+      return new Proxy(arr, {
+        get: (target: any, prop) =>
+          prop === 'push' && arr.length >= size
+            ? () => { /* noop */ }
+            : target[prop]
+      })
+    }
+    const { promise, resolve, reject } = makeDeferred<TSpawnResult>()
+    const callback: TSpawnCtx['callback'] = (err, result) => err ? reject(err) : resolve(result)
+    const store: TSpawnStore = {
+      stdout: getFixedSizeArray(1),
+      stderr: getFixedSizeArray(2),
+      stdall: getFixedSizeArray(0),
+      getStdout() { return store.stdout.join('')},
+      getStderr() { return store.stderr.join('')},
+      getStdall() { return store.stdall.join('')},
+    }
+
+    const ctx = exec({sync: false, callback, store, cmd: 'echo', args: ['hello']})
+    const result = await promise
+
+    assert.equal(ctx.store.getStdall(), '')
+    assert.equal(ctx.store.getStdout().trim(), 'hello')
+    assert.equal(result.stdout.trim(), 'hello')
+    assert.equal(result.stdall, '')
   })
 })

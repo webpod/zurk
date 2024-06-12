@@ -106,7 +106,33 @@ const { error } = await p
 error.message // 'The operation was aborted'
 ```
 
-- [ ] Stdout limit
+- [x] Stdout limit
+
+```ts
+import {type TSpawnStore, $} from 'zurk'
+
+const getFixedSizeArray = (size: number) => {
+  const arr: any[] = []
+  return new Proxy(arr, {
+    get: (target: any, prop) =>
+      prop === 'push' && arr.length >= size
+        ? () => {}
+        : target[prop]
+  })
+}
+const store: TSpawnStore = {
+  stdout: getFixedSizeArray(1),
+  stderr: getFixedSizeArray(2),
+  stdall: getFixedSizeArray(0),
+  getStdout() { return this.stdout.join('') },
+  getStderr() { return this.stdout.join('') },
+  getStdall() { return '' },
+}
+
+const result = await $({store})`echo hello`
+result.stdout // 'hello\n'
+result.stdall // ''
+```
 
 ## License
 [MIT](./LICENSE)
