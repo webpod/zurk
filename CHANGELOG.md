@@ -1,3 +1,8 @@
+## [0.3.1](https://github.com/webpod/zurk/compare/v0.3.0...v0.3.1) (2024-09-05)
+
+### Fixes & improvements
+* fix: release on abort signal handler ([c575cd4](https://github.com/webpod/zurk/commit/c575cd4be9cabc3aa0821d15bf8f6fa08b7d299e))
+
 ## [0.3.0](https://github.com/webpod/zurk/compare/v0.2.0...v0.3.0) (2024-06-12)
 
 ### Features
