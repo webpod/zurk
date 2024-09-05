@@ -184,11 +184,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         let error: any = null
         const opts = buildSpawnOpts(c)
         const child = c.spawn(c.cmd, c.args, opts)
-        c.child = child
-
-        c.ee.emit('start', child, c)
-
-        opts.signal?.addEventListener('abort', event => {
+        const onAbort = (event: any) => {
           if (opts.detached && child.pid) {
             try {
               // https://github.com/nodejs/node/issues/51766
@@ -198,7 +194,13 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
             }
           }
           c.ee.emit('abort', event, c)
-        })
+          opts.signal.removeEventListener('abort', onAbort)
+        }
+        c.child = child
+
+        c.ee.emit('start', child, c)
+
+        opts.signal?.addEventListener('abort', onAbort)
         processInput(child, c.input || c.stdin)
 
         child.stdout?.on('data', d => {
