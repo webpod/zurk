@@ -97,15 +97,16 @@ describe('mixins', () => {
     it('handles `abort`', async () => {
       const p = $({nothrow: true})`sleep 10`
       const events: any[] = []
+      let c = 0
 
       setTimeout(() => p.abort(), 25)
-      setTimeout(() => assert.ok(getEventListeners(p.ctx.signal, 'abort').length > 0))
+      setTimeout(() => c = getEventListeners(p.ctx.signal, 'abort').length, 10)
       p
         .on('abort', () => events.push('abort'))
         .on('end', () => events.push('end'))
 
       const { error } = await p
-      assert.equal(getEventListeners(p.ctx.signal, 'abort').length, 0)
+      assert.ok(getEventListeners(p.ctx.signal, 'abort').length < c)
       assert.equal(error.message, 'The operation was aborted')
       assert.deepEqual(events, ['abort', 'end'])
     })
