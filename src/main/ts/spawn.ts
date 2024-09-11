@@ -194,7 +194,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
             }
           }
           c.ee.emit('abort', event, c)
-          opts.signal.removeEventListener('abort', onAbort)
         }
         c.child = child
 
@@ -230,6 +229,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               duration: Date.now() - now,
               ctx:      c
             }
+            opts.signal?.removeEventListener('abort', onAbort)
             c.callback(error, c.fulfilled)
             c.ee.emit('end', c.fulfilled, c)
           })

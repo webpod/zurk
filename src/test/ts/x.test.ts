@@ -4,6 +4,7 @@ import * as path from 'node:path'
 import * as os from 'node:os'
 import { describe, it } from 'node:test'
 import { Stream } from 'node:stream'
+import { getEventListeners } from 'node:events'
 import { $ } from '../../main/ts/x.js'
 
 const __dirname = new URL('.', import.meta.url).pathname
@@ -98,11 +99,13 @@ describe('mixins', () => {
       const events: any[] = []
 
       setTimeout(() => p.abort(), 25)
+      setTimeout(() => assert.ok(getEventListeners(p.ctx.signal, 'abort').length > 0))
       p
         .on('abort', () => events.push('abort'))
         .on('end', () => events.push('end'))
 
       const { error } = await p
+      assert.equal(getEventListeners(p.ctx.signal, 'abort').length, 0)
       assert.equal(error.message, 'The operation was aborted')
       assert.deepEqual(events, ['abort', 'end'])
     })
