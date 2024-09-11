@@ -1,3 +1,8 @@
+## [0.3.2](https://github.com/webpod/zurk/compare/v0.3.1...v0.3.2) (2024-09-11)
+
+### Fixes & improvements
+* fix: enhance abort handlers clean up (#13) ([cf0211a](https://github.com/webpod/zurk/commit/cf0211a2a8e991724bbc689f01df1b61e329d45f))
+
 ## [0.3.1](https://github.com/webpod/zurk/compare/v0.3.0...v0.3.1) (2024-09-05)
 
 ### Fixes & improvements
