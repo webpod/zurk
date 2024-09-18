@@ -1,3 +1,8 @@
+## [0.3.4](https://github.com/webpod/zurk/compare/v0.3.3...v0.3.4) (2024-09-18)
+
+### Fixes & improvements
+* fix(type): add index to `TSpawnChunks` type ([c61538a](https://github.com/webpod/zurk/commit/c61538ae58115b9044dbae9895c2f0e47825c996))
+
 ## [0.3.3](https://github.com/webpod/zurk/compare/v0.3.2...v0.3.3) (2024-09-18)
 
 ### Fixes & improvements
