@@ -1,3 +1,8 @@
+## [0.3.3](https://github.com/webpod/zurk/compare/v0.3.2...v0.3.3) (2024-09-18)
+
+### Fixes & improvements
+* fix(type): add length prop to `TSpawnChunks` type ([93feadf](https://github.com/webpod/zurk/commit/93feadf0df4ed7f09442c3eb721003e03f8f3c1a))
+
 ## [0.3.2](https://github.com/webpod/zurk/compare/v0.3.1...v0.3.2) (2024-09-11)
 
 ### Fixes & improvements
