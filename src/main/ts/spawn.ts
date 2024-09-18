@@ -12,9 +12,7 @@ export type TPushable<T = any> = { push(...args: T[]): number }
 
 export type TJoinable = { join(sep?: string): string }
 
-export type THasLength = { length: number }
-
-export type TArrayLike<T> = Iterable<T> & TPushable<T> & TJoinable & THasLength
+export type TArrayLike<T> = Iterable<T> & TPushable<T> & TJoinable & { length: number, [i: number]: T | undefined }
 
 export type TSpawnStoreChunks = TArrayLike<string| Buffer>
 
