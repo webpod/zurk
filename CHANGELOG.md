@@ -1,3 +1,8 @@
+## [0.3.5](https://github.com/webpod/zurk/compare/v0.3.4...v0.3.5) (2024-09-19)
+
+### Fixes & improvements
+* fix: enhance `TemplateStringArray` detection ([10dc031](https://github.com/webpod/zurk/commit/10dc031690e338dd8b0a6fb763f5163c2f851c3d))
+
 ## [0.3.4](https://github.com/webpod/zurk/compare/v0.3.3...v0.3.4) (2024-09-18)
 
 ### Fixes & improvements
