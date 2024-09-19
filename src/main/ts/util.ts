@@ -22,7 +22,14 @@ export const makeDeferred = <T = any, E = any>(): { promise: Promise<T>, resolve
 
 export const isPromiseLike = (value: any): boolean => typeof value?.then === 'function'
 
-export const isStringLiteral = (pieces: any) => pieces?.every?.((p: any) => typeof p === 'string')
+export const isStringLiteral = (
+  pieces: any,
+  ...rest: any[]
+): pieces is TemplateStringsArray =>
+  pieces?.length > 0 &&
+  pieces.raw?.length === pieces.length &&
+  Object.isFrozen(pieces) &&
+  rest.length + 1 === pieces.length
 
 export const assign = <T, E>(target: T, ...extras: E[]): T =>
   Object.defineProperties(target, extras.reduce<Record<string, any>>((m: any, extra) =>

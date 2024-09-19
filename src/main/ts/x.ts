@@ -93,7 +93,7 @@ export const $: TShell = function(this: any, pieces?: any, ...args: any): any {
 
   if (pieces === undefined) return applyMixins($, preset)
 
-  if (isStringLiteral(pieces)) return ignite(preset, pieces, ...args)
+  if (isStringLiteral(pieces, ...args)) return ignite(preset, pieces, ...args)
 
   return (...args: any) => $.apply(self ? assign(self, pieces) : pieces, args)
 }
