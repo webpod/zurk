@@ -1,3 +1,8 @@
+## [0.4.1](https://github.com/webpod/zurk/compare/v0.4.0...v0.4.1) (2024-09-20)
+
+### Fixes & improvements
+* refactor: enhance internal zurk objects detectors ([bcba34d](https://github.com/webpod/zurk/commit/bcba34deb0186d1d48c996f55d738168e22bc291))
+
 ## [0.4.0](https://github.com/webpod/zurk/compare/v0.3.5...v0.4.0) (2024-09-20)
 
 ### Features
