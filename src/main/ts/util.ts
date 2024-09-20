@@ -2,6 +2,8 @@ import { Stream } from 'node:stream'
 
 export const noop = () => { /* noop */ }
 
+export const randomId = () => Math.random().toString(36).slice(2)
+
 export type PromiseResolve<T = any> = (value: T | PromiseLike<T>) => void
 
 export type TVoidCallback = (...any: any) => void
