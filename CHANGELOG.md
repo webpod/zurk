@@ -1,3 +1,8 @@
+## [0.4.0](https://github.com/webpod/zurk/compare/v0.3.5...v0.4.0) (2024-09-20)
+
+### Features
+* feat: export spawn ctx defaults ([d4466b0](https://github.com/webpod/zurk/commit/d4466b0d1ff5c7b8eb8b719729e993ffe5d824d7))
+
 ## [0.3.5](https://github.com/webpod/zurk/compare/v0.3.4...v0.3.5) (2024-09-19)
 
 ### Fixes & improvements
