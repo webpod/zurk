@@ -2,7 +2,7 @@ import * as cp from 'node:child_process'
 import process from 'node:process'
 import EventEmitter from 'node:events'
 import { Readable, Writable, Stream, Transform } from 'node:stream'
-import { assign, noop } from './util.js'
+import { assign, noop, randomId } from './util.js'
 
 export * from './util.js'
 
@@ -79,16 +79,16 @@ export interface TSpawnCtxNormalized {
   run:        (cb: () => void, ctx: TSpawnCtxNormalized) => void
 }
 
-export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
-  id:         Math.random().toString(36).slice(2),
+export const defaults: TSpawnCtxNormalized = {
+  get id()    { return randomId() },
   cmd:        '',
-  cwd:        process.cwd(),
+  get cwd()   { return process.cwd() },
   sync:       false,
   args:       [],
   input:      null,
   env:        process.env,
-  ee:         new EventEmitter(),
-  ac:         global.AbortController && new AbortController(),
+  get ee()    { return new EventEmitter() },
+  get ac()    { return global.AbortController && new AbortController() },
   get signal() { return this.ac?.signal },
   on:         {},
   detached:   process.platform !== 'win32',
@@ -96,14 +96,19 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   spawn:      cp.spawn,
   spawnSync:  cp.spawnSync,
   spawnOpts:  {},
-  store:      createStore(),
+  get store() { return createStore() },
   callback:   noop,
-  stdin:      new VoidWritable(),
-  stdout:     new VoidWritable(),
-  stderr:     new VoidWritable(),
+  get stdin() { return new VoidWritable() },
+  get stdout(){ return new VoidWritable() },
+  get stderr(){ return new VoidWritable() },
   stdio:      ['pipe', 'pipe', 'pipe'],
   run:        setImmediate,
-}, ...ctxs)
+}
+
+export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
+  ...defaults,
+  get signal() { return this.ac?.signal }},
+  ...ctxs)
 
 export const processInput = (child: TChild, input?: TInput | null) => {
   if (input && child.stdin && !child.stdin.destroyed) {
