@@ -1,3 +1,8 @@
+## [0.4.2](https://github.com/webpod/zurk/compare/v0.4.1...v0.4.2) (2024-09-20)
+
+### Fixes & improvements
+* perf: release ee handlers on process end ([49d89a9](https://github.com/webpod/zurk/commit/49d89a98fbe3d27fc0427e00d387e2f1fd50f8eb))
+
 ## [0.4.1](https://github.com/webpod/zurk/compare/v0.4.0...v0.4.1) (2024-09-20)
 
 ### Fixes & improvements
