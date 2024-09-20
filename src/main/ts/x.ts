@@ -38,7 +38,7 @@ export interface TShellOptionsExtra {
 
 export interface TShellResponseExtra<T = any> {
   pipe(shell: T): T
-  pipe(steam: Writable): Writable
+  pipe(stream: Writable): Writable
   pipe(pieces: TemplateStringsArray, ...args: any[]): T
   kill(signal?: NodeJS.Signals | null): Promise<void>
   abort(): void

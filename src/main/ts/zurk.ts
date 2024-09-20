@@ -109,9 +109,9 @@ export const getError = (data: TSpawnResult) => {
   return null
 }
 
-export const isZurk = (o: any): o is TZurk => o?.[ZURK] === ZURK
-export const isZurkPromise = (o: any): o is TZurkPromise => o?.[ZURK] === ZURK && o instanceof Promise
-export const isZurkAny = (o: any): o is TZurk | TZurkPromise => isZurk(o) || isZurkPromise(o)
+export const isZurkAny = (o: any): o is TZurk | TZurkPromise => o?.[ZURK] === ZURK
+export const isZurk = (o: any): o is TZurk => isZurkAny(o) && !(o instanceof Promise)
+export const isZurkPromise = (o: any): o is TZurkPromise => isZurkAny(o) && o instanceof Promise
 export const isZurkProxy = (value: any): boolean => value?.[ZURKPROXY] === ZURKPROXY
 
 export const zurkFactory = <C extends TSpawnCtxNormalized>(ctx: C): TZurk  => new Zurk(ctx)
