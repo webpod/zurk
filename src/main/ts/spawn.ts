@@ -144,6 +144,8 @@ export const toggleListeners = (pos: 'on' | 'off', ee: EventEmitter, on: Partial
   for (const [name, listener] of Object.entries(on)) {
     ee[pos](name, listener as any)
   }
+  if (pos === 'on')
+    ee.once('end', () => toggleListeners('off', ee, on))
 }
 
 export const createStore = (): TSpawnStore => ({
@@ -259,8 +261,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
     )
     c.ee.emit('err', error, c)
     c.ee.emit('end', c.fulfilled, c)
-  } finally {
-    toggleListeners('off', c.ee, c.on)
   }
 
   return c
