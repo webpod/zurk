@@ -1,3 +1,8 @@
+## [0.4.3](https://github.com/webpod/zurk/compare/v0.4.2...v0.4.3) (2024-09-20)
+
+### Fixes & improvements
+* fix: apply events detach on process end ([3d393be](https://github.com/webpod/zurk/commit/3d393be6ce17fd7695646735dfc1e197d3c964ac))
+
 ## [0.4.2](https://github.com/webpod/zurk/compare/v0.4.1...v0.4.2) (2024-09-20)
 
 ### Fixes & improvements
