@@ -140,9 +140,9 @@ export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detach
   signal
 })
 
-export const attachListeners = (ee: EventEmitter, on: Partial<TSpawnListeners> = {}) => {
+export const toggleListeners = (pos: 'on' | 'off', ee: EventEmitter, on: Partial<TSpawnListeners> = {}) => {
   for (const [name, listener] of Object.entries(on)) {
-    ee.on(name, listener as any)
+    ee[pos](name, listener as any)
   }
 }
 
@@ -159,7 +159,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
 
   try {
     if (c.sync) {
-      attachListeners(c.ee, c.on)
+      toggleListeners('on', c.ee, c.on)
       const opts = buildSpawnOpts(c)
       const result = c.spawnSync(c.cmd, c.args, opts)
       c.ee.emit('start', result, c)
@@ -186,7 +186,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
 
     } else {
       c.run(() => {
-        attachListeners(c.ee, c.on)
+        toggleListeners('on', c.ee, c.on)
 
         let error: any = null
         const opts = buildSpawnOpts(c)
@@ -259,6 +259,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
     )
     c.ee.emit('err', error, c)
     c.ee.emit('end', c.fulfilled, c)
+  } finally {
+    toggleListeners('off', c.ee, c.on)
   }
 
   return c
