@@ -1,3 +1,8 @@
+## [0.4.4](https://github.com/webpod/zurk/compare/v0.4.3...v0.4.4) (2024-09-25)
+
+### Fixes & improvements
+* fix: fill stdall store on sync spawn ([c63c58d](https://github.com/webpod/zurk/commit/c63c58deae9c9bd79c16d18b1431895db3cbdf42))
+
 ## [0.4.3](https://github.com/webpod/zurk/compare/v0.4.2...v0.4.3) (2024-09-20)
 
 ### Fixes & improvements
