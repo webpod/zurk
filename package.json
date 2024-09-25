@@ -62,7 +62,7 @@
   "homepage": "https://github.com/webpod/zurk#readme",
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "^22.5.5",
+    "@types/node": "^22.7.0",
     "c8": "^10.1.2",
     "concurrently": "^9.0.1",
     "esbuild": "^0.23.1",
