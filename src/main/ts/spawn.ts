@@ -224,11 +224,11 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
           c.ee.emit('stderr', d, c)
         }).pipe(c.stderr)
         child
-          .on('error', (e: any) => {
+          .once('error', (e: any) => {
             error = e
             c.ee.emit('err', error, c)
           })
-          .on('close', (status, signal) => {
+          .once('close', (status, signal) => {
             c.fulfilled = {
               error,
               status,

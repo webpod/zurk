@@ -1,6 +1,6 @@
 import { Writable } from 'node:stream'
 import { assign } from '../util.js'
-import type { VoidWritable } from '../spawn.js'
+import { VoidWritable } from '../spawn.js'
 import type { TShell, TMixin, TShellCtx } from '../x.js'
 import { type TZurk, type TZurkPromise, isZurkAny } from '../zurk.js'
 
@@ -9,27 +9,34 @@ export const pipeMixin: TMixin = <T extends TZurk | TZurkPromise >($: TShell, re
   isZurkAny(result)
     ? assign(result, {
       pipe(...args: any[]) {
-        const stream = args[0]
-        const { fulfilled, stdout} = ctx
-        if (isZurkAny(stream)) {
+        const target = args[0]
+        const { fulfilled, stdout, store } = ctx
+        if (isZurkAny(target)) {
+          // stream.ctx.input = fulfilled.stdout
+          const input = new VoidWritable()
+          target.ctx.input = input
+          for (const chunk of store.stdout) {
+            input.push(chunk)
+          }
           if (fulfilled) {
-            stream.ctx.input = fulfilled.stdout
+            input.push(null)
           } else {
-            stream.ctx.stdin = stdout as VoidWritable
+            stdout.pipe(input)
           }
 
-          return stream
+          return target
         }
 
-        if (stream instanceof Writable) {
+        if (target instanceof Writable) {
+          for (const chunk of store.stdout) {
+            target.write(chunk)
+          }
           if (fulfilled) {
-            stream.write(result.stdout)
-            stream.end()
-
-            return stream
+            target.end()
+            return target
           }
 
-          return stdout.pipe(stream)
+          return stdout.pipe(target)
         }
 
         return $.apply({input: fulfilled?.stdout || stdout, sync: !('then' in result)}, args as any)
