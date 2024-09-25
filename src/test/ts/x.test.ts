@@ -16,21 +16,20 @@ const throwError = (err: any = new Error('should have thrown')) => { throw err }
 describe('$()', () => {
   it('supports async flow', async () => {
     const p = $`echo foo`
-    const o1 = (await p).toString()
-    const o2 = await p.stdout
 
-    assert.equal(o1, 'foo')
-    assert.equal(o2.trim(), 'foo')
+    assert.equal((await p).toString(), 'foo')
+    assert.equal(await p.stdout, 'foo\n')
+    assert.equal(await p.stderr, '')
     assert.equal(await p.status, 0)
   })
 
   it('supports sync flow', () => {
     const p = $({sync: true})`echo foo`
-    const o1 = p.toString()
-    const o2 = p.stdout
 
-    assert.equal(o1, 'foo')
-    assert.equal(o2.trim(), 'foo')
+    assert.equal(p.toString(), 'foo')
+    assert.equal(p.stdout, 'foo\n')
+    assert.equal(p.stderr, '')
+    assert.deepEqual(p.stdall, 'foo\n')
   })
 
   it('handles promises in cmd literal', async () => {

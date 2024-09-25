@@ -167,11 +167,13 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
       c.ee.emit('start', result, c)
       if (result.stdout.length > 0) {
         c.store.stdout.push(result.stdout)
+        c.store.stdall.push(result.stdout)
         c.stdout.write(result.stdout)
         c.ee.emit('stdout', result.stdout, c)
       }
       if (result.stderr.length > 0) {
         c.store.stderr.push(result.stderr)
+        c.store.stdall.push(result.stderr)
         c.stderr.write(result.stderr)
         c.ee.emit('stderr', result.stderr, c)
       }
@@ -180,7 +182,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         get stdout() { return c.store.stdout.join('') },
         get stderr() { return c.store.stderr.join('') },
         stdio,
-        get stdall() { return this.stdout + this.stderr },
+        get stdall() { return c.store.stdall.join('') },
         duration: Date.now() - now,
         ctx:      c
       })
