@@ -170,5 +170,19 @@ describe('mixins', () => {
 
       assert.equal(piped.toString(), expected)
     })
+
+    it('supports multipiping', async () => {
+      const result = $`echo 1; sleep 1; echo 2; sleep 1; echo 3`
+      const piped1 = result.pipe`cat`
+      let piped2: any
+
+      setTimeout(() => {
+        piped2 = result.pipe`cat`
+      }, 1500)
+
+      await piped1
+      assert.equal((await piped1).toString(), '1\n2\n3')
+      assert.equal((await piped2).toString(), '1\n2\n3')
+    })
   })
 })

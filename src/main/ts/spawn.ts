@@ -98,9 +98,9 @@ export const defaults: TSpawnCtxNormalized = {
   spawnOpts:  {},
   get store() { return createStore() },
   callback:   noop,
-  get stdin() { return new VoidWritable() },
-  get stdout(){ return new VoidWritable() },
-  get stderr(){ return new VoidWritable() },
+  get stdin() { return new VoidStream() },
+  get stdout(){ return new VoidStream() },
+  get stderr(){ return new VoidStream() },
   stdio:      ['pipe', 'pipe', 'pipe'],
   run:        setImmediate,
 }
@@ -121,7 +121,7 @@ export const processInput = (child: TChild, input?: TInput | null) => {
   }
 }
 
-export class VoidWritable extends Transform {
+export class VoidStream extends Transform {
   _transform(chunk: any, _: string, cb: (err?: Error) => void) {
     this.emit('data', chunk)
     cb()
@@ -181,8 +181,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         ...result,
         get stdout() { return c.store.stdout.join('') },
         get stderr() { return c.store.stderr.join('') },
-        stdio,
         get stdall() { return c.store.stdall.join('') },
+        stdio,
         duration: Date.now() - now,
         ctx:      c
       })
