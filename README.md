@@ -74,7 +74,7 @@ const p = $`echo "5\\n3\\n1\\n4\\n2"`
 const sorted = $({input: p})`sort`          // 1\n2\n3\n4\n5
 ```
 
-- [x] Pipe as literal
+- [x] Pipe literals
 ```ts
 const result = $`echo "5\\n3\\n1\\n4\\n2"`
 
@@ -82,6 +82,21 @@ const piped0 = result.pipe`sort | cat`     // '1\n2\n3\n4\n5'
 const piped1 = result.pipe`sort`.pipe`cat` // ...
 const piped2 = (await result).pipe`sort`
 const piped3 = result.pipe($`sort`)
+```
+
+- [x] Pipe splitting
+```ts
+const result = $`echo 1; sleep 1; echo 2; sleep 1; echo 3`
+const piped1 = result.pipe`cat`
+let piped2: any
+
+setTimeout(() => {
+  piped2 = result.pipe`cat`
+}, 1500)
+
+await piped1
+assert.equal((await piped1).toString(), '1\n2\n3')
+assert.equal((await piped2).toString(), '1\n2\n3')
 ```
 
 - [x] Presets
