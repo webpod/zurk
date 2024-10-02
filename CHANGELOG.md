@@ -1,3 +1,12 @@
+## [0.5.0](https://github.com/webpod/zurk/compare/v0.4.4...v0.5.0) (2024-10-02)
+
+### Fixes & improvements
+* docs: mention pipe split feature ([439669d](https://github.com/webpod/zurk/commit/439669d2a5d2146c69cbb9b7c8d236e333a0c069))
+* perf: make pipe chunked ([4daae39](https://github.com/webpod/zurk/commit/4daae39f6315a54f1b323d106d43338aa8144569))
+
+### Features
+* feat: provide multipiping ([a4e0312](https://github.com/webpod/zurk/commit/a4e0312bbf1abaa88a9d23a90625ec4a2de2d5eb))
+
 ## [0.4.4](https://github.com/webpod/zurk/compare/v0.4.3...v0.4.4) (2024-09-25)
 
 ### Fixes & improvements
