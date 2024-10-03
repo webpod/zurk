@@ -1,5 +1,4 @@
 import { Writable } from 'node:stream'
-import EventEmitter from 'node:events'
 import { assign, isStringLiteral } from '../util.js'
 import { VoidStream } from '../spawn.js'
 import type { TShell, TMixin, TShellCtx } from '../x.js'

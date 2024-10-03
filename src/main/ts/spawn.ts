@@ -236,7 +236,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               get stdout() { return c.store.stdout.join('') },
               get stderr() { return c.store.stderr.join('') },
               get stdall() { return c.store.stdall.join('') },
-              stdio:    [c.stdin, c.stdout, c.stderr],
+              stdio,
               duration: Date.now() - now,
               ctx:      c
             }
@@ -249,7 +249,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   } catch (error: unknown) {
     c.callback(
       error,
-      c.fulfilled ={
+      c.fulfilled = {
         error,
         status:   null,
         signal:   null,
