@@ -4,6 +4,8 @@ import { Buffer } from 'node:buffer'
 
 export const g = (!process.versions.deno && global) || globalThis
 
+export const immediate = g.setImmediate || ((f: any) => g.setTimeout(f, 0))
+
 export const noop = () => { /* noop */ }
 
 export const randomId = () => Math.random().toString(36).slice(2)

@@ -2,7 +2,7 @@ import * as cp from 'node:child_process'
 import process from 'node:process'
 import EventEmitter from 'node:events'
 import { Readable, Writable, Stream, Transform } from 'node:stream'
-import { assign, noop, randomId, g } from './util.js'
+import { assign, noop, randomId, g, immediate } from './util.js'
 
 export * from './util.js'
 
@@ -102,7 +102,7 @@ export const defaults: TSpawnCtxNormalized = {
   get stdout(){ return new VoidStream() },
   get stderr(){ return new VoidStream() },
   stdio:      ['pipe', 'pipe', 'pipe'],
-  run:        g.setImmediate,
+  run:        immediate
 }
 
 export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
