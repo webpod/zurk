@@ -116,6 +116,7 @@ jobs:
 
   smoke-bun:
     runs-on: ubuntu-latest
+    name: Smoke Bun
     needs: build
     steps:
       - uses: actions/checkout@v4
@@ -127,3 +128,21 @@ jobs:
       - run: |
           bun ./src/test/smoke/invoke.test.cjs
           bun ./src/test/smoke/invoke.test.mjs
+
+  smoke-deno:
+    runs-on: ubuntu-latest
+    name: Smoke Deno ${{ matrix.deno-version }}
+    needs: build
+    strategy:
+      matrix:
+        deno-version: [ v1.x, v2.x ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ matrix.deno-version }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+      - run: deno test --allow-read --allow-sys --allow-env --allow-run ./src/test/smoke/invoke.test.mjs
