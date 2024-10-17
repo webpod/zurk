@@ -1,4 +1,5 @@
 import assert from 'node:assert'
+import process from 'node:process'
 import { zurk, $ } from '../../../target/esm/index.mjs'
 
 const keepAlive = setInterval(() => {}, 1000 * 60 * 60)

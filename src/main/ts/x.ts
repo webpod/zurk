@@ -18,7 +18,8 @@ import {
   quote,
   buildCmd,
   parseInput,
-  g
+  g,
+  immediate
 } from './util.js'
 import { pipeMixin } from './mixin/pipe.js'
 import { killMixin } from './mixin/kill.js'
@@ -102,7 +103,7 @@ const ignite = (preset: any, pieces: TemplateStringsArray, ...args: any[]) => {
   const input = parseInput(preset.input)
   const run = cmd instanceof Promise
     ? (cb: TVoidCallback, ctx: TShellCtx) => cmd.then((cmd) => { ctx.cmd = cmd; cb() })
-    : setImmediate
+    : immediate
   const opts = assign(preset, { cmd, run, input })
 
   return applyMixins($, opts)
