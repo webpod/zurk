@@ -1,4 +1,8 @@
 import { Stream } from 'node:stream'
+import process from 'node:process'
+import { Buffer } from 'node:buffer'
+
+export const g = (!process.versions.deno && global) || globalThis
 
 export const noop = () => { /* noop */ }
 

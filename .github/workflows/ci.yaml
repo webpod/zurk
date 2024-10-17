@@ -142,6 +142,7 @@ jobs:
         uses: denoland/setup-deno@v2
         with:
           deno-version: ${{ matrix.deno-version }}
+      - run: deno install
       - uses: actions/download-artifact@v4
         with:
           name: build

@@ -17,7 +17,8 @@ import {
   assign,
   quote,
   buildCmd,
-  parseInput
+  parseInput,
+  g
 } from './util.js'
 import { pipeMixin } from './mixin/pipe.js'
 import { killMixin } from './mixin/kill.js'
@@ -84,8 +85,6 @@ export interface TShellSync {
   <O>(this: O, pieces?: TemplateStringsArray, ...args: any[]): TShellResponseSync
   (opts: TShellOptions): TShellSync
 }
-
-const g = global || globalThis
 
 export const $: TShell = function(this: any, pieces?: any, ...args: any): any {
   const self =  (this !== g) && this
