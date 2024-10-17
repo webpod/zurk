@@ -29,6 +29,7 @@ Just a testing ground for verifying ideas and approaches aimed at improve the [z
   * Node.js >= 6 (CJS)
   * Node.js >= 12 (ESM)
   * Bun >= 1.0.0
+  * Deno >= 1.7.0
 
 ## Install
 ```bash

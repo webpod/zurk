@@ -2,7 +2,7 @@ import * as cp from 'node:child_process'
 import process from 'node:process'
 import EventEmitter from 'node:events'
 import { Readable, Writable, Stream, Transform } from 'node:stream'
-import { assign, noop, randomId } from './util.js'
+import { assign, noop, randomId, g } from './util.js'
 
 export * from './util.js'
 
@@ -88,7 +88,7 @@ export const defaults: TSpawnCtxNormalized = {
   input:      null,
   env:        process.env,
   get ee()    { return new EventEmitter() },
-  get ac()    { return global.AbortController && new AbortController() },
+  get ac()    { return g.AbortController && new AbortController() },
   get signal() { return this.ac?.signal },
   on:         {},
   detached:   process.platform !== 'win32',
@@ -102,7 +102,7 @@ export const defaults: TSpawnCtxNormalized = {
   get stdout(){ return new VoidStream() },
   get stderr(){ return new VoidStream() },
   stdio:      ['pipe', 'pipe', 'pipe'],
-  run:        setImmediate,
+  run:        g.setImmediate,
 }
 
 export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
