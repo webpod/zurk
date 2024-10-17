@@ -1,3 +1,8 @@
+## [0.6.0](https://github.com/webpod/zurk/compare/v0.5.0...v0.6.0) (2024-10-17)
+
+### Features
+* feat: provide deno support ([ec3addd](https://github.com/webpod/zurk/commit/ec3addd86df51c1cc191a237c9c7064aaee9d835))
+
 ## [0.5.0](https://github.com/webpod/zurk/compare/v0.4.4...v0.5.0) (2024-10-02)
 
 ### Fixes & improvements
