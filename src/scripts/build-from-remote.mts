@@ -5,7 +5,7 @@ import process from 'node:process'
 import { describe, it } from 'node:test'
 // import { $, tempdir, argv } from 'zx'
 
-const MODE = argv.mode
+const MODE = argv.mode || 'run'
 const SECRETS = ['NPM_TOKEN', 'GH_TOKEN', 'GITHUB_TOKEN', 'AUTH_TOKEN']
 const GH_URL = 'https://github.com'
 
