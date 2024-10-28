@@ -5,7 +5,13 @@ on:
     inputs:
       source:
         description: 'source reference, example: `google/zx/main/0cba54884f3084af1674118ef6299302d82daaf9`'
-        required: true
+      repoName:
+        description: 'source gh repo, like `google/zx`'
+      repoBranch:
+        description: 'target branch'
+        default: 'main'
+      repoCommit:
+        description: 'commit id'
 #      buildCmd:
 #        description: 'build cmd'
 #        default: 'npm ci && npm run build'

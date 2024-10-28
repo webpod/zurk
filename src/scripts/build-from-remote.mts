@@ -9,22 +9,6 @@ const MODE = argv.mode || 'run'
 const SECRETS = ['NPM_TOKEN', 'GH_TOKEN', 'GITHUB_TOKEN', 'AUTH_TOKEN']
 const GH_URL = 'https://github.com'
 
-;(async() => {
-  try {
-    if (MODE === 'run') {
-      await run()
-      process.exit(0)
-    } else if (MODE === 'test') {
-      test()
-    } else {
-      throw new Error(`unknown mode: ${MODE}. Only 'test' & 'run' values are supported`)
-    }
-  } catch (e: unknown) {
-    console.error((e as Error).message)
-    process.exit(1)
-  }
-})()
-
 export interface TContext {
   cwd?: string
   buildCmd?: string
@@ -45,11 +29,14 @@ export const createContext = (av: Record<any, string> = argv, env = process.env)
     ...JSON.parse(av.ctx || env.CTX || '{}'),
     ...av,
   }
-  const sourceRef = parseSourceRef(input.source)
+
+  const sourceRef = input.source && parseSourceRef(input.source)
   const ctx: TContext = {
     ...input,
     ...sourceRef
   }
+
+  if (!(ctx.repoName && ctx.repoBranch && ctx.repoCommit)) throw new Error('One of `source` or `repoName, repoBranch, repoCommit` is required')
 
   return ctx
 }
@@ -86,6 +73,22 @@ export const buildFromRemote = async (av = argv, env = process.env)=> {
   await buildSource(ctx)
 }
 
+;(async() => {
+  try {
+    if (MODE === 'run') {
+      await run()
+      process.exit(0)
+    } else if (MODE === 'test') {
+      test()
+    } else {
+      throw new Error(`unknown mode: ${MODE}. Only 'test' & 'run' values are supported`)
+    }
+  } catch (e: unknown) {
+    console.error((e as Error).message)
+    process.exit(1)
+  }
+})()
+
 async function run () {
   await buildFromRemote()
 }
@@ -98,6 +101,12 @@ function test(){
         const ref = parseSourceRef(source)
         assert.deepEqual(createContext({cwd: 'foo', source}), {cwd: 'foo', ...ref, source})
         assert.deepEqual(createContext({}, {CTX: JSON.stringify({cwd: 'foo', source})}), {cwd: 'foo', ...ref, source})
+
+        try {
+          createContext({}, {})
+        } catch (e) {
+          assert.equal((e as Error).message, 'One of `source` or `repoName, repoBranch, repoCommit` is required')
+        }
       })
     })
 
@@ -105,7 +114,7 @@ function test(){
       it('raises an error if secrets are exposed', () => {
         try {
           protect({ NPM_TOKEN: 'Foo' })
-        } catch (e: unknown) {
+        } catch (e) {
           assert.equal((e as Error).message, 'Credentials should not be observable from the build step')
         }
       })
