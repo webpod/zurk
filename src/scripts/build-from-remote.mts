@@ -3,7 +3,7 @@
 import assert from 'node:assert'
 import process from 'node:process'
 import { describe, it } from 'node:test'
-import { $, tempdir, argv } from 'zx'
+// import { $, tempdir, argv } from 'zx'
 
 const MODE = argv.mode
 const SECRETS = ['NPM_TOKEN', 'GH_TOKEN', 'GITHUB_TOKEN', 'AUTH_TOKEN']
