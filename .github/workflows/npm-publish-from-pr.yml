@@ -1,0 +1,65 @@
+name: npm publish from PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'source reference, example: `google/zx/main/0cba54884f3084af1674118ef6299302d82daaf9`'
+        required: true
+#      buildCmd:
+#        description: 'build cmd'
+#        default: 'npm ci && npm run build'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Node.js 23
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Fetch remote source
+        run: node --experimental-strip-types $(which npx) zx@latest https://raw.githubusercontent.com/webpod/zurk/refs/heads/main/src/scripts/build-from-remote.mts
+        env:
+          CTX: ${{ toJSON(github.event.inputs) }}
+
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-pr-${{ github.event.inputs.source }}
+          path: |
+            target
+            package.json
+            README.md
+            buildstamp.json
+          retention-days: 1
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      checks: read
+      statuses: write
+      contents: write
+      packages: write
+      id-token: write
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-pr-${{ github.event.inputs.source }}
+
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - run: |
+          npm version $(node --eval="process.stdout.write(require('./package.json').version)")-pr.$(git rev-parse --short HEAD) --no-git-tag-version
+          npm publish --provenance --access=public --no-git-tag-version --tag pr

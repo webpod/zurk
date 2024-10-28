@@ -1,3 +1,5 @@
+#!/usr/bin/env zx
+
 import assert from 'node:assert'
 import process from 'node:process'
 import { describe, it } from 'node:test'
@@ -53,7 +55,7 @@ export const createContext = (av: Record<any, string> = argv, env = process.env)
 }
 
 export const parseSourceRef = (ref: string): Pick<TContext, 'repoName' | 'repoBranch' | 'repoCommit'> => {
-  const re = /^(?:https:\/\/:)?([\w\-]+\/[\w\-]+)\/([\w\-]+(?:\/[\w\-]+)*)\/([\da-f]{40})/i
+  const re = /^(?:https:\/\/:)?([\w-]+\/[\w-]+)\/([\w-]+(?:\/[\w-]+)*)\/([\da-f]{40})/i
   const [, repoName, repoBranch, repoCommit] = re.exec(ref) || []
 
   if (!repoName) throw new Error('Invalid source ref')
