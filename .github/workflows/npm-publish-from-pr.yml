@@ -20,7 +20,7 @@ jobs:
           node-version: 23
 
       - name: Fetch remote source
-        run: NODE_OPTIONS="--experimental-strip-types" zx@latest https://raw.githubusercontent.com/webpod/zurk/refs/heads/main/src/scripts/build-from-remote.mts
+        run: NODE_OPTIONS="--experimental-strip-types" npx zx@latest https://raw.githubusercontent.com/webpod/zurk/refs/heads/main/src/scripts/build-from-remote.mts
         env:
           CTX: ${{ toJSON(github.event.inputs) }}
 
