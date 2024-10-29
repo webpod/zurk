@@ -1,4 +1,12 @@
 {
   "extends": ["eslint-config-qiwi"],
-  "rules": {}
+  "rules": {},
+  "overrides": [
+    {
+      "files": ["src/scripts/build-from-remote.mts"],
+      "rules": {
+        "sonarjs/no-duplicate-string": "off"
+      }
+    }
+  ]
 }
