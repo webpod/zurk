@@ -11,12 +11,10 @@ const GH_URL = 'https://github.com'
 
 export interface TContext {
   cwd?: string
-  buildCmd?: string
-  repoName: string,
-  repoBranch: string
-  repoCommit: string
-  npmToken: string
-  npmRegistry: string
+  cmd?: string
+  repo: string,
+  branch: string
+  commit: string
   output?: string
 }
 
@@ -31,41 +29,40 @@ export const createContext = (av: Record<any, string> = argv, env = process.env)
     ...av,
   }
 
-  const sourceRef = input.source && parseSourceRef(input.source)
+  const source = input.source || `${input.repo}/${input.branch}/${input.commit}`
+  const sourceRef = parseSourceRef(source)
   const ctx: TContext = {
     ...input,
     ...sourceRef
   }
 
-  if (!(ctx.repoName && ctx.repoBranch && ctx.repoCommit)) throw new Error('One of `source` or `repoName, repoBranch, repoCommit` is required')
-
   return ctx
 }
 
-export const parseSourceRef = (ref: string): Pick<TContext, 'repoName' | 'repoBranch' | 'repoCommit'> => {
-  const re = /^(?:https:\/\/:)?([\w-]+\/[\w-]+)\/([\w-]+(?:\/[\w-]+)*)\/([\da-f]{40})/i
-  const [, repoName, repoBranch, repoCommit] = re.exec(ref) || []
+export const parseSourceRef = (ref: string): Pick<TContext, 'repo' | 'branch' | 'commit'> => {
+  const re = /^(?:https:\/\/:)?([\w-]+\/[\w-]+)\/([\w-]+(?:\/[\w-]+)*)\/([\da-f]{8,40})/i
+  const [, repo, branch, commit] = re.exec(ref) || []
 
-  if (!repoName) throw new Error('Invalid source ref')
+  if (!repo) throw new Error('Invalid source ref')
 
   return {
-    repoName,
-    repoBranch,
-    repoCommit
+    repo,
+    branch,
+    commit
   }
 }
 
-export const fetchSource = async (ctx: Pick<TContext, 'repoName' | 'repoBranch' | 'repoCommit' | 'cwd'>) => {
-  const repoUrl = `${GH_URL}/${ctx.repoName}`
-  const $$ = $({cwd: ctx.cwd, quiet: true})
-  await $$`git clone -b ${ctx.repoBranch} --depth=1 ${repoUrl} .`
+export const fetchSource = async ({repo, branch, commit, cwd}: Pick<TContext, 'repo' | 'branch' | 'commit' | 'cwd'>) => {
+  const repoUrl = `${GH_URL}/${repo}`
+  const $$ = $({cwd, quiet: true})
+  await $$`git clone -b ${branch} --depth=1 ${repoUrl} .`
 
-  const commitId = (await $$`git rev-parse HEAD`).toString().trim()
-  if (ctx.repoCommit !== commitId) throw new Error(`Commit hash mismatch: ${ctx.repoCommit} !== ${commitId} at remote ${ctx.repoBranch} HEAD`)
+  const _commit = (await $$`git rev-parse HEAD`).toString().trim()
+  if (!_commit.startsWith(commit)) throw new Error(`Commit hash mismatch: ${commit} !== ${_commit} at remote ${branch} HEAD`)
 }
 
-export const buildSource = async ({cwd, buildCmd}: Pick<TContext, 'cwd'  | 'buildCmd'>) =>
-  buildCmd ? $({cwd})`${buildCmd}` : $({cwd})`exit 0`
+export const buildSource = async ({cwd, cmd}: Pick<TContext, 'cwd'  | 'cmd'>) =>
+  cmd ? $({cwd})`${cmd}` : $({cwd})`exit 0`
 
 export const buildFromRemote = async (av = argv, env = process.env)=> {
   protect()
@@ -103,11 +100,23 @@ function test(){
         const ref = parseSourceRef(source)
         assert.deepEqual(createContext({cwd: 'foo', source}), {cwd: 'foo', ...ref, source})
         assert.deepEqual(createContext({}, {CTX: JSON.stringify({cwd: 'foo', source})}), {cwd: 'foo', ...ref, source})
-
+      })
+      it('raises an error on empty source', () => {
         try {
           createContext({}, {})
         } catch (e) {
-          assert.equal((e as Error).message, 'One of `source` or `repoName, repoBranch, repoCommit` is required')
+          assert.equal((e as Error).message, 'Invalid source ref')
+        }
+      })
+      it('raises an error on invalid commit hash', () => {
+        try {
+          createContext({
+            repo: 'google/zx',
+            branch: 'main',
+            commit: '0cba'
+          }, {})
+        } catch (e) {
+          assert.equal((e as Error).message, 'Invalid source ref')
         }
       })
     })
@@ -132,9 +141,9 @@ function test(){
         const repoCtx = parseSourceRef(ref)
 
         assert.deepEqual(repoCtx, {
-          repoName: 'google/zx',
-          repoBranch: 'main',
-          repoCommit: '0cba54884f3084af1674118ef6299302d82daaf9'
+          repo: 'google/zx',
+          branch: 'main',
+          commit: '0cba54884f3084af1674118ef6299302d82daaf9'
         })
       })
     })
@@ -181,7 +190,7 @@ function test(){
         const cwd = tempdir()
         const result = await buildSource({
           cwd,
-          buildCmd: 'pwd'
+          cmd: 'pwd'
         })
         assert.ok(result.stdout.trim().endsWith(cwd))
       })

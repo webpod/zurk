@@ -4,13 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       source:
-        description: 'source reference: `google/zx/main/0cba...f9`'
-      repoName:
+        description: 'source ref: `google/zx/main/0cba...f9`'
+      repo:
         description: 'source gh repo, like `google/zx`'
-      repoBranch:
+      branch:
         description: 'target branch'
-        default: 'main'
-      repoCommit:
+      commit:
         description: 'commit id'
 #      buildCmd:
 #        description: 'build cmd'
