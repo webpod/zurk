@@ -5,8 +5,10 @@ on:
     inputs:
       repo:
         description: 'source gh repo, like `google/zx`'
+        required: true
       commit:
         description: 'commit id'
+        required: true
 
 jobs:
   build:
