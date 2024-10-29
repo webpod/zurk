@@ -3,15 +3,15 @@ name: npm publish from PR
 on:
   workflow_dispatch:
     inputs:
-      source:
-        description: 'source ref: `google/zx/main/0cba...f9`'
+#      source:
+#        description: 'source ref: `google/zx/main/0cba...f9`'
       repo:
         description: 'source gh repo, like `google/zx`'
-      branch:
-        description: 'target branch'
+#      branch:
+#        description: 'target branch'
       commit:
         description: 'commit id'
-#      buildCmd:
+#      cmd:
 #        description: 'build cmd'
 #        default: 'npm ci && npm run build'
 
@@ -24,10 +24,11 @@ jobs:
         with:
           node-version: 23
 
-      - name: Fetch remote source
-        run: NODE_OPTIONS="--experimental-strip-types" npx zx@latest https://raw.githubusercontent.com/webpod/zurk/refs/heads/main/src/scripts/build-from-remote.mts
-        env:
-          CTX: ${{ toJSON(github.event.inputs) }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.commit }}
 
       - name: Build
         run: |
