@@ -67,5 +67,5 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: |
-          npm version $(node --eval="process.stdout.write(require('./package.json').version)")-pr.$(git rev-parse --short HEAD) --no-git-tag-version
+          npm version $(node --eval="process.stdout.write(require('./package.json').version)")-pr.${{ github.run_id }} --no-git-tag-version
           npm publish --provenance --access=public --no-git-tag-version --tag pr

@@ -17,6 +17,7 @@ export interface TContext {
   repoCommit: string
   npmToken: string
   npmRegistry: string
+  output?: string
 }
 
 export const protect = (env = process.env) => {
@@ -71,6 +72,7 @@ export const buildFromRemote = async (av = argv, env = process.env)=> {
   const ctx = createContext(av, env)
   await fetchSource(ctx)
   await buildSource(ctx)
+  ctx.output && await fs.outputJson(ctx)
 }
 
 ;(async() => {
