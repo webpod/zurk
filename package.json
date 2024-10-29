@@ -48,8 +48,7 @@
     "test:unit": "c8 -r lcov -r text -o target/coverage -x src/scripts -x src/test -x target node --loader ts-node/esm --experimental-specifier-resolution=node src/scripts/test.mjs",
     "test:smoke:esm": "node ./src/test/smoke/invoke.test.mjs",
     "test:smoke:cjs": "node src/test/smoke/invoke.test.cjs",
-    "publish:draft": "npm run build && npm publish --no-git-tag-version",
-    "manual:test:build-from-remote": "NODE_OPTIONS='--experimental-strip-types' npx zx@latest ./src/scripts/build-from-remote.mts --mode=test"
+    "publish:draft": "npm run build && npm publish --no-git-tag-version"
   },
   "repository": {
     "type": "git",
