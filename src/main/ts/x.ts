@@ -56,7 +56,7 @@ export interface TShellCtx extends TZurkCtx, TShellCtxExtra {
 }
 
 export type TShellOptions = Omit<TZurkOptions, 'input'> & {
-  qoute?: TQuote
+  quote?: TQuote
   input?: TShellCtx['input'] | TShellResponse | TShellResponseSync | null
 } & TShellOptionsExtra
 
