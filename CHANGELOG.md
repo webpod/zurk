@@ -1,3 +1,8 @@
+## [0.6.1](https://github.com/webpod/zurk/compare/v0.6.0...v0.6.1) (2024-10-30)
+
+### Fixes & improvements
+* fix: fix `TShellOptions` type ([baa38f7](https://github.com/webpod/zurk/commit/baa38f77e54f9d4aa68025953389f015dd2c18bc))
+
 ## [0.6.0](https://github.com/webpod/zurk/compare/v0.5.0...v0.6.0) (2024-10-17)
 
 ### Features
