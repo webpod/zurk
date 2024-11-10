@@ -1,3 +1,8 @@
+## [0.6.2](https://github.com/webpod/zurk/compare/v0.6.1...v0.6.2) (2024-11-10)
+
+### Fixes & improvements
+* fix(spawn): handle nullable stdout/stderr ([030decd](https://github.com/webpod/zurk/commit/030decd3b96626fe4e01ead3ffd25daab889a578))
+
 ## [0.6.1](https://github.com/webpod/zurk/compare/v0.6.0...v0.6.1) (2024-10-30)
 
 ### Fixes & improvements
