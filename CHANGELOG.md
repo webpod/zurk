@@ -1,3 +1,8 @@
+## [0.6.3](https://github.com/webpod/zurk/compare/v0.6.2...v0.6.3) (2024-11-10)
+
+### Fixes & improvements
+* fix: unhandledRejection on proxified finally ([5877c68](https://github.com/webpod/zurk/commit/5877c68aa5ddc649815541e20b300830df6fe412))
+
 ## [0.6.2](https://github.com/webpod/zurk/compare/v0.6.1...v0.6.2) (2024-11-10)
 
 ### Fixes & improvements
