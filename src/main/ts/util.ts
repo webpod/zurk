@@ -8,6 +8,8 @@ export const immediate = g.setImmediate || ((f: any) => g.setTimeout(f, 0))
 
 export const noop = () => { /* noop */ }
 
+export const asyncVoidCall = (cb: TVoidCallback)=> async () => { await cb() }
+
 export const randomId = () => Math.random().toString(36).slice(2)
 
 export type PromiseResolve<T = any> = (value: T | PromiseLike<T>) => void
@@ -99,4 +101,4 @@ export const parseInput = (input: any): string | Buffer | Stream | null => {
   return null
 }
 
-export const pFinally = (p: Promise<any>, cb: any) => p.finally?.(cb) || p.then(cb, cb)
+export const pFinally = (p: Promise<any>, cb: TVoidCallback) => p.finally?.(asyncVoidCall(cb)) || p.then(asyncVoidCall(cb), asyncVoidCall(cb))

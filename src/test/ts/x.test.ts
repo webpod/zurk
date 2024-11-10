@@ -21,6 +21,12 @@ describe('$()', () => {
     assert.equal(await p.stdout, 'foo\n')
     assert.equal(await p.stderr, '')
     assert.equal(await p.status, 0)
+
+    try {
+      await $`exit 2`
+    } catch (error: unknown) {
+      assert.equal((error as Error).message, 'Command failed with exit code 2')
+    }
   })
 
   it('supports sync flow', () => {
@@ -30,6 +36,12 @@ describe('$()', () => {
     assert.equal(p.stdout, 'foo\n')
     assert.equal(p.stderr, '')
     assert.deepEqual(p.stdall, 'foo\n')
+
+    try {
+      $({sync: true})`exit 2`
+    } catch (error: unknown) {
+      assert.equal((error as Error).message, 'Command failed with exit code 2')
+    }
   })
 
   it('handles promises in cmd literal', async () => {
