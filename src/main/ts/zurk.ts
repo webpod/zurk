@@ -1,6 +1,7 @@
 import {
   invoke,
   normalizeCtx,
+  asyncVoidCall,
   type TSpawnCtxNormalized,
   type TSpawnResult,
   type TSpawnListeners,
@@ -77,7 +78,7 @@ export const zurkSync = (opts: TZurkOptions): TZurk => {
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpawnCtxNormalized) => {
-  if (!isPromiseLike(target) || isZurkProxy(target)) {
+  if (isZurkProxy(target) || !isPromiseLike(target)) {
     return target as TZurkPromise
   }
   const proxy = new Proxy(target, {
@@ -86,7 +87,7 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
       if (p === ZURK) return ZURK
       if (p === 'then') return target.then.bind(target)
       if (p === 'catch') return target.catch.bind(target)
-      if (p === 'finally') return (target.finally || target.then).bind(target)
+      if (p === 'finally') return (cb: TVoidCallback) => proxy.then(asyncVoidCall(cb), asyncVoidCall(cb))
       if (p === 'stdio') return ctx.stdio
       if (p === 'ctx') return ctx
       if (p === 'child') return ctx.child
