@@ -165,13 +165,13 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
       const opts = buildSpawnOpts(c)
       const result = c.spawnSync(c.cmd, c.args, opts)
       c.ee.emit('start', result, c)
-      if (result.stdout.length > 0) {
+      if (result.stdout?.length > 0) {
         c.store.stdout.push(result.stdout)
         c.store.stdall.push(result.stdout)
         c.stdout.write(result.stdout)
         c.ee.emit('stdout', result.stdout, c)
       }
-      if (result.stderr.length > 0) {
+      if (result.stderr?.length > 0) {
         c.store.stderr.push(result.stderr)
         c.store.stdall.push(result.stderr)
         c.stderr.write(result.stderr)

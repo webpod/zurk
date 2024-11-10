@@ -58,6 +58,7 @@ describe('$()', () => {
   it('handles custom stdio', async () => {
     await $({stdio: ['inherit', 'inherit', 'inherit']})`ls`
     await $({stdio: 'ignore'})`ls`
+    $({stdio: 'ignore', sync: true})`ls`
   })
 
   it('supports presets', () => {
