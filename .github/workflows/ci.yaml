@@ -20,6 +20,7 @@ jobs:
           path: |
             target
             package.json
+            jsr.json
           retention-days: 1
 
   push:
