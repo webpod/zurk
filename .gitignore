@@ -1,3 +1,7 @@
+!target/cjs
+!target/esm
+!target/dts
+
 # IDEs
 .idea
 

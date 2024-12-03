@@ -44,6 +44,7 @@
     "build:docs": "typedoc --options src/main/typedoc",
     "build:stamp": "npx buildstamp",
     "test": "concurrently 'npm:test:*'",
+    "test:target": "git diff --exit-code --quiet || (echo 'Uncommitted changes' && exit 1)",
     "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
     "test:unit": "c8 -r lcov -r text -o target/coverage -x src/scripts -x src/test -x target node --loader ts-node/esm --experimental-specifier-resolution=node src/scripts/test.mjs",
     "test:smoke:esm": "node ./src/test/smoke/invoke.test.mjs",
