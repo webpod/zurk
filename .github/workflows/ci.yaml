@@ -60,7 +60,7 @@ jobs:
 #          coverageLocations: |
 #            ${{github.workspace}}/target/coverage/lcov.info:lcov
 
-      - name: Semantic Release
+      - name: Semantic Release (npm)
         if: github.ref == 'refs/heads/main'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -72,6 +72,11 @@ jobs:
           GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
           GIT_COMMITTER_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
         run: npm_config_yes=true npx zx-semrel
+      - name: jsr publish
+        if: github.ref == 'refs/heads/main'
+        run: |
+          node src/scripts/build-jsr.mjs
+          npx jsr publish
 
   pr:
     if: github.event_name == 'pull_request'

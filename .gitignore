@@ -22,6 +22,7 @@ target/*
 !target/esm/
 !target/dts/
 typings
+jsr.json
 
 # Temp assets
 .temp
