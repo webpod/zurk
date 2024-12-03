@@ -17,17 +17,17 @@
       "import": "./target/esm/spawn.mjs",
       "default": "./target/esm/spawn.mjs"
     },
-    "./zurk": {
-      "types": "./target/dts/zurk.d.ts",
-      "require": "./target/cjs/zurk.cjs",
-      "import": "./target/esm/zurk.mjs",
-      "default": "./target/esm/zurk.mjs"
-    },
     "./util": {
       "types": "./target/dts/util.d.ts",
       "require": "./target/cjs/util.cjs",
       "import": "./target/esm/util.mjs",
       "default": "./target/esm/util.mjs"
+    },
+    "./zurk": {
+      "types": "./target/dts/zurk.d.ts",
+      "require": "./target/cjs/zurk.cjs",
+      "import": "./target/esm/zurk.mjs",
+      "default": "./target/esm/zurk.mjs"
     }
   },
   "module": "target/esm/index.mjs",
