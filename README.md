@@ -8,7 +8,7 @@
 # 🔬🧫
 
 > This subproject is a kind of experiment, addressed to the [google/zx/issues/589](https://github.com/google/zx/issues/589).
-Just a testing ground for verifying ideas and approaches aimed at improve the [zx's](https://github.com/google/zx) architecture.
+Just a testing ground for verifying ideas and approaches aimed at improve the [zx](https://github.com/google/zx) architecture.
 
 ## Concepts
 * **Layered** architecture:
