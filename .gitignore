@@ -17,10 +17,10 @@ dist
 docs
 flow-typed
 lib
-target
-!target/cjs/*
-!target/esm/*
-!target/dts/*
+target/*
+!target/cjs/
+!target/esm/
+!target/dts/
 typings
 
 # Temp assets
