@@ -52,7 +52,8 @@
     "test:smoke:cjs": "node src/test/smoke/invoke.test.cjs",
     "test:jsr": "jsr publish --dry-run",
     "test:audit": "npm audit",
-    "publish:draft": "npm run build && npm publish --no-git-tag-version"
+    "publish:draft": "npm run build && npm publish --no-git-tag-version",
+    "postrelease": "node src/scripts/build-jsr.mjs && jsr publish --allow-dirty"
   },
   "repository": {
     "type": "git",
