@@ -77,7 +77,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           node src/scripts/build-jsr.mjs
-          jsr publish --allow-dirty
+          npx jsr publish --allow-dirty
 
   pr:
     if: github.event_name == 'pull_request'
