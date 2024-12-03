@@ -24,4 +24,4 @@ export declare const buildCmd: (quote: TQuote, pieces: TemplateStringsArray, arg
 export type TSubstitute = (arg: any) => string;
 export declare const substitute: TSubstitute;
 export declare const parseInput: (input: any) => string | Buffer | Stream | null;
-export declare const pFinally: (p: Promise<any>, cb: TVoidCallback) => Promise<any>;
+export declare const pFinally: (p: Promise<any>, cb: TVoidCallback) => Promise<void>;

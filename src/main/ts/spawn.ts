@@ -110,7 +110,7 @@ export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assig
   get signal() { return this.ac?.signal }},
   ...ctxs)
 
-export const processInput = (child: TChild, input?: TInput | null) => {
+export const processInput = (child: TChild, input?: TInput | null): void => {
   if (input && child.stdin && !child.stdin.destroyed) {
     if (input instanceof Stream) {
       input.pipe(child.stdin)
@@ -140,7 +140,7 @@ export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detach
   signal
 })
 
-export const toggleListeners = (pos: 'on' | 'off', ee: EventEmitter, on: Partial<TSpawnListeners> = {}) => {
+export const toggleListeners = (pos: 'on' | 'off', ee: EventEmitter, on: Partial<TSpawnListeners> = {}): void => {
   for (const [name, listener] of Object.entries(on)) {
     ee[pos](name, listener as any)
   }

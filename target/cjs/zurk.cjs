@@ -54,9 +54,8 @@ var zurkSync = (opts) => {
   return response;
 };
 var zurkifyPromise = (target, ctx) => {
-  if (isZurkProxy(target) || !(0, import_util.isPromiseLike)(target)) {
+  if (isZurkProxy(target) || !(0, import_util.isPromiseLike)(target))
     return target;
-  }
   const proxy = new Proxy(target, {
     get(target2, p, receiver) {
       if (p === ZURKPROXY) return ZURKPROXY;
