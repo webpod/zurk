@@ -122,7 +122,7 @@ const zurkMixin: TMixin = ($: TShell, target: TShellOptions | TZurk | TZurkPromi
 
 $.mixins = [zurkMixin, killMixin, pipeMixin, timeoutMixin]
 
-export const applyMixins = ($: TShell, result: TZurk | TZurkPromise | TShellOptions, parent?: TZurk | TZurkPromise) => {
+export const applyMixins = ($: TShell, result: TZurk | TZurkPromise | TShellOptions, parent?: TZurk | TZurkPromise): TZurk | TZurkPromise | TShellOptions => {
   let ctx: TShellCtx = (parent as TZurkPromise | TZurk)?.ctx
 
   return $.mixins.reduce((r, m) => {

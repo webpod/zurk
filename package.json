@@ -43,12 +43,14 @@
     "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
     "build:docs": "typedoc --options src/main/typedoc",
     "build:stamp": "npx buildstamp",
+    "build:jsr": "node ./src/scripts/build-jsr.mjs",
     "test": "concurrently 'npm:test:*'",
     "test:target": "git diff --exit-code --quiet || (echo 'Uncommitted changes' && exit 1)",
     "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
     "test:unit": "c8 -r lcov -r text -o target/coverage -x src/scripts -x src/test -x target node --loader ts-node/esm --experimental-specifier-resolution=node src/scripts/test.mjs",
     "test:smoke:esm": "node ./src/test/smoke/invoke.test.mjs",
     "test:smoke:cjs": "node src/test/smoke/invoke.test.cjs",
+    "test:jsr": "jsr publish --dry-run",
     "test:audit": "npm audit",
     "publish:draft": "npm run build && npm publish --no-git-tag-version"
   },
@@ -62,7 +64,6 @@
     "url": "https://github.com/webpod/zurk/issues"
   },
   "homepage": "https://github.com/webpod/zurk#readme",
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.10.1",
     "c8": "^10.1.2",
@@ -76,6 +77,7 @@
     "eslint": "^8.57.0",
     "eslint-config-qiwi": "^2.1.6",
     "fast-glob": "^3.3.2",
+    "jsr": "^0.13.2",
     "minimist": "^1.2.8",
     "ts-node": "^10.9.2",
     "typedoc": "^0.27.2",

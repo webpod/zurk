@@ -4,13 +4,13 @@ import { Buffer } from 'node:buffer'
 
 export const g = (!process.versions.deno && global) || globalThis
 
-export const immediate = g.setImmediate || ((f: any) => g.setTimeout(f, 0))
+export const immediate = g.setImmediate || ((f: any): NodeJS.Timeout => g.setTimeout(f, 0))
 
 export const noop = () => { /* noop */ }
 
-export const asyncVoidCall = (cb: TVoidCallback)=> async () => { await cb() }
+export const asyncVoidCall = (cb: TVoidCallback)=> async (): Promise<void> => { await cb() }
 
-export const randomId = () => Math.random().toString(36).slice(2)
+export const randomId = (): string => Math.random().toString(36).slice(2)
 
 export type PromiseResolve<T = any> = (value: T | PromiseLike<T>) => void
 
@@ -46,7 +46,7 @@ export const assign = <T, E>(target: T, ...extras: E[]): T =>
     ({...m, ...Object.fromEntries(Object.entries(Object.getOwnPropertyDescriptors(extra))
         .filter(([,v]) => !Object.prototype.hasOwnProperty.call(v, 'value') || v.value !== undefined))}), {}))
 
-export const quote = (arg: string) => {
+export const quote = (arg: string): string => {
   if (/^[\w./:=@-]+$/i.test(arg) || arg === '') {
     return arg
   }
@@ -101,4 +101,4 @@ export const parseInput = (input: any): string | Buffer | Stream | null => {
   return null
 }
 
-export const pFinally = (p: Promise<any>, cb: TVoidCallback) => p.finally?.(asyncVoidCall(cb)) || p.then(asyncVoidCall(cb), asyncVoidCall(cb))
+export const pFinally = (p: Promise<any>, cb: TVoidCallback): Promise<void> => p.finally?.(asyncVoidCall(cb)) || p.then(asyncVoidCall(cb), asyncVoidCall(cb))

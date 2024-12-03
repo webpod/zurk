@@ -77,10 +77,10 @@ export const zurkSync = (opts: TZurkOptions): TZurk => {
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpawnCtxNormalized) => {
-  if (isZurkProxy(target) || !isPromiseLike(target)) {
+export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpawnCtxNormalized): TZurkPromise => {
+  if (isZurkProxy(target) || !isPromiseLike(target))
     return target as TZurkPromise
-  }
+
   const proxy = new Proxy(target, {
     get(target: Promise<TZurk>, p: string | symbol, receiver: any): any {
       if (p === ZURKPROXY) return ZURKPROXY
@@ -102,7 +102,7 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
   return proxy
 }
 
-export const getError = (data: TSpawnResult) => {
+export const getError = (data: TSpawnResult): Error | null => {
   if (data.error) return data.error
   if (data.status) return new Error(`Command failed with exit code ${data.status}`)
   if (data.signal) return new Error(`Command failed with signal ${data.signal}`)
