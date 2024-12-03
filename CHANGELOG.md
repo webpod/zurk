@@ -1,3 +1,8 @@
+## [0.7.0](https://github.com/webpod/zurk/compare/v0.6.3...v0.7.0) (2024-12-03)
+
+### Features
+* feat: store target in git to support distribution via gh refs ([d3b3c20](https://github.com/webpod/zurk/commit/d3b3c2076a71834371e74bbadcbf48fd561a0f67))
+
 ## [0.6.3](https://github.com/webpod/zurk/compare/v0.6.2...v0.6.3) (2024-11-10)
 
 ### Fixes & improvements
