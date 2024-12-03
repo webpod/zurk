@@ -1,3 +1,8 @@
+## [0.7.1](https://github.com/webpod/zurk/compare/v0.7.0...v0.7.1) (2024-12-03)
+
+### Fixes & improvements
+* perf: enable publishing to jsr ([044ea18](https://github.com/webpod/zurk/commit/044ea184c7c1bafa121251c2f79f1d5cc825d0a2))
+
 ## [0.7.0](https://github.com/webpod/zurk/compare/v0.6.3...v0.7.0) (2024-12-03)
 
 ### Features
