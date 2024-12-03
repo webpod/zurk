@@ -1,3 +1,8 @@
+## [0.7.5](https://github.com/webpod/zurk/compare/v0.7.4...v0.7.5) (2024-12-03)
+
+### Fixes & improvements
+* perf: tech release ([79b5456](https://github.com/webpod/zurk/commit/79b5456e288a7ff71f5a8992843a6d55a29406b2))
+
 ## [0.7.4](https://github.com/webpod/zurk/compare/v0.7.3...v0.7.4) (2024-12-03)
 
 ### Fixes & improvements
