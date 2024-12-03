@@ -148,8 +148,12 @@ for (const format of formats) {
 
 function entryPointsToRegexp(entryPoints) {
   return new RegExp(
-    '(' + entryPoints.map((e) => path.parse(e).name).join('|') + ')\\.cjs$'
+    '(' + entryPoints.map((e) => escapeRegExp(path.parse(e).name)).join('|') + ')\\.cjs$'
   )
+}
+
+function escapeRegExp(str) {
+  return str.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&')
 }
 
 process.exit(0)
