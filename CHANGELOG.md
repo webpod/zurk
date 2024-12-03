@@ -1,3 +1,8 @@
+## [0.7.3](https://github.com/webpod/zurk/compare/v0.7.2...v0.7.3) (2024-12-03)
+
+### Fixes & improvements
+* fix: move jsr publish to pkg postrelease script ([4c353c5](https://github.com/webpod/zurk/commit/4c353c541debc376925e6e933df02c378bc9ca2f))
+
 ## [0.7.2](https://github.com/webpod/zurk/compare/v0.7.1...v0.7.2) (2024-12-03)
 
 ### Fixes & improvements
