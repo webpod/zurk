@@ -33,6 +33,7 @@ export type TSpawnResult = {
   ctx:      TSpawnCtxNormalized
   error?:   TSpawnError,
   child?:   TChild
+  stack:    string
 }
 
 export type TSpawnListeners = {
@@ -77,6 +78,7 @@ export interface TSpawnCtxNormalized {
   fulfilled?: TSpawnResult
   error?:     any
   run:        (cb: () => void, ctx: TSpawnCtxNormalized) => void
+  stack:      string
 }
 
 export const defaults: TSpawnCtxNormalized = {
@@ -102,7 +104,8 @@ export const defaults: TSpawnCtxNormalized = {
   get stdout(){ return new VoidStream() },
   get stderr(){ return new VoidStream() },
   stdio:      ['pipe', 'pipe', 'pipe'],
-  run:        immediate
+  run:        immediate,
+  stack:      ''
 }
 
 export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
@@ -184,7 +187,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         get stdall() { return c.store.stdall.join('') },
         stdio,
         duration: Date.now() - now,
-        ctx:      c
+        stack: c.stack,
+        ctx: c
       })
       c.ee.emit('end', c.fulfilled, c)
 
@@ -238,7 +242,8 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               get stdall() { return c.store.stdall.join('') },
               stdio,
               duration: Date.now() - now,
-              ctx:      c
+              stack: c.stack,
+              ctx: c
             }
             opts.signal?.removeEventListener('abort', onAbort)
             c.callback(error, c.fulfilled)
@@ -251,14 +256,15 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
       error,
       c.fulfilled = {
         error,
-        status:   null,
-        signal:   null,
-        stdout:   '',
-        stderr:   '',
-        stdall:   '',
+        status: null,
+        signal: null,
+        stdout: '',
+        stderr: '',
+        stdall: '',
         stdio,
         duration: Date.now() - now,
-        ctx:      c
+        stack: c.stack,
+        ctx: c
       }
     )
     c.ee.emit('err', error, c)

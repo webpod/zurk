@@ -47,7 +47,8 @@ var defaults = {
     return new VoidStream();
   },
   stdio: ["pipe", "pipe", "pipe"],
-  run: immediate
+  run: immediate,
+  stack: ""
 };
 var normalizeCtx = (...ctxs) => assign(
   {
@@ -133,6 +134,7 @@ var invoke = (c) => {
         },
         stdio,
         duration: Date.now() - now,
+        stack: c.stack,
         ctx: c
       });
       c.ee.emit("end", c.fulfilled, c);
@@ -187,6 +189,7 @@ var invoke = (c) => {
             },
             stdio,
             duration: Date.now() - now,
+            stack: c.stack,
             ctx: c
           };
           (_a3 = opts.signal) == null ? void 0 : _a3.removeEventListener("abort", onAbort);
@@ -207,6 +210,7 @@ var invoke = (c) => {
         stdall: "",
         stdio,
         duration: Date.now() - now,
+        stack: c.stack,
         ctx: c
       }
     );

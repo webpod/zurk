@@ -11,6 +11,12 @@
       "import": "./target/esm/index.mjs",
       "default": "./target/esm/index.mjs"
     },
+    "./error": {
+      "types": "./target/dts/error.d.ts",
+      "require": "./target/cjs/error.cjs",
+      "import": "./target/esm/error.mjs",
+      "default": "./target/esm/error.mjs"
+    },
     "./spawn": {
       "types": "./target/dts/spawn.d.ts",
       "require": "./target/cjs/spawn.cjs",
