@@ -30,7 +30,6 @@ export type TSpawnResult = {
     ctx: TSpawnCtxNormalized;
     error?: TSpawnError;
     child?: TChild;
-    stack: string;
 };
 export type TSpawnListeners = {
     start: (data: TChild, ctx: TSpawnCtxNormalized) => void;

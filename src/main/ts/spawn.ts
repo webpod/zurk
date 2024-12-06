@@ -33,7 +33,6 @@ export type TSpawnResult = {
   ctx:      TSpawnCtxNormalized
   error?:   TSpawnError,
   child?:   TChild
-  stack:    string
 }
 
 export type TSpawnListeners = {
@@ -187,7 +186,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         get stdall() { return c.store.stdall.join('') },
         stdio,
         duration: Date.now() - now,
-        stack: c.stack,
         ctx: c
       })
       c.ee.emit('end', c.fulfilled, c)
@@ -242,7 +240,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               get stdall() { return c.store.stdall.join('') },
               stdio,
               duration: Date.now() - now,
-              stack: c.stack,
               ctx: c
             }
             opts.signal?.removeEventListener('abort', onAbort)
@@ -263,7 +260,6 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         stdall: '',
         stdio,
         duration: Date.now() - now,
-        stack: c.stack,
         ctx: c
       }
     )

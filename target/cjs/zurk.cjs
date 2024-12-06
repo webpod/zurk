@@ -260,11 +260,11 @@ var zurkifyPromise = (target, ctx) => {
   });
   return proxy;
 };
-var getError = (data) => {
-  if (data.error)
-    return new Error(formatErrorMessage(data.error, data.stack));
-  if (data.status || data.signal)
-    return new Error(formatExitMessage(data.status, data.signal, data.stderr, data.stack));
+var getError = (spawnResult) => {
+  if (spawnResult.error)
+    return new Error(formatErrorMessage(spawnResult.error, spawnResult.ctx.stack));
+  if (spawnResult.status || spawnResult.signal)
+    return new Error(formatExitMessage(spawnResult.status, spawnResult.signal, spawnResult.stderr, spawnResult.ctx.stack));
   return null;
 };
 var isZurkAny = (o) => (o == null ? void 0 : o[ZURK]) === ZURK;
@@ -316,9 +316,6 @@ var Zurk = class {
       this.ctx.stdout,
       this.ctx.stderr
     ];
-  }
-  get stack() {
-    return this.ctx.stack;
   }
   get duration() {
     var _a2, _b;
