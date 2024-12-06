@@ -25,7 +25,8 @@ describe('$()', () => {
     try {
       await $`exit 2`
     } catch (error: unknown) {
-      assert.equal((error as Error).message, 'Command failed with exit code 2')
+      console.error(error)
+      assert.ok((error as Error).message.includes('exit code: 2 (Misuse of shell builtins)'))
     }
   })
 
@@ -40,7 +41,7 @@ describe('$()', () => {
     try {
       $({sync: true})`exit 2`
     } catch (error: unknown) {
-      assert.equal((error as Error).message, 'Command failed with exit code 2')
+      assert.match((error as Error).message, /exit code: 2 \(Misuse of shell builtins\)/)
     }
   })
 
@@ -103,7 +104,7 @@ describe('mixins', () => {
       const signal = await killed
 
       assert.equal(signal, 'SIGTERM')
-      assert.equal(error.message, 'Command failed with signal SIGTERM')
+      assert.ok(error.message.includes('signal: SIGTERM'))
     })
 
     it('handles `abort`', async () => {
@@ -119,7 +120,8 @@ describe('mixins', () => {
 
       const { error } = await p
       assert.ok(getEventListeners(p.ctx.signal, 'abort').length < c)
-      assert.equal(error.message, 'The operation was aborted')
+      assert.ok(error.message.startsWith('The operation was aborted'))
+      assert.match(error.message, /code: ABORT_ERR/)
       assert.deepEqual(events, ['abort', 'end'])
     })
   })
@@ -129,7 +131,7 @@ describe('mixins', () => {
       const p = $({ timeout: 25, timeoutSignal: 'SIGALRM', nothrow: true })`sleep 10`
 
       const { error } = await p
-      assert.equal(error.message, 'Command failed with signal SIGALRM')
+      assert.ok(error.message.includes('signal: SIGALRM'))
     })
 
     it('handles `timeout` as promise setter', async () => {
@@ -139,7 +141,7 @@ describe('mixins', () => {
       p.ctx.nothrow = true
 
       const { error } = await p
-      assert.equal(error.message, 'Command failed with signal SIGALRM')
+      assert.ok(error.message.includes('signal: SIGALRM'))
     })
   })
 

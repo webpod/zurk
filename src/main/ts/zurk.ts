@@ -12,6 +12,10 @@ import {
   type Promisified,
   type TVoidCallback
 } from './util.js'
+import {
+  formatErrorMessage,
+  formatExitMessage
+} from './error.js'
 
 export const ZURK = Symbol('Zurk')
 export const ZURKPROXY = Symbol('ZurkProxy')
@@ -91,6 +95,7 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
       if (p === 'stdio') return ctx.stdio
       if (p === 'ctx') return ctx
       if (p === 'child') return ctx.child
+      if (p === 'stack') return ctx.stack
       if (p === 'on') return function (name: string, cb: VoidFunction){ ctx.ee.on(name, cb); return proxy }
 
       if (p in target) return Reflect.get(target, p, receiver)
@@ -103,9 +108,10 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
 }
 
 export const getError = (data: TSpawnResult): Error | null => {
-  if (data.error) return data.error
-  if (data.status) return new Error(`Command failed with exit code ${data.status}`)
-  if (data.signal) return new Error(`Command failed with signal ${data.signal}`)
+  if (data.error)
+    return new Error(formatErrorMessage(data.error, data.stack))
+  if (data.status || data.signal)
+    return new Error(formatExitMessage(data.status, data.signal, data.stderr, data.stack))
 
   return null
 }

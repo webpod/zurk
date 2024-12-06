@@ -155,7 +155,7 @@ export declare const ERRNO_CODES: {
 };
 export declare function getErrnoMessage(errno?: number): string;
 export declare function getExitCodeInfo(exitCode: number | null): string | undefined;
-export declare const getExitMessage: (code: number | null, signal: NodeJS.Signals | null, stderr: string, from: string) => string;
-export declare const getErrorMessage: (err: NodeJS.ErrnoException, from: string) => string;
+export declare const formatExitMessage: (code: number | null, signal: NodeJS.Signals | null, stderr: string, from: string) => string;
+export declare const formatErrorMessage: (err: NodeJS.ErrnoException, from: string) => string;
 export declare function getCallerLocation(err?: Error): string;
 export declare function getCallerLocationFromString(stackString?: string): string;
