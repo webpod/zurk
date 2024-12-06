@@ -1,3 +1,9 @@
+## [0.8.0](https://github.com/webpod/zurk/compare/v0.7.5...v0.8.0) (2024-12-06)
+
+### Features
+* feat: apply formatting to $ error messages ([6b1eb65](https://github.com/webpod/zurk/commit/6b1eb65af4de6b01ad316fa78ccc405c0bff4deb))
+* feat: provide error utils ([0b6949b](https://github.com/webpod/zurk/commit/0b6949bd8b62ce57b128c919baf63fdaaeabd954))
+
 ## [0.7.5](https://github.com/webpod/zurk/compare/v0.7.4...v0.7.5) (2024-12-03)
 
 ### Fixes & improvements
