@@ -155,7 +155,6 @@ var invoke = (c) => {
         },
         stdio,
         duration: Date.now() - now,
-        stack: c.stack,
         ctx: c
       }));
       c.ee.emit("end", c.fulfilled, c);
@@ -210,7 +209,6 @@ var invoke = (c) => {
             },
             stdio,
             duration: Date.now() - now,
-            stack: c.stack,
             ctx: c
           };
           (_a3 = opts.signal) == null ? void 0 : _a3.removeEventListener("abort", onAbort);
@@ -231,7 +229,6 @@ var invoke = (c) => {
         stdall: "",
         stdio,
         duration: Date.now() - now,
-        stack: c.stack,
         ctx: c
       }
     );

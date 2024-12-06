@@ -95,7 +95,6 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
       if (p === 'stdio') return ctx.stdio
       if (p === 'ctx') return ctx
       if (p === 'child') return ctx.child
-      if (p === 'stack') return ctx.stack
       if (p === 'on') return function (name: string, cb: VoidFunction){ ctx.ee.on(name, cb); return proxy }
 
       if (p in target) return Reflect.get(target, p, receiver)
@@ -107,11 +106,11 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
   return proxy
 }
 
-export const getError = (data: TSpawnResult): Error | null => {
-  if (data.error)
-    return new Error(formatErrorMessage(data.error, data.stack))
-  if (data.status || data.signal)
-    return new Error(formatExitMessage(data.status, data.signal, data.stderr, data.stack))
+export const getError = (spawnResult: TSpawnResult): Error | null => {
+  if (spawnResult.error)
+    return new Error(formatErrorMessage(spawnResult.error, spawnResult.ctx.stack))
+  if (spawnResult.status || spawnResult.signal)
+    return new Error(formatExitMessage(spawnResult.status, spawnResult.signal, spawnResult.stderr, spawnResult.ctx.stack))
 
   return null
 }
@@ -142,7 +141,6 @@ class Zurk implements TZurk {
     this.ctx.stdout,
     this.ctx.stderr
   ]}
-  get stack() { return this.ctx.stack }
   get duration()  { return this.ctx.fulfilled?.duration ?? 0 }
   toString(){ return this.stdall.trim() }
   valueOf(){ return this.stdall.trim() }

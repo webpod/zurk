@@ -18,6 +18,15 @@ import {
   immediate
 } from "./util.mjs";
 
+// src/main/ts/error.ts
+function getCallerLocation(err = new Error("zurk error")) {
+  return getCallerLocationFromString(err.stack);
+}
+function getCallerLocationFromString(stackString = "unknown") {
+  var _a;
+  return ((_a = stackString.split(/^\s*(at\s)?/m).filter((s) => s == null ? void 0 : s.includes(":"))[2]) == null ? void 0 : _a.trim()) || stackString;
+}
+
 // src/main/ts/mixin/pipe.ts
 import { Writable } from "node:stream";
 import { assign, isStringLiteral } from "./util.mjs";
@@ -121,6 +130,7 @@ var timeoutMixin = ($2, result, ctx) => {
 var $ = function(pieces, ...args) {
   const self = this !== g && this;
   const preset = self || {};
+  preset.stack = preset.stack || getCallerLocation();
   if (pieces === void 0) return applyMixins($, preset);
   if (isStringLiteral2(pieces, ...args)) return ignite(preset, pieces, ...args);
   return (...args2) => $.apply(self ? assign4(self, pieces) : pieces, args2);
