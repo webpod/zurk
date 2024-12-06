@@ -136,6 +136,7 @@ class Zurk implements TZurk {
     this.ctx.stdout,
     this.ctx.stderr
   ]}
+  get stack() { return this.ctx.stack }
   get duration()  { return this.ctx.fulfilled?.duration ?? 0 }
   toString(){ return this.stdall.trim() }
   valueOf(){ return this.stdall.trim() }

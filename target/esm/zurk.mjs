@@ -119,6 +119,9 @@ var Zurk = class {
       this.ctx.stderr
     ];
   }
+  get stack() {
+    return this.ctx.stack;
+  }
   get duration() {
     var _a2, _b;
     return (_b = (_a2 = this.ctx.fulfilled) == null ? void 0 : _a2.duration) != null ? _b : 0;

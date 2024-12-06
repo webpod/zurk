@@ -30,6 +30,7 @@ export type TSpawnResult = {
     ctx: TSpawnCtxNormalized;
     error?: TSpawnError;
     child?: TChild;
+    stack: string;
 };
 export type TSpawnListeners = {
     start: (data: TChild, ctx: TSpawnCtxNormalized) => void;
@@ -69,6 +70,7 @@ export interface TSpawnCtxNormalized {
     fulfilled?: TSpawnResult;
     error?: any;
     run: (cb: () => void, ctx: TSpawnCtxNormalized) => void;
+    stack: string;
 }
 export declare const defaults: TSpawnCtxNormalized;
 export declare const normalizeCtx: (...ctxs: TSpawnCtx[]) => TSpawnCtxNormalized;
