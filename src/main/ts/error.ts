@@ -166,7 +166,7 @@ export function getExitCodeInfo(exitCode: number | null): string | undefined {
     return EXIT_CODES[exitCode as keyof typeof EXIT_CODES]
 }
 
-export const getExitMessage = (
+export const formatExitMessage = (
     code: number | null,
     signal: NodeJS.Signals | null,
     stderr: string,
@@ -186,7 +186,7 @@ export const getExitMessage = (
     return message
 }
 
-export const getErrorMessage = (err: NodeJS.ErrnoException, from: string) => {
+export const formatErrorMessage = (err: NodeJS.ErrnoException, from: string) => {
     return (
         `${err.message}\n` +
         `    errno: ${err.errno} (${getErrnoMessage(err.errno)})\n` +
@@ -195,7 +195,7 @@ export const getErrorMessage = (err: NodeJS.ErrnoException, from: string) => {
     )
 }
 
-export function getCallerLocation(err = new Error()) {
+export function getCallerLocation(err = new Error('zurk error')) {
     return getCallerLocationFromString(err.stack)
 }
 

@@ -21,6 +21,7 @@ import {
   g,
   immediate
 } from './util.js'
+import { getCallerLocation } from './error.ts'
 import { pipeMixin } from './mixin/pipe.js'
 import { killMixin } from './mixin/kill.js'
 import { timeoutMixin } from './mixin/timeout.js'
@@ -90,6 +91,7 @@ export interface TShellSync {
 export const $: TShell = function(this: any, pieces?: any, ...args: any): any {
   const self =  (this !== g) && this
   const preset = self || {}
+  preset.stack = (preset.stack || getCallerLocation())
 
   if (pieces === undefined) return applyMixins($, preset)
 
