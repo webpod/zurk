@@ -1,3 +1,8 @@
+## [0.9.0](https://github.com/webpod/zurk/compare/v0.8.0...v0.9.0) (2024-12-08)
+
+### Features
+* feat: let `shell` be false ([5b4ebdb](https://github.com/webpod/zurk/commit/5b4ebdbb37105a4b2c91c920357be609a5b7e18b))
+
 ## [0.8.0](https://github.com/webpod/zurk/compare/v0.7.5...v0.8.0) (2024-12-06)
 
 ### Features
