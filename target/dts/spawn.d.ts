@@ -56,7 +56,7 @@ export interface TSpawnCtxNormalized {
     on: Partial<TSpawnListeners>;
     ac: AbortController;
     signal: AbortController['signal'];
-    shell: string | true | undefined;
+    shell: string | boolean | undefined;
     spawn: typeof cp.spawn;
     spawnSync: typeof cp.spawnSync;
     spawnOpts: Record<string, any>;
@@ -81,7 +81,7 @@ export declare const buildSpawnOpts: ({ spawnOpts, stdio, cwd, shell, input, env
     env: Record<string, string | undefined>;
     cwd: string;
     stdio: cp.StdioOptions;
-    shell: string | true | undefined;
+    shell: string | boolean | undefined;
     input: string | Buffer;
     windowsHide: boolean;
     detached: boolean;

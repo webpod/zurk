@@ -28,6 +28,9 @@ describe('$()', () => {
       console.error(error)
       assert.ok((error as Error).message.includes('exit code: 2 (Misuse of shell builtins)'))
     }
+
+    const err = await $`exit 2`.catch((error) => error)
+    assert.ok(err.message.includes('exit code: 2 (Misuse of shell builtins)'))
   })
 
   it('supports sync flow', () => {
@@ -72,6 +75,14 @@ describe('$()', () => {
     await $({stdio: ['inherit', 'inherit', 'inherit']})`ls`
     await $({stdio: 'ignore'})`ls`
     $({stdio: 'ignore', sync: true})`ls`
+  })
+
+  it('works without shell', async () => {
+    const o1 = await $({shell: true})`exit 2 | exit 0`
+    const o2 = await $({shell: false, nothrow: true})`exit 1 | exit 0`
+
+    assert.equal(o1.status, 0)
+    assert.equal(o2.status, -2)
   })
 
   it('supports presets', () => {
