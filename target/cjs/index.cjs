@@ -141,7 +141,8 @@ var $ = function(pieces, ...args) {
   return (...args2) => $.apply(self ? (0, import_util4.assign)(self, pieces) : pieces, args2);
 };
 var ignite = (preset, pieces, ...args) => {
-  const cmd = (0, import_util4.buildCmd)(preset.quote || import_util4.quote, pieces, args);
+  const _quote = preset.quote || (preset.shell === false ? (arg) => arg : import_util4.quote);
+  const cmd = (0, import_util4.buildCmd)(_quote, pieces, args);
   const input = (0, import_util4.parseInput)(preset.input);
   const run = cmd instanceof Promise ? (cb, ctx) => cmd.then((cmd2) => {
     ctx.cmd = cmd2;
