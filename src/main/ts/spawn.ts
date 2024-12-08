@@ -64,7 +64,7 @@ export interface TSpawnCtxNormalized {
   on:         Partial<TSpawnListeners>
   ac:         AbortController
   signal:     AbortController['signal']
-  shell:      string | true | undefined
+  shell:      string | boolean | undefined
   spawn:      typeof cp.spawn
   spawnSync:  typeof cp.spawnSync
   spawnOpts:  Record<string, any>

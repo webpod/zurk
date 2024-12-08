@@ -136,7 +136,8 @@ var $ = function(pieces, ...args) {
   return (...args2) => $.apply(self ? assign4(self, pieces) : pieces, args2);
 };
 var ignite = (preset, pieces, ...args) => {
-  const cmd = buildCmd(preset.quote || quote, pieces, args);
+  const _quote = preset.quote || (preset.shell === false ? (arg) => arg : quote);
+  const cmd = buildCmd(_quote, pieces, args);
   const input = parseInput(preset.input);
   const run = cmd instanceof Promise ? (cb, ctx) => cmd.then((cmd2) => {
     ctx.cmd = cmd2;

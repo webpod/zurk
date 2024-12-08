@@ -101,7 +101,8 @@ export const $: TShell = function(this: any, pieces?: any, ...args: any): any {
 }
 
 const ignite = (preset: any, pieces: TemplateStringsArray, ...args: any[]) => {
-  const cmd = buildCmd(preset.quote || quote, pieces as TemplateStringsArray, args)
+  const _quote = preset.quote || (preset.shell === false ? (arg: string) => arg : quote)
+  const cmd = buildCmd(_quote, pieces as TemplateStringsArray, args)
   const input = parseInput(preset.input)
   const run = cmd instanceof Promise
     ? (cb: TVoidCallback, ctx: TShellCtx) => cmd.then((cmd) => { ctx.cmd = cmd; cb() })
