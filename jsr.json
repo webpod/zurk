@@ -1,6 +1,0 @@
-{
-  "name": "@webpod/zurk",
-  "version": "0.9.0",
-  "license": "MIT",
-  "exports": "./mod.ts"
-}
