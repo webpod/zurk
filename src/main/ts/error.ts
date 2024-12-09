@@ -1,3 +1,16 @@
+/**
+ * @module zurk/error
+ *
+ * Zurk spawn error codes & handling utilities
+ *
+ * @example
+ * ```ts
+ * import {EXIT_CODES} from 'zurk/error'
+ *
+ * console.log(EXIT_CODES[2]) // 'Misuse of shell builtins'
+ * ```
+ */
+
 export const EXIT_CODES = {
     2: 'Misuse of shell builtins',
     126: 'Invoked command cannot execute',

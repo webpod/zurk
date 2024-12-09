@@ -2,6 +2,19 @@ import { Stream } from 'node:stream'
 import process from 'node:process'
 import { Buffer } from 'node:buffer'
 
+/**
+ * @module zurk/util
+ *
+ * Zurk utility functions
+ *
+ * @example
+ * ```ts
+ * import {randomId} from 'zurk/util'
+ *
+ * randomId() // 'kdrx9bngrb'
+ * ```
+ */
+
 export const g = (!process.versions.deno && global) || globalThis
 
 export const immediate = g.setImmediate || ((f: any): NodeJS.Timeout => g.setTimeout(f, 0))

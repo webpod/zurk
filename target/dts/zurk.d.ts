@@ -1,5 +1,18 @@
 import { type TSpawnCtxNormalized, type TSpawnResult, type TSpawnListeners } from './spawn.js';
 import { type Promisified } from './util.js';
+/**
+ * @module zurk/zurk
+ *
+ * Zurk process spawner
+ *
+ * @example
+ * ```ts
+ * import {zurk} from 'zurk/zurk'
+ *
+ * const r1 = zurk({ sync: true, cmd: 'echo', args: ['foo']})
+ * const r2 = await zurk({ sync: false, cmd: 'echo', args: ['foo']})
+ * ```
+ */
 export declare const ZURK: unique symbol;
 export declare const ZURKPROXY: unique symbol;
 export interface TZurkOn<R> {

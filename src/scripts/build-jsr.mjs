@@ -13,6 +13,9 @@ fs.writeFileSync(path.resolve(cwd, 'jsr.json'), JSON.stringify({
     './zurk': './src/main/ts/zurk.ts'
   },
   publish: {
-    include: ['src/main/ts']
+    include: [
+      'src/main/ts',
+      'README.md'
+    ]
   }
 }, null, 2))

@@ -1,3 +1,15 @@
+/**
+ * @module zurk/error
+ *
+ * Zurk spawn error codes & handling utilities
+ *
+ * @example
+ * ```ts
+ * import {EXIT_CODES} from 'zurk/error'
+ *
+ * console.log(EXIT_CODES[2]) // 'Misuse of shell builtins'
+ * ```
+ */
 export declare const EXIT_CODES: {
     2: string;
     126: string;
