@@ -22,7 +22,8 @@ var makeDeferred = () => {
 var isPromiseLike = (value) => typeof (value == null ? void 0 : value.then) === "function";
 var isStringLiteral = (pieces, ...rest) => {
   var _a;
-  return (pieces == null ? void 0 : pieces.length) > 0 && ((_a = pieces.raw) == null ? void 0 : _a.length) === pieces.length && Object.isFrozen(pieces) && rest.length + 1 === pieces.length;
+  return (pieces == null ? void 0 : pieces.length) > 0 && ((_a = pieces.raw) == null ? void 0 : _a.length) === pieces.length && // Object.isFrozen(pieces) &&
+  rest.length + 1 === pieces.length;
 };
 var assign = (target, ...extras) => Object.defineProperties(target, extras.reduce((m, extra) => ({ ...m, ...Object.fromEntries(Object.entries(Object.getOwnPropertyDescriptors(extra)).filter(([, v]) => !Object.prototype.hasOwnProperty.call(v, "value") || v.value !== void 0)) }), {}));
 var quote = (arg) => {
