@@ -17,15 +17,7 @@ import {
   g,
   immediate
 } from "./util.mjs";
-
-// src/main/ts/error.ts
-function getCallerLocation(err = new Error("zurk error")) {
-  return getCallerLocationFromString(err.stack);
-}
-function getCallerLocationFromString(stackString = "unknown") {
-  var _a;
-  return ((_a = stackString.split(/^\s*(at\s)?/m).filter((s) => s == null ? void 0 : s.includes(":"))[2]) == null ? void 0 : _a.trim()) || stackString;
-}
+import { getCallerLocation } from "./error.mjs";
 
 // src/main/ts/mixin/pipe.ts
 import { Writable } from "node:stream";

@@ -22,15 +22,7 @@ var import_spawn2 = require("./spawn.cjs");
 // src/main/ts/x.ts
 var import_zurk4 = require("./zurk.cjs");
 var import_util4 = require("./util.cjs");
-
-// src/main/ts/error.ts
-function getCallerLocation(err = new Error("zurk error")) {
-  return getCallerLocationFromString(err.stack);
-}
-function getCallerLocationFromString(stackString = "unknown") {
-  var _a;
-  return ((_a = stackString.split(/^\s*(at\s)?/m).filter((s) => s == null ? void 0 : s.includes(":"))[2]) == null ? void 0 : _a.trim()) || stackString;
-}
+var import_error = require("./error.cjs");
 
 // src/main/ts/mixin/pipe.ts
 var import_node_stream = require("stream");
@@ -135,7 +127,7 @@ var timeoutMixin = ($2, result, ctx) => {
 var $ = function(pieces, ...args) {
   const self = this !== import_util4.g && this;
   const preset = self || {};
-  preset.stack = preset.stack || getCallerLocation();
+  preset.stack = preset.stack || (0, import_error.getCallerLocation)();
   if (pieces === void 0) return applyMixins($, preset);
   if ((0, import_util4.isStringLiteral)(pieces, ...args)) return ignite(preset, pieces, ...args);
   return (...args2) => $.apply(self ? (0, import_util4.assign)(self, pieces) : pieces, args2);

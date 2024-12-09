@@ -45,7 +45,7 @@
   ],
   "scripts": {
     "build": "concurrently 'npm:build:*'",
-    "build:js": "node ./src/scripts/build.mjs --entry='./src/main/ts/index.ts:./src/main/ts/util.ts:./src/main/ts/spawn.ts:./src/main/ts/zurk.ts'",
+    "build:js": "node ./src/scripts/build.mjs --entry='./src/main/ts/index.ts:./src/main/ts/util.ts:./src/main/ts/spawn.ts:./src/main/ts/zurk.ts:./src/main/ts/error.ts'",
     "build:dts": "tsc --emitDeclarationOnly --outDir target/dts",
     "build:docs": "typedoc --options src/main/typedoc",
     "build:stamp": "npx buildstamp",
