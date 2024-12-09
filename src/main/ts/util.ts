@@ -38,7 +38,7 @@ export const isStringLiteral = (
 ): pieces is TemplateStringsArray =>
   pieces?.length > 0 &&
   pieces.raw?.length === pieces.length &&
-  Object.isFrozen(pieces) &&
+  // Object.isFrozen(pieces) &&
   rest.length + 1 === pieces.length
 
 export const assign = <T, E>(target: T, ...extras: E[]): T =>

@@ -1,6 +1,7 @@
 import * as assert from 'node:assert'
 import {describe, it, test} from 'node:test'
 import { assign, isStringLiteral } from '../../main/ts/util.js'
+import tslib from 'tslib'
 
 describe('util', () => {
   it('assign()', () => {
@@ -13,6 +14,7 @@ describe('util', () => {
     assert.ok(isStringLiteral``)
     assert.ok(isStringLiteral`foo`)
     assert.ok(isStringLiteral`foo ${bar}`)
+    assert.ok(isStringLiteral(tslib.__makeTemplateObject(["git pull --tags --force ", " ", ""], ["git pull --tags --force ", " ", ""]), 'foo', 'bar'))
 
     assert.ok(!isStringLiteral(''))
     assert.ok(!isStringLiteral('foo'))
