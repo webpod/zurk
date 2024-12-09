@@ -17,6 +17,21 @@ import {
   formatExitMessage
 } from './error.js'
 
+
+/**
+ * @module zurk/zurk
+ *
+ * Zurk process spawner
+ *
+ * @example
+ * ```ts
+ * import {zurk} from 'zurk/zurk'
+ *
+ * const r1 = zurk({ sync: true, cmd: 'echo', args: ['foo']})
+ * const r2 = await zurk({ sync: false, cmd: 'echo', args: ['foo']})
+ * ```
+ */
+
 export const ZURK = Symbol('Zurk')
 export const ZURKPROXY = Symbol('ZurkProxy')
 

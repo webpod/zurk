@@ -1,5 +1,17 @@
 import { Stream } from 'node:stream';
 import { Buffer } from 'node:buffer';
+/**
+ * @module zurk/util
+ *
+ * Zurk utility functions
+ *
+ * @example
+ * ```ts
+ * import {randomId} from 'zurk/util'
+ *
+ * randomId() // 'kdrx9bngrb'
+ * ```
+ */
 export declare const g: typeof globalThis;
 export declare const immediate: typeof setImmediate;
 export declare const noop: () => void;

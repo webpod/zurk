@@ -1,12 +1,16 @@
 import * as assert from 'node:assert'
 import {describe, it, test} from 'node:test'
-import { assign, isStringLiteral } from '../../main/ts/util.js'
+import { assign, isStringLiteral, randomId } from '../../main/ts/util.js'
 import tslib from 'tslib'
 
 describe('util', () => {
   it('assign()', () => {
     assert.deepEqual(assign({a: 1}, {b: 2}), {a: 1, b: 2})
     assert.deepEqual(assign({a: 1}, {a: undefined}), {a: 1})
+  })
+
+  it('randomId()', () => {
+    assert.match(randomId(), /^[\da-z]+$/)
   })
 
   test('isStringLiteral()', () => {

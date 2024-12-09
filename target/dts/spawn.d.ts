@@ -1,6 +1,26 @@
 import * as cp from 'node:child_process';
 import EventEmitter from 'node:events';
 import { Readable, Writable, Stream, Transform } from 'node:stream';
+/**
+ * @module zurk/spawn
+ *
+ * Zurk internal child_process caller API
+ *
+ * @example
+ * ```ts
+ * import {invoke, normalizeCtx, TSpawnCtx} from 'zurk/spawn'
+ *
+ * const results: string[] = []
+ * const callback: TSpawnCtx['callback'] = (_err, result) => results.push(result.stdout)
+ *
+ * invoke(normalizeCtx({
+ *   sync: true,
+ *   cmd: 'echo',
+ *   args: ['hello'],
+ *   callback,
+ * }))
+ * ```
+ */
 export * from './util.js';
 export type TSpawnError = any;
 export type TPushable<T = any> = {
