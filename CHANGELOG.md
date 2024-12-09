@@ -1,3 +1,8 @@
+## [0.9.1](https://github.com/webpod/zurk/compare/v0.9.0...v0.9.1) (2024-12-09)
+
+### Fixes & improvements
+* fix: relax `isTemplateLiteral` check for tslib compat ([898f0d0](https://github.com/webpod/zurk/commit/898f0d03f92b8c60ed6858277f02cf3c8d340f58))
+
 ## [0.9.0](https://github.com/webpod/zurk/compare/v0.8.0...v0.9.0) (2024-12-08)
 
 ### Features
