@@ -1,3 +1,9 @@
+## [0.9.2](https://github.com/webpod/zurk/compare/v0.9.1...v0.9.2) (2024-12-09)
+
+### Fixes & improvements
+* docs: improve jsr docs refs ([770c846](https://github.com/webpod/zurk/commit/770c84686468686762e61f2a733c70dfe63efe62))
+* fix: build error chunk separately ([556ef0f](https://github.com/webpod/zurk/commit/556ef0f58598c241407bdd8d1c83c83beba8dc77))
+
 ## [0.9.1](https://github.com/webpod/zurk/compare/v0.9.0...v0.9.1) (2024-12-09)
 
 ### Fixes & improvements
