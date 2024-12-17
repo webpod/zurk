@@ -1,3 +1,9 @@
+## [0.9.3](https://github.com/webpod/zurk/compare/v0.9.2...v0.9.3) (2024-12-17)
+
+### Fixes & improvements
+* fix: apply forced stdio destroy for abort flow only ([bbac4fe](https://github.com/webpod/zurk/commit/bbac4fe9577eb85b52396b3e92028909094768b3))
+* fix: force stdio destroy on `abort/child.kill()` ([cd32992](https://github.com/webpod/zurk/commit/cd3299235bb2c0b31c59d4533510b0c751b55b66))
+
 ## [0.9.2](https://github.com/webpod/zurk/compare/v0.9.1...v0.9.2) (2024-12-09)
 
 ### Fixes & improvements
