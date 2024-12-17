@@ -251,6 +251,10 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
             error = e
             c.ee.emit('err', error, c)
           })
+          .once('exit', () => {
+            child.stdout?.destroy()
+            child.stderr?.destroy()
+          })
           .once('close', (status, signal) => {
             c.fulfilled = {
               error,

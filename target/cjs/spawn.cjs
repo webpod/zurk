@@ -192,6 +192,10 @@ var invoke = (c) => {
         child.once("error", (e) => {
           error = e;
           c.ee.emit("err", error, c);
+        }).once("exit", () => {
+          var _a3, _b3;
+          (_a3 = child.stdout) == null ? void 0 : _a3.destroy();
+          (_b3 = child.stderr) == null ? void 0 : _b3.destroy();
         }).once("close", (status, signal) => {
           var _a3;
           c.fulfilled = {
