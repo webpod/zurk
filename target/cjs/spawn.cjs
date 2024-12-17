@@ -163,6 +163,7 @@ var invoke = (c) => {
         var _a2, _b2, _c;
         toggleListeners("on", c.ee, c.on);
         let error = null;
+        let aborted = false;
         const opts = buildSpawnOpts(c);
         const child = c.spawn(c.cmd, c.args, opts);
         const onAbort = (event) => {
@@ -173,6 +174,7 @@ var invoke = (c) => {
               child.kill();
             }
           }
+          aborted = true;
           c.ee.emit("abort", event, c);
         };
         c.child = child;
@@ -194,8 +196,10 @@ var invoke = (c) => {
           c.ee.emit("err", error, c);
         }).once("exit", () => {
           var _a3, _b3;
-          (_a3 = child.stdout) == null ? void 0 : _a3.destroy();
-          (_b3 = child.stderr) == null ? void 0 : _b3.destroy();
+          if (aborted) {
+            (_a3 = child.stdout) == null ? void 0 : _a3.destroy();
+            (_b3 = child.stderr) == null ? void 0 : _b3.destroy();
+          }
         }).once("close", (status, signal) => {
           var _a3;
           c.fulfilled = {

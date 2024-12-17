@@ -216,6 +216,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
         toggleListeners('on', c.ee, c.on)
 
         let error: any = null
+        let aborted = false
         const opts = buildSpawnOpts(c)
         const child = c.spawn(c.cmd, c.args, opts)
         const onAbort = (event: any) => {
@@ -227,6 +228,7 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
               child.kill()
             }
           }
+          aborted = true
           c.ee.emit('abort', event, c)
         }
         c.child = child
@@ -252,8 +254,10 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
             c.ee.emit('err', error, c)
           })
           .once('exit', () => {
-            child.stdout?.destroy()
-            child.stderr?.destroy()
+            if (aborted) {
+              child.stdout?.destroy()
+              child.stderr?.destroy()
+            }
           })
           .once('close', (status, signal) => {
             c.fulfilled = {
