@@ -1,6 +1,6 @@
 {
   "name": "zurk",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "description": "A generic process spawner",
   "type": "module",
   "main": "target/cjs/index.cjs",

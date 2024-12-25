@@ -1,3 +1,8 @@
+## [0.10.0](https://github.com/webpod/zurk/compare/v0.9.3...v0.10.0) (2024-12-25)
+
+### Features
+* feat: introduce `stdall` event ([13d8abd](https://github.com/webpod/zurk/commit/13d8abd26f68a99117a88e8e546ce00d8b0a0e12))
+
 ## [0.9.3](https://github.com/webpod/zurk/compare/v0.9.2...v0.9.3) (2024-12-17)
 
 ### Fixes & improvements
