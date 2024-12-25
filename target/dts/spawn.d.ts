@@ -1,5 +1,6 @@
 import * as cp from 'node:child_process';
 import EventEmitter from 'node:events';
+import { Buffer } from 'node:buffer';
 import { Readable, Writable, Stream, Transform } from 'node:stream';
 /**
  * @module zurk/spawn
@@ -55,6 +56,7 @@ export type TSpawnListeners = {
     start: (data: TChild, ctx: TSpawnCtxNormalized) => void;
     stdout: (data: Buffer, ctx: TSpawnCtxNormalized) => void;
     stderr: (data: Buffer, ctx: TSpawnCtxNormalized) => void;
+    stdall: (data: Buffer, ctx: TSpawnCtxNormalized) => void;
     abort: (error: Event, ctx: TSpawnCtxNormalized) => void;
     err: (error: Error, ctx: TSpawnCtxNormalized) => void;
     end: (result: TSpawnResult, ctx: TSpawnCtxNormalized) => void;

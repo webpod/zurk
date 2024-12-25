@@ -125,25 +125,27 @@ var invoke = (c) => {
   var _a, _b;
   const now = Date.now();
   const stdio = [c.stdin, c.stdout, c.stderr];
+  const push = (kind, data) => {
+    c.store[kind].push(data);
+    c.store.stdall.push(data);
+    c.ee.emit(kind, data, c);
+    c.ee.emit("stdall", data, c);
+  };
   try {
     if (c.sync) {
       toggleListeners("on", c.ee, c.on);
       const opts = buildSpawnOpts(c);
-      const result = c.spawnSync(c.cmd, c.args, opts);
-      c.ee.emit("start", result, c);
-      if (((_a = result.stdout) == null ? void 0 : _a.length) > 0) {
-        c.store.stdout.push(result.stdout);
-        c.store.stdall.push(result.stdout);
-        c.stdout.write(result.stdout);
-        c.ee.emit("stdout", result.stdout, c);
+      const r = c.spawnSync(c.cmd, c.args, opts);
+      c.ee.emit("start", r, c);
+      if (((_a = r.stdout) == null ? void 0 : _a.length) > 0) {
+        c.stdout.write(r.stdout);
+        push("stdout", r.stdout);
       }
-      if (((_b = result.stderr) == null ? void 0 : _b.length) > 0) {
-        c.store.stderr.push(result.stderr);
-        c.store.stdall.push(result.stderr);
-        c.stderr.write(result.stderr);
-        c.ee.emit("stderr", result.stderr, c);
+      if (((_b = r.stderr) == null ? void 0 : _b.length) > 0) {
+        c.stderr.write(r.stderr);
+        push("stderr", r.stderr);
       }
-      c.callback(null, c.fulfilled = __spreadProps(__spreadValues({}, result), {
+      c.callback(null, c.fulfilled = __spreadProps(__spreadValues({}, r), {
         get stdout() {
           return c.store.stdout.join("");
         },
@@ -182,14 +184,10 @@ var invoke = (c) => {
         (_a2 = opts.signal) == null ? void 0 : _a2.addEventListener("abort", onAbort);
         processInput(child, c.input || c.stdin);
         (_b2 = child.stdout) == null ? void 0 : _b2.on("data", (d) => {
-          c.store.stdout.push(d);
-          c.store.stdall.push(d);
-          c.ee.emit("stdout", d, c);
+          push("stdout", d);
         }).pipe(c.stdout);
         (_c = child.stderr) == null ? void 0 : _c.on("data", (d) => {
-          c.store.stderr.push(d);
-          c.store.stdall.push(d);
-          c.ee.emit("stderr", d, c);
+          push("stderr", d);
         }).pipe(c.stderr);
         child.once("error", (e) => {
           error = e;
