@@ -1,6 +1,7 @@
 import * as cp from 'node:child_process'
 import process from 'node:process'
 import EventEmitter from 'node:events'
+import { Buffer } from 'node:buffer'
 import { Readable, Writable, Stream, Transform } from 'node:stream'
 import { assign, noop, randomId, g, immediate } from './util.js'
 
@@ -60,6 +61,7 @@ export type TSpawnListeners = {
   start:    (data: TChild, ctx: TSpawnCtxNormalized) => void
   stdout:   (data: Buffer, ctx: TSpawnCtxNormalized) => void
   stderr:   (data: Buffer, ctx: TSpawnCtxNormalized) => void
+  stdall:   (data: Buffer, ctx: TSpawnCtxNormalized) => void
   abort:    (error: Event, ctx: TSpawnCtxNormalized) => void
   err:      (error: Error, ctx: TSpawnCtxNormalized) => void
   end:      (result: TSpawnResult, ctx: TSpawnCtxNormalized) => void
@@ -181,27 +183,29 @@ export const createStore = (): TSpawnStore => ({
 export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   const now = Date.now()
   const stdio: TSpawnResult['stdio'] = [c.stdin, c.stdout, c.stderr]
+  const push = (kind: 'stdout' | 'stderr', data: Buffer) => {
+    c.store[kind].push(data)
+    c.store.stdall.push(data)
+    c.ee.emit(kind, data, c)
+    c.ee.emit('stdall', data, c)
+  }
 
   try {
     if (c.sync) {
       toggleListeners('on', c.ee, c.on)
       const opts = buildSpawnOpts(c)
-      const result = c.spawnSync(c.cmd, c.args, opts)
-      c.ee.emit('start', result, c)
-      if (result.stdout?.length > 0) {
-        c.store.stdout.push(result.stdout)
-        c.store.stdall.push(result.stdout)
-        c.stdout.write(result.stdout)
-        c.ee.emit('stdout', result.stdout, c)
+      const r = c.spawnSync(c.cmd, c.args, opts)
+      c.ee.emit('start', r, c)
+      if (r.stdout?.length > 0) {
+        c.stdout.write(r.stdout)
+        push('stdout', r.stdout)
       }
-      if (result.stderr?.length > 0) {
-        c.store.stderr.push(result.stderr)
-        c.store.stdall.push(result.stderr)
-        c.stderr.write(result.stderr)
-        c.ee.emit('stderr', result.stderr, c)
+      if (r.stderr?.length > 0) {
+        c.stderr.write(r.stderr)
+        push('stderr', r.stderr)
       }
       c.callback(null, c.fulfilled = {
-        ...result,
+        ...r,
         get stdout() { return c.store.stdout.join('') },
         get stderr() { return c.store.stderr.join('') },
         get stdall() { return c.store.stdall.join('') },
@@ -232,22 +236,13 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
           c.ee.emit('abort', event, c)
         }
         c.child = child
-
         c.ee.emit('start', child, c)
 
         opts.signal?.addEventListener('abort', onAbort)
         processInput(child, c.input || c.stdin)
 
-        child.stdout?.on('data', d => {
-          c.store.stdout.push(d)
-          c.store.stdall.push(d)
-          c.ee.emit('stdout', d, c)
-        }).pipe(c.stdout)
-        child.stderr?.on('data', d => {
-          c.store.stderr.push(d)
-          c.store.stdall.push(d)
-          c.ee.emit('stderr', d, c)
-        }).pipe(c.stderr)
+        child.stdout?.on('data', d => { push('stdout', d) }).pipe(c.stdout)
+        child.stderr?.on('data', d => { push('stderr', d) }).pipe(c.stderr)
         child
           .once('error', (e: any) => {
             error = e
