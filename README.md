@@ -25,11 +25,11 @@ Just a testing ground for verifying ideas and approaches aimed at improve the [z
   * Linux
   * MacOS
   * Windows
-* **JS Runtime**
+* **Runtime**
   * Node.js >= 6 (CJS)
   * Node.js >= 12 (ESM)
   * Bun >= 1.0.0
-  * Deno >= 1.7.0
+  * Deno >= 1.7.0, 2.x
 
 ## Install
 ```bash
