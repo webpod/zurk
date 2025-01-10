@@ -7,8 +7,8 @@ const {
 
 
 // src/main/ts/index.ts
-var index_exports = {};
-__export(index_exports, {
+var ts_exports = {};
+__export(ts_exports, {
   $: () => $,
   buildCmd: () => import_util5.buildCmd,
   defaults: () => import_spawn2.defaults,
@@ -16,7 +16,7 @@ __export(index_exports, {
   invoke: () => import_spawn2.invoke,
   zurk: () => import_zurk5.zurk
 });
-module.exports = __toCommonJS(index_exports);
+module.exports = __toCommonJS(ts_exports);
 var import_spawn2 = require("./spawn.cjs");
 
 // src/main/ts/x.ts
