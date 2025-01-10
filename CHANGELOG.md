@@ -1,3 +1,8 @@
+## [0.10.1](https://github.com/webpod/zurk/compare/v0.10.0...v0.10.1) (2025-01-10)
+
+### Fixes & improvements
+* fix: make `spawnChunkStore` reducible ([c04f309](https://github.com/webpod/zurk/commit/c04f3099036bfd10962bba6194b0eae1e9857161))
+
 ## [0.10.0](https://github.com/webpod/zurk/compare/v0.9.3...v0.10.0) (2024-12-25)
 
 ### Features
