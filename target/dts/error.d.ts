@@ -1,5 +1,5 @@
 /**
- * @module zurk/error
+ * @module
  *
  * Zurk spawn error codes & handling utilities
  *

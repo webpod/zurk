@@ -6,7 +6,7 @@ export { $ } from './x.js';
 export { zurk } from './zurk.js';
 export { type Promisified, buildCmd } from './util.js';
 /**
- * @module zurk
+ * @module
  *
  * A generic process spawner
  *

@@ -3,7 +3,7 @@ import EventEmitter from 'node:events';
 import { Buffer } from 'node:buffer';
 import { Readable, Writable, Stream, Transform } from 'node:stream';
 /**
- * @module zurk/spawn
+ * @module
  *
  * Zurk internal child_process caller API
  *
@@ -96,12 +96,34 @@ export interface TSpawnCtxNormalized {
     run: (cb: () => void, ctx: TSpawnCtxNormalized) => void;
     stack: string;
 }
+/**
+ * zurk default settings
+ */
 export declare const defaults: TSpawnCtxNormalized;
+/**
+ * Normalizes spawn context.
+ *
+ * @param ctxs Contexts to normalize
+ * @returns
+ */
 export declare const normalizeCtx: (...ctxs: TSpawnCtx[]) => TSpawnCtxNormalized;
+/**
+ * Redirects input to child process stdin
+ * @param child
+ * @param input
+ */
 export declare const processInput: (child: TChild, input?: TInput | null) => void;
+/**
+ * Transformer that emits data but does not consume it.
+ */
 export declare class VoidStream extends Transform {
     _transform(chunk: any, _: string, cb: (err?: Error) => void): void;
 }
+/**
+ * Builds spawn options
+ * @param ctx
+ * @returns spawn options
+ */
 export declare const buildSpawnOpts: ({ spawnOpts, stdio, cwd, shell, input, env, detached, signal }: TSpawnCtxNormalized) => {
     env: Record<string, string | undefined>;
     cwd: string;
@@ -112,7 +134,26 @@ export declare const buildSpawnOpts: ({ spawnOpts, stdio, cwd, shell, input, env
     detached: boolean;
     signal: AbortSignal;
 };
+/**
+ * Toggles event listeners
+ * @param pos 'on' | 'off'
+ * @param ee EventEmitter
+ * @param on listeners map
+ */
 export declare const toggleListeners: (pos: "on" | "off", ee: EventEmitter, on?: Partial<TSpawnListeners>) => void;
+/**
+ * Creates a new spawn store
+ */
 export declare const createStore: () => TSpawnStore;
+/**
+ * Invokes a child process
+ * @param c Normalized context.
+ * @returns Normalized context.
+ */
 export declare const invoke: (c: TSpawnCtxNormalized) => TSpawnCtxNormalized;
+/**
+ * Executes a child process
+ * @param ctx TSpawnCtx
+ * @returns TSpawnCtxNormalized
+ */
 export declare const exec: (ctx: TSpawnCtx) => TSpawnCtxNormalized;

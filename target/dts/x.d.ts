@@ -1,6 +1,18 @@
 import type { Readable, Writable } from 'node:stream';
 import { TZurk, TZurkPromise, TZurkOptions, TZurkCtx } from './zurk.js';
 import { type Promisified, type TVoidCallback, type TQuote } from './util.js';
+/**
+ * @module
+ *
+ * Zurk $ API
+ *
+ * @example
+ * ```ts
+ * import {$} from 'zurk/x'
+ *
+ * const p = await $`echo foo`'
+ * ```
+ */
 export interface TShellCtxExtra {
 }
 export interface TShellExtra {
@@ -50,5 +62,18 @@ export interface TShellSync {
     <O>(this: O, pieces?: TemplateStringsArray, ...args: any[]): TShellResponseSync;
     (opts: TShellOptions): TShellSync;
 }
+/**
+ * Zurk $ template API
+ *
+ * @param pieces
+ * @param args
+ */
 export declare const $: TShell;
+/**
+ * Applies mixins to the result.
+ * @param $
+ * @param result
+ * @param parent
+ * @returns TZurk | TZurkPromise | TShellOptions
+ */
 export declare const applyMixins: ($: TShell, result: TZurk | TZurkPromise | TShellOptions, parent?: TZurk | TZurkPromise) => TZurk | TZurkPromise | TShellOptions;

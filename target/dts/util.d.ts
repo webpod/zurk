@@ -1,7 +1,7 @@
 import { Stream } from 'node:stream';
 import { Buffer } from 'node:buffer';
 /**
- * @module zurk/util
+ * @module
  *
  * Zurk utility functions
  *

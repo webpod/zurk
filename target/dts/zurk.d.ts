@@ -1,7 +1,7 @@
 import { type TSpawnCtxNormalized, type TSpawnResult, type TSpawnListeners } from './spawn.js';
 import { type Promisified } from './util.js';
 /**
- * @module zurk/zurk
+ * @module
  *
  * Zurk process spawner
  *
