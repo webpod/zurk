@@ -4,6 +4,12 @@ import { assign } from '../util.js'
 import type { TMixin, TShell, TShellCtx } from '../x.js'
 import { type TZurk, type TZurkPromise, isZurkAny } from '../zurk.js'
 
+/**
+ * @module
+ *
+ * Zurk $ pipe mixin
+ */
+
 // https://github.com/nodejs/node/issues/37518
 // https://github.com/nodejs/node/issues/46865
 const kill = (child?: ChildProcess, signal: null | string | number | NodeJS.Signals = 'SIGTERM') => new Promise<typeof signal>((resolve, reject) => {

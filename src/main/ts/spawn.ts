@@ -6,7 +6,7 @@ import { Readable, Writable, Stream, Transform } from 'node:stream'
 import { assign, noop, randomId, g, immediate } from './util.js'
 
 /**
- * @module zurk/spawn
+ * @module
  *
  * Zurk internal child_process caller API
  *
@@ -105,6 +105,9 @@ export interface TSpawnCtxNormalized {
   stack:      string
 }
 
+/**
+ * zurk default settings
+ */
 export const defaults: TSpawnCtxNormalized = {
   get id()    { return randomId() },
   cmd:        '',
@@ -132,11 +135,22 @@ export const defaults: TSpawnCtxNormalized = {
   stack:      ''
 }
 
+/**
+ * Normalizes spawn context.
+ *
+ * @param ctxs Contexts to normalize
+ * @returns
+ */
 export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
   ...defaults,
   get signal() { return this.ac?.signal }},
   ...ctxs)
 
+/**
+ * Redirects input to child process stdin
+ * @param child
+ * @param input
+ */
 export const processInput = (child: TChild, input?: TInput | null): void => {
   if (input && child.stdin && !child.stdin.destroyed) {
     if (input instanceof Stream) {
@@ -148,6 +162,9 @@ export const processInput = (child: TChild, input?: TInput | null): void => {
   }
 }
 
+/**
+ * Transformer that emits data but does not consume it.
+ */
 export class VoidStream extends Transform {
   _transform(chunk: any, _: string, cb: (err?: Error) => void) {
     this.emit('data', chunk)
@@ -155,6 +172,11 @@ export class VoidStream extends Transform {
   }
 }
 
+/**
+ * Builds spawn options
+ * @param ctx
+ * @returns spawn options
+ */
 export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detached, signal}: TSpawnCtxNormalized) => ({
   ...spawnOpts,
   env,
@@ -167,6 +189,12 @@ export const buildSpawnOpts = ({spawnOpts, stdio, cwd, shell, input, env, detach
   signal
 })
 
+/**
+ * Toggles event listeners
+ * @param pos 'on' | 'off'
+ * @param ee EventEmitter
+ * @param on listeners map
+ */
 export const toggleListeners = (pos: 'on' | 'off', ee: EventEmitter, on: Partial<TSpawnListeners> = {}): void => {
   for (const [name, listener] of Object.entries(on)) {
     ee[pos](name, listener as any)
@@ -175,12 +203,20 @@ export const toggleListeners = (pos: 'on' | 'off', ee: EventEmitter, on: Partial
     ee.once('end', () => toggleListeners('off', ee, on))
 }
 
+/**
+ * Creates a new spawn store
+ */
 export const createStore = (): TSpawnStore => ({
   stdout: [],
   stderr: [],
   stdall: [],
 })
 
+/**
+ * Invokes a child process
+ * @param c Normalized context.
+ * @returns Normalized context.
+ */
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   const now = Date.now()
@@ -296,6 +332,11 @@ export const invoke = (c: TSpawnCtxNormalized): TSpawnCtxNormalized => {
   return c
 }
 
+/**
+ * Executes a child process
+ * @param ctx TSpawnCtx
+ * @returns TSpawnCtxNormalized
+ */
 export const exec = (ctx: TSpawnCtx): TSpawnCtxNormalized => invoke(normalizeCtx(ctx))
 
 // https://2ality.com/2018/05/child-process-streams.html

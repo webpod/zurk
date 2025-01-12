@@ -4,6 +4,12 @@ import { VoidStream } from '../spawn.js'
 import type { TShell, TMixin, TShellCtx } from '../x.js'
 import { type TZurk, type TZurkPromise, isZurkAny } from '../zurk.js'
 
+/**
+ * @module
+ *
+ * Zurk $ pipe mixin
+ */
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const pipeMixin: TMixin = <T extends TZurk | TZurkPromise >($: TShell, result: T, ctx: TShellCtx) =>
   isZurkAny(result)

@@ -26,6 +26,20 @@ import { pipeMixin } from './mixin/pipe.js'
 import { killMixin } from './mixin/kill.js'
 import { timeoutMixin } from './mixin/timeout.js'
 
+
+/**
+ * @module
+ *
+ * Zurk $ API
+ *
+ * @example
+ * ```ts
+ * import {$} from 'zurk/x'
+ *
+ * const p = await $`echo foo`'
+ * ```
+ */
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TShellCtxExtra {
 }
@@ -88,6 +102,12 @@ export interface TShellSync {
   (opts: TShellOptions): TShellSync
 }
 
+/**
+ * Zurk $ template API
+ *
+ * @param pieces
+ * @param args
+ */
 export const $: TShell = function(this: any, pieces?: any, ...args: any): any {
   const self =  (this !== g) && this
   const preset = self || {}
@@ -125,6 +145,13 @@ const zurkMixin: TMixin = ($: TShell, target: TShellOptions | TZurk | TZurkPromi
 
 $.mixins = [zurkMixin, killMixin, pipeMixin, timeoutMixin]
 
+/**
+ * Applies mixins to the result.
+ * @param $
+ * @param result
+ * @param parent
+ * @returns TZurk | TZurkPromise | TShellOptions
+ */
 export const applyMixins = ($: TShell, result: TZurk | TZurkPromise | TShellOptions, parent?: TZurk | TZurkPromise): TZurk | TZurkPromise | TShellOptions => {
   let ctx: TShellCtx = (parent as TZurkPromise | TZurk)?.ctx
 

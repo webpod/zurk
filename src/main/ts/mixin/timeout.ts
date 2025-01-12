@@ -3,6 +3,12 @@ import { assign, pFinally } from '../util.js'
 import type { TMixin, TShell, TShellCtx } from '../x.js'
 import { type TZurk, type TZurkPromise, isZurkPromise } from '../zurk.js'
 
+/**
+ * @module
+ *
+ * Zurk $ timeout mixin
+ */
+
 const attachTimeout = <T extends TZurkPromise & { kill?: (signal: NodeJS.Signals) => void }>(
   ctx: TShellCtx,
   result: T

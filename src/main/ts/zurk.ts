@@ -19,7 +19,7 @@ import {
 
 
 /**
- * @module zurk/zurk
+ * @module
  *
  * Zurk process spawner
  *
