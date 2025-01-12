@@ -1,3 +1,8 @@
+## [0.10.2](https://github.com/webpod/zurk/compare/v0.10.1...v0.10.2) (2025-01-12)
+
+### Fixes & improvements
+* docs: add jsdocs ([538b43a](https://github.com/webpod/zurk/commit/538b43aec0cb15cab22bf67a2a6e0aa3ff804670))
+
 ## [0.10.1](https://github.com/webpod/zurk/compare/v0.10.0...v0.10.1) (2025-01-10)
 
 ### Fixes & improvements
