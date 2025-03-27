@@ -1,3 +1,8 @@
+## [0.11.0](https://github.com/webpod/zurk/compare/v0.10.3...v0.11.0) (2025-03-27)
+
+### Features
+* feat: expose `quote` and `quotePwsh` ([f5a1c61](https://github.com/webpod/zurk/commit/f5a1c6111e47bc0adb7aac093c00a1cc9fa0a1bb))
+
 ## [0.10.3](https://github.com/webpod/zurk/compare/v0.10.2...v0.10.3) (2025-03-27)
 
 ### Fixes & improvements
