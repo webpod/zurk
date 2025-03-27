@@ -2,7 +2,7 @@
 import * as cp from "node:child_process";
 import process from "node:process";
 import EventEmitter from "node:events";
-import { Stream, Transform } from "node:stream";
+import { Readable, Transform } from "node:stream";
 import { assign, noop, randomId, g, immediate } from "./util.mjs";
 export * from "./util.mjs";
 var defaults = {
@@ -62,7 +62,7 @@ var normalizeCtx = (...ctxs) => assign(
 );
 var processInput = (child, input) => {
   if (input && child.stdin && !child.stdin.destroyed) {
-    if (input instanceof Stream) {
+    if (input instanceof Readable) {
       input.pipe(child.stdin);
     } else {
       child.stdin.write(input);

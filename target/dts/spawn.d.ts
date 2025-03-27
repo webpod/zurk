@@ -1,7 +1,7 @@
 import * as cp from 'node:child_process';
 import EventEmitter from 'node:events';
 import { Buffer } from 'node:buffer';
-import { Readable, Writable, Stream, Transform } from 'node:stream';
+import { Readable, Writable, Transform } from 'node:stream';
 /**
  * @module
  *
@@ -66,7 +66,7 @@ export type TSpawnListeners = {
 };
 export type TSpawnCtx = Partial<Omit<TSpawnCtxNormalized, 'child'>>;
 export type TChild = ReturnType<typeof cp.spawn>;
-export type TInput = string | Buffer | Stream;
+export type TInput = string | Buffer | Readable;
 export interface TSpawnCtxNormalized {
     id: string;
     cwd: string;
