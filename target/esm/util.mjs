@@ -28,12 +28,12 @@ var isStringLiteral = (pieces, ...rest) => {
 var assign = (target, ...extras) => Object.defineProperties(target, extras.reduce((m, extra) => ({ ...m, ...Object.fromEntries(Object.entries(Object.getOwnPropertyDescriptors(extra)).filter(([, v]) => !Object.prototype.hasOwnProperty.call(v, "value") || v.value !== void 0)) }), {}));
 var quote = (arg) => {
   if (arg === "") return `$''`;
-  if (/^[\w/.\-@:=]+$/.test(arg)) return arg;
+  if (/^[\w./:=@-]+$/.test(arg)) return arg;
   return `$'` + arg.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/\f/g, "\\f").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\v/g, "\\v").replace(/\0/g, "\\0") + `'`;
 };
 function quotePwsh(arg) {
   if (arg === "") return `''`;
-  if (/^[\w/.\-]+$/.test(arg)) return arg;
+  if (/^[\w./-]+$/.test(arg)) return arg;
   return `'` + arg.replace(/'/g, "''") + `'`;
 }
 var buildCmd = (quote2, pieces, args, subs = substitute) => {

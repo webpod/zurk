@@ -61,7 +61,7 @@ export const assign = <T, E>(target: T, ...extras: E[]): T =>
 
 export const quote = (arg: string): string => {
   if (arg === '') return `$''`
-  if (/^[\w/.\-@:=]+$/.test(arg)) return arg
+  if (/^[\w./:=@-]+$/.test(arg)) return arg
 
   return (
     `$'` +
@@ -80,7 +80,7 @@ export const quote = (arg: string): string => {
 
 export function quotePwsh(arg: string): string {
   if (arg === '') return `''`
-  if (/^[\w/.\-]+$/.test(arg)) return arg
+  if (/^[\w./-]+$/.test(arg)) return arg
 
   return `'` + arg.replace(/'/g, "''") + `'`
 }

@@ -27,6 +27,7 @@ describe('util', () => {
 
   test('quotePwsh()', () => {
     assert.equal(quotePwsh(''), "''")
+    assert.equal(quotePwsh('--foo'), '--foo')
     assert.equal(quotePwsh('foo bar\r\nbaz'), "'foo bar\r\nbaz'")
   })
 
