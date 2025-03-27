@@ -85,7 +85,7 @@ var normalizeCtx = (...ctxs) => (0, import_util.assign)(
 );
 var processInput = (child, input) => {
   if (input && child.stdin && !child.stdin.destroyed) {
-    if (input instanceof import_node_stream.Stream) {
+    if (input instanceof import_node_stream.Readable) {
       input.pipe(child.stdin);
     } else {
       child.stdin.write(input);
