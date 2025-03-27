@@ -36,7 +36,7 @@ export type TZurkPromise = Promise<TZurk> & Promisified<TZurk> & TZurkOn<TZurkPr
     stdio: TZurkCtx['stdio'];
     child: TZurkCtx['child'];
 };
-export declare const zurk: <T extends TZurkOptions = Partial<Omit<TZurkCtx, "callback">>, R = T extends {
+export declare const zurk: <T extends TZurkOptions = TZurkOptions, R = T extends {
     sync: true;
 } ? TZurk : TZurkPromise>(opts: T) => R;
 export declare const zurkAsync: (opts: TZurkOptions) => TZurkPromise;
