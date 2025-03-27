@@ -152,8 +152,8 @@ result.stdall // ''
 import {quote, quotePwsh} from 'zurk'
 
 const arg = 'foo bar'
-$({quote})`echo ${arg}`.ctx.cmd             // "echo $'foo bar'"
-$({quote: quotePwsh})`echo ${arg}`.ctx.cmd  // "echo 'foo bar'"
+$({quote})`echo ${arg}`             // "echo $'foo bar'"
+$({quote: quotePwsh})`echo ${arg}`  // "echo 'foo bar'"
 ```
 
 ## License
