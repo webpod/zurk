@@ -1,3 +1,8 @@
+## [0.10.3](https://github.com/webpod/zurk/compare/v0.10.2...v0.10.3) (2025-03-27)
+
+### Fixes & improvements
+* fix: strengthen `spawn.input` type ([bef4919](https://github.com/webpod/zurk/commit/bef49194c234aa26e5f2a053b8c4dc5634080e4b))
+
 ## [0.10.2](https://github.com/webpod/zurk/compare/v0.10.1...v0.10.2) (2025-01-12)
 
 ### Fixes & improvements
