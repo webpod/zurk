@@ -14,6 +14,8 @@ __export(index_exports, {
   defaults: () => import_spawn2.defaults,
   exec: () => import_spawn2.exec,
   invoke: () => import_spawn2.invoke,
+  quote: () => import_util5.quote,
+  quotePwsh: () => import_util5.quotePwsh,
   zurk: () => import_zurk5.zurk
 });
 module.exports = __toCommonJS(index_exports);
@@ -170,5 +172,7 @@ var import_util5 = require("./util.cjs");
   defaults,
   exec,
   invoke,
+  quote,
+  quotePwsh,
   zurk
 });

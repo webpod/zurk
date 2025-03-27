@@ -11,6 +11,6 @@ describe('index', () => {
     assert.equal(typeof exec, 'function')
     assert.equal(typeof invoke, 'function')
     assert.equal(typeof buildCmd, 'function')
-    assert.equal(Object.keys(all).length, 6)
+    assert.equal(Object.keys(all).length, 8)
   })
 })

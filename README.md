@@ -147,5 +147,14 @@ result.stdout // 'hello\n'
 result.stdall // ''
 ```
 
+- [x] Built-in quote for bash and powershell
+```ts
+import {quote, quotePwsh} from 'zurk'
+
+const arg = 'foo bar'
+$({quote})`echo ${arg}`.ctx.cmd             // "echo $'foo bar'"
+$({quote: quotePwsh})`echo ${arg}`.ctx.cmd  // "echo 'foo bar'"
+```
+
 ## License
 [MIT](./LICENSE)

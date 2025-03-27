@@ -59,8 +59,7 @@ var zurkifyPromise = (target, ctx) => {
     return target;
   const proxy = new Proxy(target, {
     get(target2, p, receiver) {
-      if (p === ZURKPROXY) return ZURKPROXY;
-      if (p === ZURK) return ZURK;
+      if (p === ZURKPROXY || p === ZURK) return p;
       if (p === "then") return target2.then.bind(target2);
       if (p === "catch") return target2.catch.bind(target2);
       if (p === "finally") return (cb) => proxy.then((0, import_spawn.asyncVoidCall)(cb), (0, import_spawn.asyncVoidCall)(cb));

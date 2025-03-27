@@ -102,8 +102,7 @@ export const zurkifyPromise = (target: Promise<TZurk> | TZurkPromise, ctx: TSpaw
 
   const proxy = new Proxy(target, {
     get(target: Promise<TZurk>, p: string | symbol, receiver: any): any {
-      if (p === ZURKPROXY) return ZURKPROXY
-      if (p === ZURK) return ZURK
+      if (p === ZURKPROXY || p === ZURK) return p
       if (p === 'then') return target.then.bind(target)
       if (p === 'catch') return target.catch.bind(target)
       if (p === 'finally') return (cb: TVoidCallback) => proxy.then(asyncVoidCall(cb), asyncVoidCall(cb))
