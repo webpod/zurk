@@ -157,12 +157,14 @@ var applyMixins = ($2, result, parent) => {
 
 // src/main/ts/index.ts
 import { zurk as zurk2 } from "./zurk.mjs";
-import { buildCmd as buildCmd2 } from "./util.mjs";
+import { buildCmd as buildCmd2, quote as quote2, quotePwsh } from "./util.mjs";
 export {
   $,
   buildCmd2 as buildCmd,
   defaults,
   exec,
   invoke,
+  quote2 as quote,
+  quotePwsh,
   zurk2 as zurk
 };

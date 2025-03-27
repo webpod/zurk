@@ -23,6 +23,7 @@ __export(util_exports, {
   pFinally: () => pFinally,
   parseInput: () => parseInput,
   quote: () => quote,
+  quotePwsh: () => quotePwsh,
   randomId: () => randomId,
   substitute: () => substitute
 });
@@ -55,11 +56,15 @@ var isStringLiteral = (pieces, ...rest) => {
 };
 var assign = (target, ...extras) => Object.defineProperties(target, extras.reduce((m, extra) => __spreadValues(__spreadValues({}, m), Object.fromEntries(Object.entries(Object.getOwnPropertyDescriptors(extra)).filter(([, v]) => !Object.prototype.hasOwnProperty.call(v, "value") || v.value !== void 0))), {}));
 var quote = (arg) => {
-  if (/^[\w./:=@-]+$/i.test(arg) || arg === "") {
-    return arg;
-  }
+  if (arg === "") return `$''`;
+  if (/^[\w/.\-@:=]+$/.test(arg)) return arg;
   return `$'` + arg.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/\f/g, "\\f").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\v/g, "\\v").replace(/\0/g, "\\0") + `'`;
 };
+function quotePwsh(arg) {
+  if (arg === "") return `''`;
+  if (/^[\w/.\-]+$/.test(arg)) return arg;
+  return `'` + arg.replace(/'/g, "''") + `'`;
+}
 var buildCmd = (quote2, pieces, args, subs = substitute) => {
   if (args.some(isPromiseLike))
     return Promise.all(args).then((args2) => buildCmd(quote2, pieces, args2));
@@ -95,6 +100,7 @@ var pFinally = (p, cb) => {
   pFinally,
   parseInput,
   quote,
+  quotePwsh,
   randomId,
   substitute
 });

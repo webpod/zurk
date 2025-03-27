@@ -60,9 +60,8 @@ export const assign = <T, E>(target: T, ...extras: E[]): T =>
         .filter(([,v]) => !Object.prototype.hasOwnProperty.call(v, 'value') || v.value !== undefined))}), {}))
 
 export const quote = (arg: string): string => {
-  if (/^[\w./:=@-]+$/i.test(arg) || arg === '') {
-    return arg
-  }
+  if (arg === '') return `$''`
+  if (/^[\w/.\-@:=]+$/.test(arg)) return arg
 
   return (
     `$'` +
@@ -77,6 +76,13 @@ export const quote = (arg: string): string => {
       .replace(/\0/g, '\\0') +
     `'`
   )
+}
+
+export function quotePwsh(arg: string): string {
+  if (arg === '') return `''`
+  if (/^[\w/.\-]+$/.test(arg)) return arg
+
+  return `'` + arg.replace(/'/g, "''") + `'`
 }
 
 export type TQuote = (input: string) => string

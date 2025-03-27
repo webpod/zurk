@@ -6,6 +6,7 @@ import { describe, it } from 'node:test'
 import { Stream } from 'node:stream'
 import { getEventListeners } from 'node:events'
 import { $ } from '../../main/ts/x.js'
+import { quote, quotePwsh } from '../../main/ts/util.js'
 
 const __dirname = new URL('.', import.meta.url).pathname
 const fixtures = path.resolve(__dirname, '../fixtures')
@@ -101,6 +102,18 @@ describe('$()', () => {
     assert.equal(o2.trim(), 'bar')
     assert.equal(o3.trim(), 'baz')
     assert.equal(o4.trim(), 'qux')
+  })
+
+  it('accepts custom quote', async () => {
+    const arg = 'foo bar'
+    const p1 = $({quote})
+    const p2 = $({quote: quotePwsh})
+
+    assert.equal(p1`echo ${arg}`.ctx.cmd, "echo $'foo bar'")
+    assert.equal(p2`echo ${arg}`.ctx.cmd, "echo 'foo bar'")
+
+    await p1
+    await p2
   })
 })
 

@@ -31,6 +31,7 @@ export declare const isPromiseLike: (value: any) => boolean;
 export declare const isStringLiteral: (pieces: any, ...rest: any[]) => pieces is TemplateStringsArray;
 export declare const assign: <T, E>(target: T, ...extras: E[]) => T;
 export declare const quote: (arg: string) => string;
+export declare function quotePwsh(arg: string): string;
 export type TQuote = (input: string) => string;
 export declare const buildCmd: (quote: TQuote, pieces: TemplateStringsArray, args: any[], subs?: TSubstitute) => string | Promise<string>;
 export type TSubstitute = (arg: any) => string;

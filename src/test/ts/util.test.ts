@@ -1,6 +1,6 @@
 import * as assert from 'node:assert'
 import {describe, it, test} from 'node:test'
-import { assign, isStringLiteral, randomId } from '../../main/ts/util.js'
+import { assign, isStringLiteral, randomId, quote, quotePwsh } from '../../main/ts/util.js'
 import tslib from 'tslib'
 
 describe('util', () => {
@@ -23,5 +23,15 @@ describe('util', () => {
     assert.ok(!isStringLiteral(''))
     assert.ok(!isStringLiteral('foo'))
     assert.ok(!isStringLiteral(['foo']))
+  })
+
+  test('quotePwsh()', () => {
+    assert.equal(quotePwsh(''), "''")
+    assert.equal(quotePwsh('foo bar\r\nbaz'), "'foo bar\r\nbaz'")
+  })
+
+  test('quote()', () => {
+    assert.equal(quote(''), "$''")
+    assert.equal(quote('foo bar\r\nbaz'), "$'foo bar\\r\\nbaz'")
   })
 })
