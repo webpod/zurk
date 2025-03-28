@@ -34,5 +34,6 @@ describe('util', () => {
   test('quote()', () => {
     assert.equal(quote(''), "$''")
     assert.equal(quote('foo bar\r\nbaz'), "$'foo bar\\r\\nbaz'")
+    assert.equal(quote('vs fast" && touch $HOME/Desktop/test.txt || echo "'), `$'vs fast\\" && touch $HOME/Desktop/test.txt || echo \\"'`)
   })
 })

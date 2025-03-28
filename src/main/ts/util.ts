@@ -68,6 +68,7 @@ export const quote = (arg: string): string => {
     arg
       .replace(/\\/g, '\\\\')
       .replace(/'/g, "\\'")
+      .replace(/"/g, "\\\"")
       .replace(/\f/g, '\\f')
       .replace(/\n/g, '\\n')
       .replace(/\r/g, '\\r')
