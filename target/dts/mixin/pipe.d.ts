@@ -1,4 +1,4 @@
-import type { TMixin } from '../x.js';
+import type { TMixin } from '../x.ts';
 /**
  * @module
  *

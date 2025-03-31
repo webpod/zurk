@@ -1,8 +1,8 @@
 import process from 'node:process'
 import { ChildProcess } from 'node:child_process'
-import { assign } from '../util.js'
-import type { TMixin, TShell, TShellCtx } from '../x.js'
-import { type TZurk, type TZurkPromise, isZurkAny } from '../zurk.js'
+import { assign } from '../util.ts'
+import type { TMixin, TShell, TShellCtx } from '../x.ts'
+import { type TZurk, type TZurkPromise, isZurkAny } from '../zurk.ts'
 
 /**
  * @module

@@ -8,8 +8,8 @@ import {
   TSpawnCtx,
   TSpawnResult,
   TSpawnStore
-} from '../../main/ts/spawn.js'
-import { makeDeferred } from '../../main/ts/util.js'
+} from '../../main/ts/spawn.ts'
+import { makeDeferred } from '../../main/ts/util.ts'
 
 describe('invoke()', () => {
   it('calls a given cmd', async () => {

@@ -1,7 +1,7 @@
 import process from 'node:process'
-import { assign, pFinally } from '../util.js'
-import type { TMixin, TShell, TShellCtx } from '../x.js'
-import { type TZurk, type TZurkPromise, isZurkPromise } from '../zurk.js'
+import { assign, pFinally } from '../util.ts'
+import type { TMixin, TShell, TShellCtx } from '../x.ts'
+import { type TZurk, type TZurkPromise, isZurkPromise } from '../zurk.ts'
 
 /**
  * @module
