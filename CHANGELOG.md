@@ -1,3 +1,8 @@
+## [0.11.1](https://github.com/webpod/zurk/compare/v0.11.0...v0.11.1) (2025-03-31)
+
+### Fixes & improvements
+* refactor: use .ts ext in sources ([2504eab](https://github.com/webpod/zurk/commit/2504eabe20310f8287efcdfeb4a03f0ea4fe2b00))
+
 ## [0.11.0](https://github.com/webpod/zurk/compare/v0.10.3...v0.11.0) (2025-03-27)
 
 ### Features
