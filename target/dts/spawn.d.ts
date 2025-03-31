@@ -22,7 +22,7 @@ import { Readable, Writable, Transform } from 'node:stream';
  * }))
  * ```
  */
-export * from './util.js';
+export * from './util.ts';
 export type TSpawnError = any;
 export type TPushable<T = any> = {
     push(...args: T[]): number;

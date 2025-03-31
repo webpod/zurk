@@ -1,6 +1,6 @@
 import type { Readable, Writable } from 'node:stream';
-import { TZurk, TZurkPromise, TZurkOptions, TZurkCtx } from './zurk.js';
-import { type Promisified, type TVoidCallback, type TQuote } from './util.js';
+import { TZurk, TZurkPromise, TZurkOptions, TZurkCtx } from './zurk.ts';
+import { type Promisified, type TVoidCallback, type TQuote } from './util.ts';
 /**
  * @module
  *

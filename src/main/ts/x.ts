@@ -7,7 +7,7 @@ import {
   TZurkPromise,
   TZurkOptions,
   TZurkCtx
-} from './zurk.js'
+} from './zurk.ts'
 import {
   type Promisified,
   type TVoidCallback,
@@ -20,11 +20,11 @@ import {
   parseInput,
   g,
   immediate
-} from './util.js'
+} from './util.ts'
 import { getCallerLocation } from './error.ts'
-import { pipeMixin } from './mixin/pipe.js'
-import { killMixin } from './mixin/kill.js'
-import { timeoutMixin } from './mixin/timeout.js'
+import { pipeMixin } from './mixin/pipe.ts'
+import { killMixin } from './mixin/kill.ts'
+import { timeoutMixin } from './mixin/timeout.ts'
 
 
 /**

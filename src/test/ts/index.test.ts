@@ -1,7 +1,7 @@
 import * as assert from 'node:assert'
 import { describe, it } from 'node:test'
-import { invoke, zurk, $, buildCmd, exec, defaults } from '../../main/ts/index.js'
-import * as all from '../../main/ts/index.js'
+import { invoke, zurk, $, buildCmd, exec, defaults } from '../../main/ts/index.ts'
+import * as all from '../../main/ts/index.ts'
 
 describe('index', () => {
   it('has proper exports', () => {

@@ -5,8 +5,8 @@ import path from 'node:path'
 import { describe, it } from 'node:test'
 import { Stream } from 'node:stream'
 import { getEventListeners } from 'node:events'
-import { $ } from '../../main/ts/x.js'
-import { quote, quotePwsh } from '../../main/ts/util.js'
+import { $ } from '../../main/ts/x.ts'
+import { quote, quotePwsh } from '../../main/ts/util.ts'
 
 const __dirname = new URL('.', import.meta.url).pathname
 const fixtures = path.resolve(__dirname, '../fixtures')

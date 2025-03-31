@@ -5,17 +5,17 @@ import {
   type TSpawnCtxNormalized,
   type TSpawnResult,
   type TSpawnListeners,
-} from './spawn.js'
+} from './spawn.ts'
 import {
   isPromiseLike,
   makeDeferred,
   type Promisified,
   type TVoidCallback
-} from './util.js'
+} from './util.ts'
 import {
   formatErrorMessage,
   formatExitMessage
-} from './error.js'
+} from './error.ts'
 
 
 /**
