@@ -1,10 +1,9 @@
 export type * from './spawn.ts';
 export type * from './x.ts';
 export type * from './zurk.ts';
-export { invoke, exec, defaults } from './spawn.ts';
+export { invoke, exec, defaults, VoidStream, isStringLiteral, quote, quotePwsh, buildCmd } from './spawn.ts';
 export { $ } from './x.ts';
 export { zurk } from './zurk.ts';
-export { type Promisified, buildCmd, quote, quotePwsh } from './util.ts';
 /**
  * @module
  *
