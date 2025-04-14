@@ -1,6 +1,6 @@
+import { Buffer } from 'node:buffer'
 import { Stream } from 'node:stream'
 import process from 'node:process'
-import { Buffer } from 'node:buffer'
 
 /**
  * @module
