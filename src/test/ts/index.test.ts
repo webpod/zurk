@@ -1,7 +1,7 @@
 import * as assert from 'node:assert'
 import { describe, it } from 'node:test'
-import { invoke, zurk, $, buildCmd, exec, defaults } from '../../main/ts/index.js'
-import * as all from '../../main/ts/index.js'
+import { invoke, zurk, $, buildCmd, exec, defaults, isStringLiteral, VoidStream } from '../../main/ts/index.ts'
+import * as all from '../../main/ts/index.ts'
 
 describe('index', () => {
   it('has proper exports', () => {
@@ -11,6 +11,8 @@ describe('index', () => {
     assert.equal(typeof exec, 'function')
     assert.equal(typeof invoke, 'function')
     assert.equal(typeof buildCmd, 'function')
-    assert.equal(Object.keys(all).length, 8)
+    assert.equal(typeof VoidStream, 'function')
+    assert.equal(typeof isStringLiteral, 'function')
+    assert.equal(Object.keys(all).length, 10)
   })
 })

@@ -1,5 +1,5 @@
-import { type TSpawnCtxNormalized, type TSpawnResult, type TSpawnListeners } from './spawn.js';
-import { type Promisified } from './util.js';
+import { type TSpawnCtxNormalized, type TSpawnResult, type TSpawnListeners } from './spawn.ts';
+import { type Promisified } from './util.ts';
 /**
  * @module
  *

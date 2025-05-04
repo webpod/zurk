@@ -1,8 +1,8 @@
 import { Writable } from 'node:stream'
-import { assign, isStringLiteral } from '../util.js'
-import { VoidStream } from '../spawn.js'
-import type { TShell, TMixin, TShellCtx } from '../x.js'
-import { type TZurk, type TZurkPromise, isZurkAny } from '../zurk.js'
+import { assign, isStringLiteral } from '../util.ts'
+import { VoidStream } from '../spawn.ts'
+import type { TShell, TMixin, TShellCtx } from '../x.ts'
+import { type TZurk, type TZurkPromise, isZurkAny } from '../zurk.ts'
 
 /**
  * @module

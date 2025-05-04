@@ -1,2 +1,2 @@
-import type { TMixin } from '../x.js';
+import type { TMixin } from '../x.ts';
 export declare const killMixin: TMixin;

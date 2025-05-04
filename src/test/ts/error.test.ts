@@ -9,9 +9,9 @@ import {
   formatExitMessage,
   EXIT_CODES,
   ERRNO_CODES
-} from '../../main/ts/error.js'
+} from '../../main/ts/error.ts'
 
-import * as all from '../../main/ts/error.js'
+import * as all from '../../main/ts/error.ts'
 
 describe('error', () => {
   it('has proper exports', () => {

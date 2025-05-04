@@ -1,6 +1,6 @@
 import * as assert from 'node:assert'
 import {describe, it, test} from 'node:test'
-import { assign, isStringLiteral, randomId, quote, quotePwsh } from '../../main/ts/util.js'
+import { assign, isStringLiteral, randomId, quote, quotePwsh } from '../../main/ts/util.ts'
 import tslib from 'tslib'
 
 describe('util', () => {

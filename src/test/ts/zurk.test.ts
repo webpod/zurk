@@ -1,7 +1,7 @@
 import * as assert from 'node:assert'
 import { describe, it } from 'node:test'
-import { zurk, isZurk, isZurkPromise } from '../../main/ts/zurk.js'
-import type { TSpawnResult } from '../../main/ts/spawn.js'
+import { zurk, isZurk, isZurkPromise } from '../../main/ts/zurk.ts'
+import type { TSpawnResult } from '../../main/ts/spawn.ts'
 
 describe('zurk()', () => {
   it('sync returns Zurk instance', async () => {

@@ -10,12 +10,14 @@ const {
 var index_exports = {};
 __export(index_exports, {
   $: () => $,
-  buildCmd: () => import_util5.buildCmd,
+  VoidStream: () => import_spawn2.VoidStream,
+  buildCmd: () => import_spawn2.buildCmd,
   defaults: () => import_spawn2.defaults,
   exec: () => import_spawn2.exec,
   invoke: () => import_spawn2.invoke,
-  quote: () => import_util5.quote,
-  quotePwsh: () => import_util5.quotePwsh,
+  isStringLiteral: () => import_spawn2.isStringLiteral,
+  quote: () => import_spawn2.quote,
+  quotePwsh: () => import_spawn2.quotePwsh,
   zurk: () => import_zurk5.zurk
 });
 module.exports = __toCommonJS(index_exports);
@@ -164,14 +166,15 @@ var applyMixins = ($2, result, parent) => {
 
 // src/main/ts/index.ts
 var import_zurk5 = require("./zurk.cjs");
-var import_util5 = require("./util.cjs");
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   $,
+  VoidStream,
   buildCmd,
   defaults,
   exec,
   invoke,
+  isStringLiteral,
   quote,
   quotePwsh,
   zurk

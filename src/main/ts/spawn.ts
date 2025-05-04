@@ -3,7 +3,7 @@ import process from 'node:process'
 import EventEmitter from 'node:events'
 import { Buffer } from 'node:buffer'
 import { Readable, Writable, Transform } from 'node:stream'
-import { assign, noop, randomId, g, immediate } from './util.js'
+import { assign, noop, randomId, g, immediate } from './util.ts'
 
 /**
  * @module
@@ -26,7 +26,7 @@ import { assign, noop, randomId, g, immediate } from './util.js'
  * ```
  */
 
-export * from './util.js'
+export * from './util.ts'
 
 export type TSpawnError = any
 
