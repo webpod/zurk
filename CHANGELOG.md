@@ -1,3 +1,8 @@
+## [0.11.3](https://github.com/webpod/zurk/compare/v0.11.2...v0.11.3) (2025-06-22)
+
+### Fixes & improvements
+* fix: pass `subs` fn for nested `buildCmd` calls ([4beca8b](https://github.com/webpod/zurk/commit/4beca8b210b8f9fbe38048560db951ab62156f7f))
+
 ## [0.11.2](https://github.com/webpod/zurk/compare/v0.11.1...v0.11.2) (2025-04-01)
 
 ### Fixes & improvements
