@@ -89,7 +89,7 @@ export type TQuote = (input: string) => string
 
 export const buildCmd = (quote: TQuote, pieces: TemplateStringsArray, args: any[], subs = substitute): string | Promise<string> =>  {
   if (args.some(isPromiseLike))
-    return Promise.all(args).then((args) => buildCmd(quote, pieces, args))
+    return Promise.all(args).then((args) => buildCmd(quote, pieces, args, subs))
 
   let cmd = pieces[0], i = 0
   while (i < args.length) {
