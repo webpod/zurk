@@ -50,16 +50,7 @@ var defaults = {
   run: immediate,
   stack: ""
 };
-var normalizeCtx = (...ctxs) => assign(
-  {
-    ...defaults,
-    get signal() {
-      var _a;
-      return (_a = this.ac) == null ? void 0 : _a.signal;
-    }
-  },
-  ...ctxs
-);
+var normalizeCtx = (...ctxs) => assign({ ...defaults }, ...ctxs);
 var processInput = (child, input) => {
   if (input && child.stdin && !child.stdin.destroyed) {
     if (input instanceof Readable) {

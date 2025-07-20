@@ -141,10 +141,8 @@ export const defaults: TSpawnCtxNormalized = {
  * @param ctxs Contexts to normalize
  * @returns
  */
-export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized => assign({
-  ...defaults,
-  get signal() { return this.ac?.signal }},
-  ...ctxs)
+export const normalizeCtx = (...ctxs: TSpawnCtx[]): TSpawnCtxNormalized =>
+  assign({...defaults}, ...ctxs)
 
 /**
  * Redirects input to child process stdin
