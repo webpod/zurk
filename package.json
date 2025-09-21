@@ -50,6 +50,7 @@
     "build:docs": "typedoc --options src/main/typedoc",
     "build:stamp": "npx buildstamp",
     "build:jsr": "node ./src/scripts/build-jsr.mjs",
+    "build:pkgjson": "node ./src/scripts/build-pkgjson.ts",
     "test": "concurrently 'npm:test:*'",
     "test:target": "git diff --exit-code --quiet || (echo 'Uncommitted changes' && exit 1)",
     "test:lint": "eslint -c src/test/lint/.eslintrc.json src",
@@ -58,6 +59,7 @@
     "test:smoke:cjs": "node src/test/smoke/invoke.test.cjs",
     "test:jsr": "jsr publish --dry-run",
     "test:audit": "npm audit",
+    "_test:workflow": "zizmor .github/workflows -v -p --min-severity=medium",
     "publish:draft": "npm run build && npm publish --no-git-tag-version",
     "postrelease": "node src/scripts/build-jsr.mjs && jsr publish --allow-dirty"
   },
