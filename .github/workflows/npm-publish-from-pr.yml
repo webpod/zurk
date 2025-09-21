@@ -1,5 +1,7 @@
 name: npm publish from PR
 
+permissions: {}
+
 on:
   workflow_dispatch:
     inputs:
@@ -15,15 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Use Node.js 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ github.event.inputs.repo }}
           ref: ${{ github.event.inputs.commit }}
+          persist-credentials: false
 
       - name: Build
         run: |
@@ -36,6 +39,7 @@ jobs:
           path: |
             target
             package.json
+            package-main.json
             README.md
             buildstamp.json
           retention-days: 1
@@ -50,7 +54,7 @@ jobs:
       packages: write
       id-token: write
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - uses: actions/download-artifact@v4

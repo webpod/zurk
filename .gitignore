@@ -5,3 +5,4 @@ target/*
 jsr.json
 node_modules/
 buildstamp.json
+package-main.json

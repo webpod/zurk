@@ -3,10 +3,10 @@ import {
   zurk,
   zurkifyPromise,
   isZurkAny,
-  TZurk,
-  TZurkPromise,
-  TZurkOptions,
-  TZurkCtx
+  type TZurk,
+  type TZurkPromise,
+  type TZurkOptions,
+  type TZurkCtx
 } from './zurk.ts'
 import {
   type Promisified,

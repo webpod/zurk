@@ -51,13 +51,11 @@ var defaults = {
   stack: ""
 };
 var normalizeCtx = (...ctxs) => assign(
-  {
-    ...defaults,
-    get signal() {
-      var _a;
-      return (_a = this.ac) == null ? void 0 : _a.signal;
-    }
-  },
+  { ...defaults },
+  { get signal() {
+    var _a;
+    return (_a = this.ac) == null ? void 0 : _a.signal;
+  } },
   ...ctxs
 );
 var processInput = (child, input) => {

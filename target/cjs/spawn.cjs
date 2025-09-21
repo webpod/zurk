@@ -75,12 +75,11 @@ var defaults = {
   stack: ""
 };
 var normalizeCtx = (...ctxs) => (0, import_util.assign)(
-  __spreadProps(__spreadValues({}, defaults), {
-    get signal() {
-      var _a;
-      return (_a = this.ac) == null ? void 0 : _a.signal;
-    }
-  }),
+  __spreadValues({}, defaults),
+  { get signal() {
+    var _a;
+    return (_a = this.ac) == null ? void 0 : _a.signal;
+  } },
   ...ctxs
 );
 var processInput = (child, input) => {

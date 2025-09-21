@@ -2,15 +2,20 @@
 # If the tests pass and this is a push to the master branch it also runs Semantic Release.
 name: CI
 on: [push, pull_request]
+
+permissions: {}
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
         with:
-          node-version: 20.x
+          persist-credentials: false
+      - name: Use Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
           cache: 'npm'
       - run: npm ci
       - run: npm run build
@@ -20,13 +25,42 @@ jobs:
           path: |
             target
             package.json
+            package-main.json
             jsr.json
           retention-days: 1
 
-  push:
-    name: Push ${{ github.ref }}
+  test:
     needs: build
     if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: 'npm'
+      - uses: actions/download-artifact@v5
+        with:
+          name: build
+      - name: Fetch deps
+        run: npm ci
+      - name: Run tests
+        run: npm run test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: |
+            target/coverage
+            package.json
+          retention-days: 1
+
+  release:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       checks: read
@@ -36,48 +70,41 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
-          fetch-depth: ${{ github.ref == 'refs/heads/main' && '0' || '1' }}
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@v5
         with:
-          node-version: 20
-          cache: 'npm'
-      - uses: actions/download-artifact@v4
-        with:
-          name: build
-      - name: Fetch deps
-        run: npm ci
-      - name: Run tests
-        run: npm run test
-
-#      - name: Codeclimate
-#        if: github.ref == 'refs/heads/main'
-#        uses: paambaati/codeclimate-action@v4.0.0
-#        env:
-#          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-#        with:
-#          coverageLocations: |
-#            ${{github.workspace}}/target/coverage/lcov.info:lcov
-
-      - name: Semantic Release (npm)
+          merge-multiple: true
+      - name: Semantic Release
         if: github.ref == 'refs/heads/main'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_PROVENANCE: true
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: 'x-access-token'
           GIT_BRANCH: 'main'
           GIT_AUTHOR_NAME: ${{ vars.GIT_AUTHOR_NAME }}
           GIT_AUTHOR_EMAIL: ${{ vars.GIT_AUTHOR_EMAIL }}
           GIT_COMMITTER_NAME: ${{ vars.GIT_COMMITTER_NAME }}
           GIT_COMMITTER_EMAIL: ${{ vars.GIT_COMMITTER_EMAIL }}
-        run: npx zx-semrel
+        run: |
+          mv -f package-main.json package.json
+          npx zx-semrel
+
+      - name: Push docs and coverage
+        env:
+          GIT_COMMITTER_NAME: ${{ vars.GIT_COMMITTER_NAME }}
+          GIT_COMMITTER_EMAIL: ${{ vars.GIT_COMMITTER_EMAIL }}
+        run: |
+          npx ggcp target/docs https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git/gh-pages --message='chore: update docs'
+          npx ggcp target/coverage/lcov.info https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git/coverage/${{ github.sha }}.lcov.info --message='chore: add coverage for ${{ github.sha }}'
 
   pr:
     if: github.event_name == 'pull_request'
     needs: build
-    name: PR (Node v${{ matrix.node-version }}, OS ${{ matrix.os }})
+    name: pr-os-${{ matrix.os }}-nodejs-${{ matrix.node-version }}
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
@@ -86,13 +113,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: build
 
@@ -120,10 +149,12 @@ jobs:
     name: Smoke Bun
     needs: build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - name: Setup Bun
-        uses: antongolub/action-setup-bun@v1
-      - uses: actions/download-artifact@v4
+        uses: antongolub/action-setup-bun@f0b9f339a7ce9ba1174a58484e4dc9bbd6f7b133 # v1.13.2
+      - uses: actions/download-artifact@v5
         with:
           name: build
       - run: |
@@ -132,19 +163,21 @@ jobs:
 
   smoke-deno:
     runs-on: ubuntu-latest
-    name: Smoke Deno ${{ matrix.deno-version }}
+    name: smoke-deno-${{ matrix.deno-version }}
     needs: build
     strategy:
       matrix:
-        deno-version: [ v1.x, v2.x ]
+        deno-version: [ 1, 2 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - name: Setup Deno
-        uses: denoland/setup-deno@v2
+        uses: denoland/setup-deno@909cc5acb0fdd60627fb858598759246509fa755 # v2.0.2
         with:
           deno-version: ${{ matrix.deno-version }}
       - run: deno install npm:types/node
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: build
       - run: deno test --allow-read --allow-sys --allow-env --allow-run ./src/test/smoke/invoke.test.mjs
