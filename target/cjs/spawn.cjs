@@ -74,7 +74,14 @@ var defaults = {
   run: import_util.immediate,
   stack: ""
 };
-var normalizeCtx = (...ctxs) => (0, import_util.assign)(__spreadValues({}, defaults), ...ctxs);
+var normalizeCtx = (...ctxs) => (0, import_util.assign)(
+  __spreadValues({}, defaults),
+  { get signal() {
+    var _a;
+    return (_a = this.ac) == null ? void 0 : _a.signal;
+  } },
+  ...ctxs
+);
 var processInput = (child, input) => {
   if (input && child.stdin && !child.stdin.destroyed) {
     if (input instanceof import_node_stream.Readable) {
