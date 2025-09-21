@@ -1,3 +1,8 @@
+## [0.11.5](https://github.com/webpod/zurk/compare/v0.11.4...v0.11.5) (2025-09-21)
+
+### Fixes & improvements
+* perf: up dev deps, update gh pipelines, repack (#44) ([c026e8c](https://github.com/webpod/zurk/commit/c026e8c1cd2f84196bd612443a24172c43d1f29e))
+
 ## [0.11.4](https://github.com/webpod/zurk/compare/v0.11.3...v0.11.4) (2025-06-27)
 
 ### Fixes & improvements
