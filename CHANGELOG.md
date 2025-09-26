@@ -1,3 +1,8 @@
+## [0.11.10](https://github.com/webpod/zurk/compare/v0.11.9...v0.11.10) (2025-09-26)
+
+### Fixes & improvements
+* perf: update release pipeline & repack ([4f01a90](https://github.com/webpod/zurk/commit/4f01a9001a25144b40aa5e6103ba0bee77193c10))
+
 ## [0.11.9](https://github.com/webpod/zurk/compare/v0.11.8...v0.11.9) (2025-09-26)
 
 ### Fixes & improvements
