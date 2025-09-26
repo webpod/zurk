@@ -148,9 +148,9 @@ jobs:
         run: npm run test:smoke:cjs
 
   smoke-bun:
-    runs-on: ubuntu-latest
-    name: Smoke Bun
+    if: github.event_name == 'pull_request'
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
         with:
@@ -165,9 +165,10 @@ jobs:
           bun ./src/test/smoke/invoke.test.mjs
 
   smoke-deno:
+    needs: build
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     name: smoke-deno-${{ matrix.deno-version }}
-    needs: build
     strategy:
       matrix:
         deno-version: [ 1, 2 ]
