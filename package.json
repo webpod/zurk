@@ -60,9 +60,11 @@
     "test:jsr": "jsr publish --dry-run",
     "test:audit": "npm audit",
     "_test:workflow": "zizmor .github/workflows -v -p --min-severity=medium",
+    "prepack": "npm run publish:jsr && PKGJSON_PATH=package.json npm run build:pkgjson",
     "publish:draft": "npm run build && npm publish --no-git-tag-version",
-    "publish:jsr": "node src/scripts/build-jsr.mjs && jsr publish --allow-dirty && echo 'Published via JSR'",
-    "prepack": "npm run publish:jsr && PKGJSON_PATH=package.json npm run build:pkgjson"
+    "publish:jsr": "node src/scripts/build-jsr.mjs && npx jsr publish --allow-dirty && echo 'Published via JSR'",
+    "publish:docs": "npx ggcp target/docs https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git/gh-pages --message='chore: update docs'",
+    "publish:coverage": "npx ggcp target/coverage/lcov.info https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git/coverage/$GH_SHA.lcov.info --message=\"chore: add coverage for $GH_SHA\""
   },
   "repository": {
     "type": "git",

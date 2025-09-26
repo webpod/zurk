@@ -100,9 +100,12 @@ jobs:
         env:
           GIT_COMMITTER_NAME: ${{ vars.GIT_COMMITTER_NAME }}
           GIT_COMMITTER_EMAIL: ${{ vars.GIT_COMMITTER_EMAIL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          GH_SHA: ${{ github.sha }}
         run: |
-          npx ggcp target/docs https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git/gh-pages --message='chore: update docs'
-          npx ggcp target/coverage/lcov.info https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git/coverage/${{ github.sha }}.lcov.info --message='chore: add coverage for ${{ github.sha }}'
+          npm run publish:docs
+          npm run publish:coverage
 
   pr:
     if: github.event_name == 'pull_request'
