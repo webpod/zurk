@@ -89,9 +89,7 @@ jobs:
           GIT_AUTHOR_EMAIL: ${{ vars.GIT_AUTHOR_EMAIL }}
           GIT_COMMITTER_NAME: ${{ vars.GIT_COMMITTER_NAME }}
           GIT_COMMITTER_EMAIL: ${{ vars.GIT_COMMITTER_EMAIL }}
-        run: |
-          mv -f package-main.json package.json
-          npx zx-semrel
+        run: npx zx-semrel
 
       - name: Push docs and coverage
         env:
