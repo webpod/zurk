@@ -61,8 +61,8 @@
     "test:audit": "npm audit",
     "_test:workflow": "zizmor .github/workflows -v -p --min-severity=medium",
     "publish:draft": "npm run build && npm publish --no-git-tag-version",
-    "postrelease": "node src/scripts/build-jsr.mjs && jsr publish --allow-dirty",
-    "prepack": "PKGJSON_PATH=package.json npm run build:pkgjson"
+    "publish:jsr": "node src/scripts/build-jsr.mjs && jsr publish --allow-dirty && echo 'Published via JSR'",
+    "prepack": "npm run publish:jsr && PKGJSON_PATH=package.json npm run build:pkgjson"
   },
   "repository": {
     "type": "git",
