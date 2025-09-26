@@ -1,3 +1,8 @@
+## [0.11.7](https://github.com/webpod/zurk/compare/v0.11.6...v0.11.7) (2025-09-26)
+
+### Fixes & improvements
+* fix: use nodejs24 for release & repack ([ca0607d](https://github.com/webpod/zurk/commit/ca0607dd92074e323aea6fba4daa6fd6217d2084))
+
 ## [0.11.6](https://github.com/webpod/zurk/compare/v0.11.5...v0.11.6) (2025-09-26)
 
 ### Fixes & improvements
