@@ -1,3 +1,8 @@
+## [0.11.6](https://github.com/webpod/zurk/compare/v0.11.5...v0.11.6) (2025-09-26)
+
+### Fixes & improvements
+* fix: fix release flow & repack ([ae84657](https://github.com/webpod/zurk/commit/ae8465704ccaa1901a6bb53d61ed7ef63e2c4271))
+
 ## [0.11.5](https://github.com/webpod/zurk/compare/v0.11.4...v0.11.5) (2025-09-21)
 
 ### Fixes & improvements
