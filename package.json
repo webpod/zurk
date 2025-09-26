@@ -90,6 +90,7 @@
     "eslint": "^8.57.0",
     "eslint-config-qiwi": "^2.1.6",
     "fast-glob": "^3.3.3",
+    "ggcp": "^1.11.0",
     "jsr": "^0.13.5",
     "minimist": "^1.2.8",
     "ts-node": "^10.9.2",

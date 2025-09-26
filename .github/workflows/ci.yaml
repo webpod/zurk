@@ -83,6 +83,7 @@ jobs:
           node-version: 24
           cache: 'npm'
 
+      - run: npm ci
       - name: Semantic Release
         if: github.ref == 'refs/heads/main'
         env:
