@@ -35,14 +35,8 @@ import {
 export const ZURK = Symbol('Zurk')
 export const ZURKPROXY = Symbol('ZurkProxy')
 
-// TODO infer
 export interface TZurkOn<R> {
-  on<T extends 'start', L extends TSpawnListeners[T]>(name: T, listener: L): R
-  on<T extends 'stdout', L extends TSpawnListeners[T]>(name: T, listener: L): R
-  on<T extends 'stderr', L extends TSpawnListeners[T]>(name: T, listener: L): R
-  on<T extends 'end', L extends TSpawnListeners[T]>(name: T, listener: L): R
-  on<T extends 'err', L extends TSpawnListeners[T]>(name: T, listener: L): R
-  on<T extends 'abort', L extends TSpawnListeners[T]>(name: T, listener: L): R
+  on<T extends keyof TSpawnListeners>(name: T, listener: TSpawnListeners[T]): R
 }
 
 export interface TZurk extends TSpawnResult, TZurkOn<TZurk> {
