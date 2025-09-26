@@ -77,6 +77,11 @@ jobs:
       - uses: actions/download-artifact@v5
         with:
           merge-multiple: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: 'npm'
       - name: Semantic Release
         if: github.ref == 'refs/heads/main'
         env:
