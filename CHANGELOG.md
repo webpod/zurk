@@ -1,3 +1,8 @@
+## [0.11.9](https://github.com/webpod/zurk/compare/v0.11.8...v0.11.9) (2025-09-26)
+
+### Fixes & improvements
+* perf: simplify `TZurkOn` type ([b29834a](https://github.com/webpod/zurk/commit/b29834a96ece2a4b79fa19595ea2ca9fc77c88b7))
+
 ## [0.11.8](https://github.com/webpod/zurk/compare/v0.11.7...v0.11.8) (2025-09-26)
 
 ### Fixes & improvements
