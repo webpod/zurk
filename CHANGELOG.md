@@ -1,3 +1,8 @@
+## [0.11.8](https://github.com/webpod/zurk/compare/v0.11.7...v0.11.8) (2025-09-26)
+
+### Fixes & improvements
+* fix: fix jsr publish flow ([6ea1771](https://github.com/webpod/zurk/commit/6ea1771007416170038bccc15d821cc5433bc9e1))
+
 ## [0.11.7](https://github.com/webpod/zurk/compare/v0.11.6...v0.11.7) (2025-09-26)
 
 ### Fixes & improvements
